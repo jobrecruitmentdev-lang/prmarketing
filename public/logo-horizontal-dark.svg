@@ -1,0 +1,22 @@
+<svg width="340" height="72" viewBox="0 0 340 72" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="PR Marketing Ventures">
+  <defs>
+    <linearGradient id="pmvGradD" x1="4" y1="4" x2="68" y2="68" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#818CF8"/>
+      <stop offset="1" stop-color="#4F46E5"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(4,4)">
+    <rect x="0" y="0" width="64" height="64" rx="16" fill="url(#pmvGradD)"/>
+    <rect x="14" y="34" width="7" height="12" rx="3.5" fill="#FFFFFF" fill-opacity="0.55"/>
+    <rect x="26.5" y="26" width="7" height="20" rx="3.5" fill="#FFFFFF" fill-opacity="0.8"/>
+    <rect x="39" y="16" width="7" height="30" rx="3.5" fill="#FFFFFF"/>
+    <path d="M13 31 L26 24 L35 29 L47 14" stroke="#34D399" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M41 13.5 L48 12.5 L47 19.5" stroke="#34D399" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <g font-family="'Poppins','Inter','Segoe UI',system-ui,sans-serif">
+    <text x="84" y="34" font-size="25" font-weight="700" fill="#F8FAFC" letter-spacing="-0.5">
+      <tspan fill="#A5B4FC">PR</tspan><tspan dx="6">Marketing</tspan>
+    </text>
+    <text x="84" y="56" font-size="14.5" font-weight="500" fill="#94A3B8" letter-spacing="5.5">VENTURES</text>
+  </g>
+</svg>
