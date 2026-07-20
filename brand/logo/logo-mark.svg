@@ -1,16 +1,15 @@
 <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="PR Marketing Ventures mark">
-  <defs>
-    <linearGradient id="pmvGrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#6366F1"/>
-      <stop offset="1" stop-color="#4338CA"/>
-    </linearGradient>
-  </defs>
-  <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#pmvGrad)"/>
-  <!-- ascending growth bars -->
-  <rect x="16" y="36" width="7" height="12" rx="3.5" fill="#FFFFFF" fill-opacity="0.55"/>
-  <rect x="28.5" y="28" width="7" height="20" rx="3.5" fill="#FFFFFF" fill-opacity="0.8"/>
-  <rect x="41" y="18" width="7" height="30" rx="3.5" fill="#FFFFFF"/>
-  <!-- growth arrow -->
-  <path d="M15 33 L28 26 L37 31 L49 16" stroke="#34D399" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M43 15.5 L50 14.5 L49 21.5" stroke="#34D399" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Compass ring + cardinal ticks -->
+  <circle cx="32" cy="32" r="27" stroke="#D4AF37" stroke-width="1.75" opacity="0.55"/>
+  <g stroke="#D4AF37" stroke-width="1.75" opacity="0.55" stroke-linecap="round">
+    <path d="M32 3v6M32 55v6M3 32h6M55 32h6"/>
+  </g>
+  <!-- Phoenix — wings rising into a peak -->
+  <path d="M32 12 C27 20 20 22 14 20 C19 26 24 28 29 27 L20 40 C26 37 30 33 32 28 C34 33 38 37 44 40 L35 27 C40 28 45 26 50 20 C44 22 37 20 32 12 Z" fill="#D4AF37"/>
+  <path d="M32 28 L32 50" stroke="#D4AF37" stroke-width="3" stroke-linecap="round"/>
+  <path d="M25 47 C28 43 30 40 32 37 C34 40 36 43 39 47" stroke="#D4AF37" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Growth coin badge -->
+  <circle cx="47" cy="47" r="10.5" fill="#FFFFFF" stroke="#D4AF37" stroke-width="1.75"/>
+  <path d="M42 50 L45 46 L48 48.5 L52 43" stroke="#D4AF37" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M49 43h3v3" stroke="#D4AF37" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
