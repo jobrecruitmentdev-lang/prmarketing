@@ -1,4 +1,6 @@
 import { ImageResponse } from "next/og";
+import { readFileSync } from "node:fs";
+import path from "node:path";
 
 export const dynamic = "force-static";
 
@@ -6,6 +8,13 @@ export const alt =
   "PR Marketing Ventures — AI-Powered Growth, SEO & Digital Engineering";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+
+// Official logo mark, base64-inlined at build time — satori (next/og) can't
+// read local file paths, only remote URLs or data URIs.
+const markBase64 = readFileSync(
+  path.join(process.cwd(), "public", "logo-mark.png"),
+).toString("base64");
+const markSrc = `data:image/png;base64,${markBase64}`;
 
 export default function OpengraphImage() {
   return new ImageResponse(
@@ -23,20 +32,12 @@ export default function OpengraphImage() {
           fontFamily: "sans-serif",
         }}
       >
-        {/* Logo mark — compass ring + rising phoenix + growth coin */}
-        <svg width="120" height="120" viewBox="0 0 64 64" fill="none">
-          <circle cx="32" cy="32" r="27" stroke="#D4AF37" strokeWidth="1.75" opacity={0.55} />
-          <path
-            d="M32 12 C27 20 20 22 14 20 C19 26 24 28 29 27 L20 40 C26 37 30 33 32 28 C34 33 38 37 44 40 L35 27 C40 28 45 26 50 20 C44 22 37 20 32 12 Z"
-            fill="#D4AF37"
-          />
-          <path d="M32 28 L32 50" stroke="#D4AF37" strokeWidth="3" strokeLinecap="round" />
-          <circle cx="47" cy="47" r="10.5" fill="#1C1C1E" stroke="#D4AF37" strokeWidth="1.75" />
-        </svg>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={markSrc} width={120} height={132} alt="" />
         <div
           style={{
             display: "flex",
-            marginTop: 48,
+            marginTop: 40,
             fontSize: 64,
             fontWeight: 700,
             letterSpacing: "-0.02em",

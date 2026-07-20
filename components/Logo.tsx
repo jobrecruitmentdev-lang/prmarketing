@@ -1,82 +1,29 @@
 import Link from "next/link";
+import Image from "next/image";
 
-/* Brand mark — compass ring + rising phoenix + growth coin, per the
-   PR Marketing Ventures brand guideline sheet (brand/logo/). Gold #D4AF37
-   on transparent/dark; charcoal #1C1C1E is the paired dark brand color. */
+/* Official brand mark — compass ring + phoenix + growth coin, sourced from
+   the PR Marketing Ventures brand guideline sheet (brand/logo/). Cropped
+   directly from the guideline artwork with the background keyed out, per
+   guideline rule: "Use the logo files. Do not recreate the logo." */
 
 export function LogoMark({
   size = 40,
-  variant = "gold",
+  dark = false,
 }: {
   size?: number;
-  /** gold: default brand mark. inverse: white, for photo/busy or brand-color backgrounds. mono: currentColor. */
-  variant?: "gold" | "inverse" | "mono";
+  /** Use the white/inverse mark for dark backgrounds, per brand guideline §4 "Logo on Backgrounds". */
+  dark?: boolean;
 }) {
-  const fg =
-    variant === "inverse" ? "#FFFFFF" : variant === "mono" ? "currentColor" : "#D4AF37";
-
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 64 64"
-      fill="none"
-      aria-hidden="true"
-    >
-      {/* Compass ring + cardinal ticks */}
-      <circle cx="32" cy="32" r="27" stroke={fg} strokeWidth="1.75" opacity="0.55" />
-      <g stroke={fg} strokeWidth="1.75" opacity="0.55" strokeLinecap="round">
-        <path d="M32 3v6M32 55v6M3 32h6M55 32h6" />
-      </g>
-
-      {/* Phoenix — wings rising into a peak, tail sweeping down */}
-      <path
-        d="M32 12
-           C27 20 20 22 14 20
-           C19 26 24 28 29 27
-           L20 40
-           C26 37 30 33 32 28
-           C34 33 38 37 44 40
-           L35 27
-           C40 28 45 26 50 20
-           C44 22 37 20 32 12 Z"
-        fill={fg}
-      />
-      {/* Rising tail feather, doubles as an upward growth stroke */}
-      <path
-        d="M32 28 L32 50"
-        stroke={fg}
-        strokeWidth="3"
-        strokeLinecap="round"
-      />
-      <path
-        d="M25 47 C28 43 30 40 32 37 C34 40 36 43 39 47"
-        stroke={fg}
-        strokeWidth="2.25"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        fill="none"
-      />
-
-      {/* Growth coin badge, bottom-right */}
-      <circle
-        cx="47"
-        cy="47"
-        r="10.5"
-        fill={variant === "inverse" ? "#1C1C1E" : "#FFFFFF"}
-        stroke={fg}
-        strokeWidth="1.75"
-      />
-      <path
-        d="M42 50 L45 46 L48 48.5 L52 43"
-        stroke={fg}
-        strokeWidth="1.75"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        fill="none"
-      />
-      <path d="M49 43h3v3" stroke={fg} strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
+    <Image
+      src={dark ? "/logo-mark-white.png" : "/logo-mark.png"}
+      alt=""
+      width={468}
+      height={dark ? 501 : 516}
+      className="shrink-0"
+      style={{ width: size, height: "auto" }}
+      priority
+    />
   );
 }
 
@@ -94,7 +41,7 @@ export default function Logo({
       className="flex items-center gap-3"
       aria-label="PR Marketing Ventures — home"
     >
-      <LogoMark variant={dark ? "inverse" : "gold"} />
+      <LogoMark dark={dark} />
       <span className="flex flex-col leading-none">
         <span
           className={`font-heading text-lg font-bold tracking-tight ${dark ? "text-white" : "text-ink"}`}

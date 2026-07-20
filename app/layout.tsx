@@ -60,7 +60,7 @@ const orgSchema = {
   "@type": "Organization",
   name: site.name,
   url: site.url,
-  logo: `${site.url}/logo-mark.svg`,
+  logo: `${site.url}/logo-mark.png`,
   description: site.description,
   email: site.email,
   address: {

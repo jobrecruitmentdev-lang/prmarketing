@@ -24,7 +24,7 @@ const localBusinessSchema = {
   description: site.description,
   url: site.url,
   email: site.email,
-  image: `${site.url}/logo-mark.svg`,
+  image: `${site.url}/logo-mark.png`,
   address: {
     "@type": "PostalAddress",
     addressLocality: "Ahmedabad",
