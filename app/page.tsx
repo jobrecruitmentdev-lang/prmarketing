@@ -126,15 +126,13 @@ export default function Home() {
       <section className="relative overflow-hidden bg-gradient-to-b from-primary-soft via-white to-white">
         <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 pb-20 pt-16 sm:px-6 md:pt-24 lg:grid-cols-2">
           <div>
-            <p className="inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-white px-3.5 py-1.5 text-xs font-semibold tracking-wide text-primary">
+            <p className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-white px-3.5 py-1.5 text-xs font-semibold tracking-wide text-primary">
               <IconSparkles width={14} height={14} />
               AI-POWERED GROWTH AGENCY · AHMEDABAD
             </p>
             <h1 className="mt-6 font-heading text-4xl font-bold leading-tight tracking-tight text-ink sm:text-5xl lg:text-[3.4rem]">
               Websites that{" "}
-              <span className="bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent">
-                rank, convert
-              </span>{" "}
+              <span className="text-accent-dark">rank, convert</span>{" "}
               and scale.
             </h1>
             <p className="mt-5 max-w-xl text-lg leading-relaxed text-slate-600">
@@ -171,22 +169,22 @@ export default function Home() {
 
           {/* Stylized growth dashboard visual */}
           <div aria-hidden="true" className="relative hidden lg:block">
-            <div className="absolute -right-16 -top-16 h-72 w-72 rounded-full bg-indigo-200/40 blur-3xl" />
-            <div className="absolute -bottom-12 -left-10 h-56 w-56 rounded-full bg-emerald-200/40 blur-3xl" />
+            <div className="absolute -right-16 -top-16 h-72 w-72 rounded-full bg-amber-200/40 blur-3xl" />
+            <div className="absolute -bottom-12 -left-10 h-56 w-56 rounded-full bg-amber-300/30 blur-3xl" />
             <div className="relative rounded-2xl border border-slate-200 bg-white p-6 shadow-xl">
               <div className="flex items-center justify-between">
                 <p className="text-sm font-semibold text-slate-500">
                   Organic growth
                 </p>
-                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-accent-dark">
+                <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-semibold text-accent-dark">
                   <IconTrendingUp width={14} height={14} /> Compounding
                 </span>
               </div>
               <svg viewBox="0 0 320 120" className="mt-4 w-full">
                 <defs>
                   <linearGradient id="fillGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0" stopColor="#6366F1" stopOpacity="0.25" />
-                    <stop offset="1" stopColor="#6366F1" stopOpacity="0" />
+                    <stop offset="0" stopColor="#D4AF37" stopOpacity="0.25" />
+                    <stop offset="1" stopColor="#D4AF37" stopOpacity="0" />
                   </linearGradient>
                 </defs>
                 <path
@@ -196,11 +194,11 @@ export default function Home() {
                 <path
                   d="M0 100 C40 95 60 80 90 78 S150 60 180 50 240 30 320 12"
                   fill="none"
-                  stroke="#4338CA"
+                  stroke="#1C1C1E"
                   strokeWidth="3"
                   strokeLinecap="round"
                 />
-                <circle cx="320" cy="12" r="5" fill="#34D399" />
+                <circle cx="320" cy="12" r="5" fill="#D4AF37" />
               </svg>
               <div className="mt-5 grid grid-cols-3 gap-3">
                 {[
@@ -254,7 +252,7 @@ export default function Home() {
             <Reveal key={s.title} delay={(i % 3) * 90}>
               <Link
                 href={s.href}
-                className="group block h-full rounded-2xl border border-slate-200 bg-white p-6 transition-all duration-200 hover:-translate-y-1 hover:border-indigo-200 hover:shadow-lg"
+                className="group block h-full rounded-2xl border border-slate-200 bg-white p-6 transition-all duration-200 hover:-translate-y-1 hover:border-amber-200 hover:shadow-lg"
               >
                 <span className="inline-flex rounded-xl bg-primary-soft p-3 text-primary transition-colors duration-200 group-hover:bg-primary group-hover:text-white">
                   <s.icon />

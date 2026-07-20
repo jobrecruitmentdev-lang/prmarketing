@@ -54,7 +54,7 @@ export default function Footer() {
     <footer className="bg-ink text-slate-300">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-2 lg:grid-cols-4">
         <div>
-          <Logo dark />
+          <Logo dark tagline />
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-slate-400">
             {site.tagline}. We engineer websites, SEO and automation systems
             that help businesses in {`Ahmedabad`} rank, convert and scale.

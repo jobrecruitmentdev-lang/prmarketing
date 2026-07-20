@@ -1,15 +1,17 @@
 @import "tailwindcss";
 
-/* Brand tokens — source of truth: design-system/pr-marketing-ventures/MASTER.md */
+/* Brand tokens — source of truth: brand/logo/ "PR Marketing Ventures" gold/charcoal
+   guideline sheet. Gold #D4AF37 / Charcoal #1C1C1E are the two spec'd brand colors;
+   the remaining tokens are derived shades for UI contrast (buttons, small text, cards). */
 @theme {
-  --color-primary: #4338ca; /* Indigo 700 — trust, tech */
-  --color-primary-light: #6366f1; /* Indigo 500 */
-  --color-primary-soft: #eef2ff; /* Indigo 50 — tinted backgrounds */
-  --color-accent: #10b981; /* Emerald 500 — growth (logo arrow) */
-  --color-accent-dark: #047857; /* Emerald 700 — small text on white, 5.5:1 contrast (was 600 at 3.8:1) */
-  --color-accent-bright: #34d399; /* Emerald 400 — on dark bg */
-  --color-ink: #0f172a; /* Slate 900 — dark sections, headings */
-  --color-ink-2: #1e293b; /* Slate 800 — dark cards */
+  --color-primary: #1c1c1e; /* Brand Dark Charcoal — CTA buttons, headings, dark UI */
+  --color-primary-light: #33333a; /* lighter charcoal — hover state */
+  --color-primary-soft: #fbf7ec; /* warm cream tint — soft section backgrounds */
+  --color-accent: #d4af37; /* Brand Gold (primary) — icon color, badges, CTA on dark */
+  --color-accent-dark: #8a6d1a; /* deep gold — small text on white, 4.9:1 contrast */
+  --color-accent-bright: #e7c568; /* light gold — bright buttons/icons on charcoal bg */
+  --color-ink: #1c1c1e; /* Brand Dark Charcoal — dark section backgrounds */
+  --color-ink-2: #26262b; /* lighter charcoal — cards on dark bg */
 
   --font-sans: var(--font-source-sans), ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-lexend), ui-sans-serif, system-ui, sans-serif;

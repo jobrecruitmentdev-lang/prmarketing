@@ -130,7 +130,7 @@ export default function EnquiryForm() {
       </button>
 
       {sent && (
-        <p role="status" className="rounded-lg bg-emerald-50 px-4 py-3 text-sm text-accent-dark">
+        <p role="status" className="rounded-lg bg-amber-50 px-4 py-3 text-sm text-accent-dark">
           Your email app should have opened with the enquiry pre-filled — just
           press send. If it didn&rsquo;t, email us directly at{" "}
           <a href={`mailto:${site.email}`} className="font-semibold underline">

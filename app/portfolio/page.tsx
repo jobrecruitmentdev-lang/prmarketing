@@ -96,7 +96,7 @@ export default function Portfolio() {
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {work.map((w, i) => (
             <Reveal key={w.title} delay={(i % 3) * 90}>
-              <article className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-6 transition-all duration-200 hover:-translate-y-1 hover:border-indigo-200 hover:shadow-lg">
+              <article className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-6 transition-all duration-200 hover:-translate-y-1 hover:border-amber-200 hover:shadow-lg">
                 <div className="flex items-center justify-between">
                   <span className="inline-flex rounded-xl bg-primary-soft p-3 text-primary">
                     <w.icon />
@@ -115,7 +115,7 @@ export default function Portfolio() {
                   {w.tags.map((t) => (
                     <span
                       key={t}
-                      className="rounded-full border border-indigo-100 bg-primary-soft px-2.5 py-1 text-xs font-medium text-primary"
+                      className="rounded-full border border-amber-200 bg-primary-soft px-2.5 py-1 text-xs font-medium text-primary"
                     >
                       {t}
                     </span>

@@ -18,31 +18,20 @@ export default function OpengraphImage() {
           flexDirection: "column",
           justifyContent: "center",
           padding: "80px",
-          background: "#0F172A",
+          background: "#1C1C1E",
           color: "#F8FAFC",
           fontFamily: "sans-serif",
         }}
       >
-        {/* Logo mark */}
+        {/* Logo mark — compass ring + rising phoenix + growth coin */}
         <svg width="120" height="120" viewBox="0 0 64 64" fill="none">
-          <rect x="2" y="2" width="60" height="60" rx="16" fill="#4F46E5" />
-          <rect x="16" y="36" width="7" height="12" rx="3.5" fill="#FFFFFF" fillOpacity="0.55" />
-          <rect x="28.5" y="28" width="7" height="20" rx="3.5" fill="#FFFFFF" fillOpacity="0.8" />
-          <rect x="41" y="18" width="7" height="30" rx="3.5" fill="#FFFFFF" />
+          <circle cx="32" cy="32" r="27" stroke="#D4AF37" strokeWidth="1.75" opacity={0.55} />
           <path
-            d="M15 33 L28 26 L37 31 L49 16"
-            stroke="#34D399"
-            strokeWidth="3.6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+            d="M32 12 C27 20 20 22 14 20 C19 26 24 28 29 27 L20 40 C26 37 30 33 32 28 C34 33 38 37 44 40 L35 27 C40 28 45 26 50 20 C44 22 37 20 32 12 Z"
+            fill="#D4AF37"
           />
-          <path
-            d="M43 15.5 L50 14.5 L49 21.5"
-            stroke="#34D399"
-            strokeWidth="3.6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
+          <path d="M32 28 L32 50" stroke="#D4AF37" strokeWidth="3" strokeLinecap="round" />
+          <circle cx="47" cy="47" r="10.5" fill="#1C1C1E" stroke="#D4AF37" strokeWidth="1.75" />
         </svg>
         <div
           style={{
@@ -53,7 +42,7 @@ export default function OpengraphImage() {
             letterSpacing: "-0.02em",
           }}
         >
-          <span style={{ color: "#A5B4FC" }}>PR</span>
+          <span style={{ color: "#E7C568" }}>PR</span>
           <span style={{ marginLeft: 18 }}>Marketing Ventures</span>
         </div>
         <div
@@ -71,7 +60,7 @@ export default function OpengraphImage() {
             width: 220,
             height: 8,
             borderRadius: 4,
-            background: "#34D399",
+            background: "#D4AF37",
           }}
         />
       </div>
