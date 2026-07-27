@@ -22,7 +22,7 @@ const plans = [
       "On-Page SEO Execution: Optimization of up to 15 primary target keywords.",
       "Technical Site Fixes: Basic correction of broken links, site speed, and meta tags.",
       "Social Media Creation: 8 to 12 monthly static graphics for Facebook and Instagram.",
-      "Content Generation: 1 to 2 targeted blog posts per month (800–1000 words each).",
+      "Content & Citations: 1 to 2 targeted blog posts to establish foundational topical authority.",
       "Performance Reporting: Standard monthly analytics overview covering traffic and reach.",
     ],
   },
@@ -34,7 +34,7 @@ const plans = [
     timeline: "3 to 4 months for measurable lead generation.",
     features: [
       "Expanded SEO Campaign: Tracking and optimization for up to 50 competitive keywords.",
-      "Content Marketing Pipeline: 4 high-quality blog posts and guest post outreach monthly.",
+      "AEO & Content Pipeline: 4 high-quality articles engineered for AI Overview (GEO) citations.",
       "Active Social Media Strategy: 16 to 20 monthly assets, including basic video/Reels.",
       "Paid Ads Architecture: Setup and daily monitoring of Google Ads and Meta Ads.",
       "Basic Funnel Creation: Development of dedicated landing pages for ad campaigns.",
@@ -47,7 +47,7 @@ const plans = [
     price: "₹1,00,000 – ₹2,50,000+ / mo",
     timeline: "1 to 2 months for significant conversion improvements.",
     features: [
-      "Aggressive Organic Strategy: Unlimited keyword tracking with deep competitor gap analysis.",
+      "Enterprise GEO & Topical Authority: Comprehensive entity SEO to secure brand citations in ChatGPT & Gemini.",
       "Premium Asset Creation: 4 high-quality video Reels/TikToks per week and custom infographics.",
       "Omnichannel Ad Execution: Coordination of Google Search, Shopping, Meta, and LinkedIn Ads.",
       "Conversion Optimization: Weekly A/B testing of landing pages, checkout flows, and CTAs.",
