@@ -8,7 +8,7 @@ import {
   IconPhone,
 } from "@/components/icons";
 import { site } from "@/lib/site";
-import { breadcrumbSchema } from "@/lib/seo";
+import { breadcrumbSchema, localBusinessSchema, webPageSchema } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Contact — Get a Free Website & SEO Audit",
@@ -17,28 +17,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/contact/" },
 };
 
-const localBusinessSchema = {
-  "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  name: site.name,
-  description: site.description,
-  url: site.url,
-  email: site.email,
-  image: `${site.url}/logo-mark.png`,
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "B-910, Fairdeal House, Chimanlal Girdharlal Road (C.G. Road), Near Swastik Cross Road, Shital Kunj Society, Vasant Vihar, Navrangpura",
-    addressLocality: "Ahmedabad",
-    addressRegion: "Gujarat",
-    postalCode: "380009",
-    addressCountry: "IN",
-  },
-  areaServed: [
-    { "@type": "City", name: "Ahmedabad" },
-    { "@type": "State", name: "Gujarat" },
-  ],
-  priceRange: "₹₹",
-};
+
 
 const info = [
   {
@@ -71,8 +50,9 @@ export default function Contact() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify([
-            localBusinessSchema,
+            localBusinessSchema(),
             breadcrumbSchema("Contact", "/contact/"),
+            webPageSchema("ContactPage", metadata.title as string, metadata.description as string, "/contact/"),
           ]),
         }}
       />

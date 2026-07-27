@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Reveal from "@/components/Reveal";
 import CtaBand from "@/components/CtaBand";
 import DarkFeatureGrid from "@/components/DarkFeatureGrid";
-import { breadcrumbSchema } from "@/lib/seo";
+import { breadcrumbSchema, webPageSchema } from "@/lib/seo";
 import {
   IconCheck,
   IconGauge,
@@ -67,7 +67,10 @@ export default function About() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(breadcrumbSchema("About", "/about/")),
+          __html: JSON.stringify([
+            breadcrumbSchema("About", "/about/"),
+            webPageSchema("AboutPage", metadata.title as string, metadata.description as string, "/about/"),
+          ]),
         }}
       />
       {/* Hero */}

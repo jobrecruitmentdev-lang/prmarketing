@@ -19,6 +19,7 @@ import {
   IconWorkflow,
 } from "@/components/icons";
 import { industries } from "@/lib/site";
+import { faqSchema, localBusinessSchema } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "AI-Powered Growth, SEO & Digital Engineering in Ahmedabad",
@@ -141,6 +142,12 @@ const faqs = [
 export default function Home() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([localBusinessSchema(), faqSchema(faqs)]),
+        }}
+      />
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-b from-primary-soft via-white to-white">
         <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 pb-20 pt-16 sm:px-6 md:pt-24 lg:grid-cols-2">

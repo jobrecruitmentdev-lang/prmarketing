@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Reveal from "@/components/Reveal";
 import CtaBand from "@/components/CtaBand";
-import { breadcrumbSchema } from "@/lib/seo";
+import { breadcrumbSchema, serviceSchema } from "@/lib/seo";
 import {
   IconBot,
   IconCart,
@@ -178,12 +178,23 @@ const groups: {
 ];
 
 export default function Services() {
+  const schemaServices = groups.flatMap((g) => 
+    g.services.map(s => ({
+      title: s.title,
+      desc: s.desc,
+      url: `/services/#${g.id}`
+    }))
+  );
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(breadcrumbSchema("Services", "/services/")),
+          __html: JSON.stringify([
+            breadcrumbSchema("Services", "/services/"),
+            serviceSchema(schemaServices),
+          ]),
         }}
       />
       <section className="bg-gradient-to-b from-primary-soft via-white to-white">
