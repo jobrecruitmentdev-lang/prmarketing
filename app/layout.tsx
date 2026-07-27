@@ -1,14 +1,18 @@
 import type { Metadata, Viewport } from "next";
-import { Lexend, Source_Sans_3 } from "next/font/google";
+import { Lexend, Source_Sans_3, Space_Grotesk } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { site } from "@/lib/site";
 import "./globals.css";
 
-/* No `weight` — both are variable fonts; one file per font instead of
-   per-weight static instances (240KB/10 files → ~100KB/2-4 files). */
 const lexend = Lexend({
   variable: "--font-lexend",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
   display: "swap",
 });
@@ -86,7 +90,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${lexend.variable} ${sourceSans.variable} h-full antialiased`}
+      className={`${spaceGrotesk.variable} ${lexend.variable} ${sourceSans.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-white font-sans text-ink">
         <script
