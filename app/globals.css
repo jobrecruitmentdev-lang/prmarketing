@@ -4,17 +4,17 @@
    guideline sheet. Gold #D4AF37 / Charcoal #1C1C1E are the two spec'd brand colors;
    the remaining tokens are derived shades for UI contrast (buttons, small text, cards). */
 @theme {
-  --color-primary: #1c1c1e; /* Brand Dark Charcoal — CTA buttons, headings, dark UI */
-  --color-primary-light: #33333a; /* lighter charcoal — hover state */
-  --color-primary-soft: #fbf7ec; /* warm cream tint — soft section backgrounds */
-  --color-accent: #d4af37; /* Brand Gold (primary) — icon color, badges, CTA on dark */
-  --color-accent-dark: #8a6d1a; /* deep gold — small text on white, 4.9:1 contrast */
-  --color-accent-bright: #e7c568; /* light gold — bright buttons/icons on charcoal bg */
-  --color-ink: #1c1c1e; /* Brand Dark Charcoal — dark section backgrounds */
-  --color-ink-2: #26262b; /* lighter charcoal — cards on dark bg */
+  --color-primary: #ec4899; /* Hot Pink */
+  --color-primary-light: #f472b6;
+  --color-primary-soft: #fdf2f8;
+  --color-accent: #0891b2; /* Cyan */
+  --color-accent-dark: #0e7490;
+  --color-accent-bright: #22d3ee;
+  --color-ink: #0a0a0c;
+  --color-ink-2: #18181b;
 
   --font-sans: var(--font-source-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-heading: var(--font-lexend), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: 'Space Grotesk', var(--font-lexend), ui-sans-serif, system-ui, sans-serif;
 }
 
 html {

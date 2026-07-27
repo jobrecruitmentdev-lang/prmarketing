@@ -7,7 +7,7 @@ import Image from "next/image";
    guideline rule: "Use the logo files. Do not recreate the logo." */
 
 export function LogoMark({
-  size = 40,
+  size = 60,
   dark = false,
 }: {
   size?: number;
@@ -44,13 +44,13 @@ export default function Logo({
       <LogoMark dark={dark} />
       <span className="flex flex-col leading-none">
         <span
-          className={`font-heading text-lg font-bold tracking-tight ${dark ? "text-white" : "text-ink"}`}
+          className={`font-heading text-2xl font-bold tracking-tight ${dark ? "text-white" : "text-ink"}`}
         >
           <span className={dark ? "text-accent-bright" : "text-accent-dark"}>PR</span>{" "}
           Marketing
         </span>
         <span
-          className={`mt-1 text-[0.65rem] font-medium tracking-[0.35em] ${dark ? "text-slate-400" : "text-slate-500"}`}
+          className={`mt-1 text-[0.85rem] font-medium tracking-[0.35em] ${dark ? "text-slate-400" : "text-slate-500"}`}
         >
           VENTURES
         </span>

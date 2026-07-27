@@ -119,6 +119,21 @@ const process = [
   },
 ];
 
+const faqs = [
+  {
+    q: "How to increase website traffic consistently?",
+    a: "We use a Hub and Spoke SEO architecture combined with high-performance Next.js development. This ensures your content ranks for both high-intent commercial terms and informational keywords.",
+  },
+  {
+    q: "Why is my Google ad spend so high without conversions?",
+    a: "Most campaigns suffer from poor landing page experiences or broad keyword targeting. As a top PPC management company, we fix the funnel first, ensuring every click lands on a conversion-optimized page.",
+  },
+  {
+    q: "What is the best social media strategy for retail and local business?",
+    a: "For businesses in Navrangpura and Ahmedabad, we recommend dominating the local map pack first, followed by a targeted social media marketing strategy to drive foot traffic and direct messages.",
+  },
+];
+
 export default function Home() {
   return (
     <>
@@ -128,17 +143,13 @@ export default function Home() {
           <div>
             <p className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-white px-3.5 py-1.5 text-xs font-semibold tracking-wide text-primary">
               <IconSparkles width={14} height={14} />
-              AI-POWERED GROWTH AGENCY · AHMEDABAD
+              BEST DIGITAL MARKETING AGENCY IN NAVRANGPURA, AHMEDABAD
             </p>
             <h1 className="mt-6 font-heading text-4xl font-bold leading-tight tracking-tight text-ink sm:text-5xl lg:text-[3.4rem]">
-              Websites that{" "}
-              <span className="text-accent-dark">rank, convert</span>{" "}
-              and scale.
+              The <span className="text-accent-dark">digital marketing agency</span> that engineers growth.
             </h1>
             <p className="mt-5 max-w-xl text-lg leading-relaxed text-slate-600">
-              We are not a traditional marketing agency. We are a growth
-              engineering company — combining AI, technical SEO, automation and
-              high-performance web development into one system that compounds.
+              Stop searching for a "digital marketing agency near me". We combine AI, top PPC management, SEO, and social media marketing services into one high-performance system that ranks and converts.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Link
@@ -336,13 +347,39 @@ export default function Home() {
               {industries.map((ind) => (
                 <span
                   key={ind}
-                  className="rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm text-slate-700"
+                  className="rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm text-slate-700 hover:border-primary hover:text-primary transition-colors cursor-pointer"
                 >
                   {ind}
                 </span>
               ))}
             </div>
           </Reveal>
+        </div>
+      </section>
+
+      {/* FAQ / Problem Solving */}
+      <section className="mx-auto max-w-4xl px-4 py-20 sm:px-6">
+        <Reveal className="text-center">
+          <h2 className="font-heading text-3xl font-bold tracking-tight text-ink md:text-4xl">
+            Solving growth bottlenecks
+          </h2>
+          <p className="mt-4 text-lg text-slate-600">
+            Answers to the most common questions we get from business owners.
+          </p>
+        </Reveal>
+        <div className="mt-12 space-y-6">
+          {faqs.map((faq, i) => (
+            <Reveal key={i} delay={i * 80}>
+              <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
+                <h3 className="font-heading text-lg font-bold text-ink">
+                  {faq.q}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                  {faq.a}
+                </p>
+              </div>
+            </Reveal>
+          ))}
         </div>
       </section>
 

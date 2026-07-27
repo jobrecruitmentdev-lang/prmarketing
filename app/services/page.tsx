@@ -14,6 +14,8 @@ import {
   IconServer,
   IconSparkles,
   IconWorkflow,
+  IconBuilding,
+  IconHeart,
 } from "@/components/icons";
 
 export const metadata: Metadata = {
@@ -255,6 +257,59 @@ export default function Services() {
           </div>
         </section>
       ))}
+
+      {/* Industry Specific Solutions */}
+      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-20">
+        <Reveal className="text-center">
+          <p className="text-sm font-semibold tracking-wide text-accent-dark">
+            INDUSTRY SOLUTIONS
+          </p>
+          <h2 className="mt-2 font-heading text-3xl font-bold tracking-tight text-ink">
+            Specialized marketing for your niche
+          </h2>
+          <p className="mx-auto mt-3 max-w-2xl text-lg text-slate-600">
+            We adapt our growth engineering framework to the unique demands of specific industries.
+          </p>
+        </Reveal>
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            {
+              title: "E-commerce marketing agency",
+              desc: "Scaling online stores with product schema, shopping ads, and CRO.",
+              icon: IconCart,
+            },
+            {
+              title: "Real estate digital marketing",
+              desc: "Lead generation funnels, local SEO, and WhatsApp automation for realtors.",
+              icon: IconBuilding,
+            },
+            {
+              title: "Healthcare SEO services",
+              desc: "Trust-building content, local map pack dominance, and patient acquisition.",
+              icon: IconHeart,
+            },
+            {
+              title: "SaaS growth marketing agency",
+              desc: "Product-led SEO, trial conversion funnels, and B2B LinkedIn ads.",
+              icon: IconWorkflow,
+            },
+          ].map((ind, i) => (
+            <Reveal key={ind.title} delay={i * 90}>
+              <div className="flex h-full flex-col items-center text-center rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:border-amber-200 hover:-translate-y-1 transition-all duration-200">
+                <span className="inline-flex rounded-xl bg-primary-soft p-3 text-primary mb-4">
+                  <ind.icon />
+                </span>
+                <h3 className="font-heading text-base font-semibold text-ink">
+                  {ind.title}
+                </h3>
+                <p className="mt-2 text-sm text-slate-600">
+                  {ind.desc}
+                </p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
 
       <CtaBand
         title="Not sure where to start?"

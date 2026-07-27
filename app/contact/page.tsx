@@ -13,7 +13,7 @@ import { breadcrumbSchema } from "@/lib/seo";
 export const metadata: Metadata = {
   title: "Contact — Get a Free Website & SEO Audit",
   description:
-    "Contact PR Marketing Ventures in Ahmedabad for a free website and SEO audit. Tell us about your project and get a clear, prioritized growth plan.",
+    "Contact the best digital marketing agency in Navrangpura, Ahmedabad for a free website and SEO audit. Tell us about your project and get a clear, prioritized growth plan.",
   alternates: { canonical: "/contact/" },
 };
 
@@ -27,8 +27,10 @@ const localBusinessSchema = {
   image: `${site.url}/logo-mark.png`,
   address: {
     "@type": "PostalAddress",
+    streetAddress: "B-910, Fairdeal House, Chimanlal Girdharlal Road (C.G. Road), Near Swastik Cross Road, Shital Kunj Society, Vasant Vihar, Navrangpura",
     addressLocality: "Ahmedabad",
     addressRegion: "Gujarat",
+    postalCode: "380009",
     addressCountry: "IN",
   },
   areaServed: [
@@ -84,7 +86,7 @@ export default function Contact() {
             Let&rsquo;s engineer your growth.
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-600">
-            Tell us about your business and goals. We&rsquo;ll reply with a
+            Looking for a local PPC agency and SEO partner in Ahmedabad? Tell us about your business and goals. We&rsquo;ll reply with a
             free, no-obligation audit — a clear picture of what&rsquo;s holding
             you back and what to fix first.
           </p>

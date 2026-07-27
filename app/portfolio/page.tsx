@@ -25,6 +25,30 @@ export const metadata: Metadata = {
 const work = [
   {
     icon: IconCode,
+    category: "Content Portal",
+    title: "techandcarsinfo.com",
+    desc: "A high-performance news and information portal for the latest in technology and automobiles, optimized for speed and search visibility.",
+    tags: ["Web Design", "SEO", "Content Architecture"],
+    href: "https://techandcarsinfo.com",
+  },
+  {
+    icon: IconWorkflow,
+    category: "Job Board",
+    title: "jobrecruitment.in",
+    desc: "A streamlined recruitment platform connecting employers with candidates, featuring advanced search capabilities and user profiles.",
+    tags: ["Web Portal", "Database Architecture", "Job Board"],
+    href: "https://jobrecruitment.in",
+  },
+  {
+    icon: IconCart,
+    category: "Ecommerce",
+    title: "atozgadgets.com",
+    desc: "A feature-rich ecommerce storefront for consumer electronics, designed for high conversion rates and seamless checkout.",
+    tags: ["Ecommerce", "UI/UX", "CRO"],
+    href: "https://atozgadgets.com",
+  },
+  {
+    icon: IconCode,
     category: "Web Engineering",
     title: "High-performance business websites",
     desc: "Corporate and service websites built on Next.js and PHP with SEO-first architecture — structured data, content clusters and 90+ PageSpeed targets from launch.",
@@ -106,7 +130,15 @@ export default function Portfolio() {
                   </span>
                 </div>
                 <h2 className="mt-4 font-heading text-lg font-semibold text-ink">
-                  {w.title}
+                  {/* @ts-ignore */}
+                  {w.href ? (
+                    // @ts-ignore
+                    <a href={w.href} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors flex items-center gap-1.5">
+                      {w.title} <IconArrowRight width={16} height={16} />
+                    </a>
+                  ) : (
+                    w.title
+                  )}
                 </h2>
                 <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
                   {w.desc}

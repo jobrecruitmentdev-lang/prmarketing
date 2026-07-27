@@ -1,0 +1,13 @@
+# PR Marketing Ventures
+> AI-powered growth agency in Ahmedabad specializing in high-performance websites, technical SEO, local SEO, AI search optimization (GEO/AEO) and marketing automation systems.
+
+## Main Services
+- [Web Engineering](https://prmarketingventures.com/services/#web): Website and eCommerce Design and Development with Next.js and PHP.
+- [Search & Visibility](https://prmarketingventures.com/services/#seo): Technical SEO, Local SEO, and AI SEO (GEO/AEO).
+- [Automation & AI](https://prmarketingventures.com/services/#automation): n8n-powered marketing pipelines and 24/7 AI Chatbots.
+
+## Key Facts
+- Location: B-910, Fairdeal House, Chimanlal Girdharlal Road (C.G. Road), Near Swastik Cross Road, Shital Kunj Society, Vasant Vihar, Navrangpura, Ahmedabad, Gujarat 380009, India
+- Phone: +91 8160666408
+- Email: contact@prmarketingventures.com
+- Pricing: Digital Marketing Service Plans range from ₹15,000 for Basic, to ₹2,50,000+ for Advanced Performance.

@@ -165,3 +165,16 @@ export const IconClock = (p: SVGProps<SVGSVGElement>) => (
     <path d="M12 7v5l3 3" />
   </Base>
 );
+
+export const IconBuilding = (p: SVGProps<SVGSVGElement>) => (
+  <Base {...p}>
+    <rect x="4" y="2" width="16" height="20" rx="2" />
+    <path d="M9 22v-4h6v4M8 6h.01M16 6h.01M12 6h.01M12 10h.01M16 10h.01M8 10h.01M8 14h.01M12 14h.01M16 14h.01" />
+  </Base>
+);
+
+export const IconHeart = (p: SVGProps<SVGSVGElement>) => (
+  <Base {...p}>
+    <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+  </Base>
+);
