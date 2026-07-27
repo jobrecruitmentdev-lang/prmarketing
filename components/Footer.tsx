@@ -93,7 +93,16 @@ export default function Footer() {
       <div className="border-t border-slate-800">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 py-5 text-xs text-slate-400 sm:flex-row sm:px-6">
           <p>
-            © {new Date().getFullYear()} {site.name}. All rights reserved.
+            © {new Date().getFullYear()}{" "}
+            <a
+              href="https://prmarketingventures.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-slate-300 underline hover:text-accent-bright"
+            >
+              PR Marketing Ventures
+            </a>
+            . All rights reserved.
           </p>
           <p>{site.tagline}</p>
         </div>
