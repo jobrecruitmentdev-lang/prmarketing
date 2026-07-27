@@ -1,8 +1,40 @@
 import type { Metadata } from "next";
 import Reveal from "@/components/Reveal";
 import CtaBand from "@/components/CtaBand";
-import { breadcrumbSchema } from "@/lib/seo";
-import { IconCheck } from "@/components/icons";
+import { breadcrumbSchema, faqSchema } from "@/lib/seo";
+
+// Inline icons to ensure zero dependencies break while giving a premium look
+const CheckIcon = ({ className }: { className?: string }) => (
+  <svg className={className} xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="20 6 9 17 4 12"></polyline>
+  </svg>
+);
+
+const CrossIcon = ({ className }: { className?: string }) => (
+  <svg className={className} xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="18" y1="6" x2="6" y2="18"></line>
+    <line x1="6" y1="6" x2="18" y2="18"></line>
+  </svg>
+);
+
+const faqs = [
+  {
+    q: "How much do digital marketing packages cost in Ahmedabad?",
+    a: "Digital marketing packages in Ahmedabad typically range from ₹25K to ₹2.5L+ per month depending on services, campaign complexity, and business goals."
+  },
+  {
+    q: "What is included in digital marketing packages?",
+    a: "Digital marketing packages may include SEO, Google Ads, social media marketing, content creation, landing page optimization, conversion tracking, and performance reporting."
+  },
+  {
+    q: "Which digital marketing package is best for my business?",
+    a: "The best package depends on your business goals, competition level, monthly budget, and whether you need leads, brand awareness, or full-funnel growth."
+  },
+  {
+    q: "Are digital marketing packages better than individual services?",
+    a: "Yes, packages are often better because they combine multiple services like SEO, ads, and social media into a single growth strategy."
+  }
+];
 
 export const metadata: Metadata = {
   title: "Pricing — Digital Marketing Service Plans",
@@ -13,48 +45,85 @@ export const metadata: Metadata = {
 
 const plans = [
   {
-    name: "Basic / Starter Plan",
-    bestFor: "Local businesses and startups looking for affordable small business marketing.",
-    price: "₹15,000 – ₹40,000 / mo",
-    timeline: "4 to 6 months for visible organic growth.",
+    name: "Essential",
+    pitch: "Perfect for local businesses starting their organic maps presence.",
+    price: "",
+    billing: "",
+    buttonText: "Activate Essential",
+    popular: false,
     features: [
-      "Local Search Optimization: Setup and weekly management of Google Business Profile.",
-      "On-Page SEO Execution: Optimization of up to 15 primary target keywords.",
-      "Technical Site Fixes: Basic correction of broken links, site speed, and meta tags.",
-      "Social Media Creation: 8 to 12 monthly static graphics for Facebook and Instagram.",
-      "Content & Citations: 1 to 2 targeted blog posts to establish foundational topical authority.",
-      "Performance Reporting: Standard monthly analytics overview covering traffic and reach.",
+      { name: "SEO Friendly Google Business Profile Optimization", included: true },
+      { name: "Targeting Business Blog", included: true },
+      { name: "Three Keywords Targeted with S.E.O", included: true },
+      { name: "Your Area", included: true },
+      { name: "Top Google Position", included: true },
+      { name: "Monthly Performance Reports", included: true },
+      { name: "One Year Duration", included: true },
+      { name: "Activation Up To 30 Days", included: true },
     ],
   },
   {
-    name: "Standard Growth Plan",
+    name: "Growth",
+    pitch: "Designed for growing services looking to establish full credibility.",
+    price: "",
+    billing: "",
+    buttonText: "Launch Growth Plan",
     popular: true,
-    bestFor: "Established regional brands, expanding B2B firms, and new e-commerce sites.",
-    price: "₹40,000 – ₹1,00,000 / mo",
-    timeline: "3 to 4 months for measurable lead generation.",
     features: [
-      "Expanded SEO Campaign: Tracking and optimization for up to 50 competitive keywords.",
-      "AEO & Content Pipeline: 4 high-quality articles engineered for AI Overview (GEO) citations.",
-      "Active Social Media Strategy: 16 to 20 monthly assets, including basic video/Reels.",
-      "Paid Ads Architecture: Setup and daily monitoring of Google Ads and Meta Ads.",
-      "Basic Funnel Creation: Development of dedicated landing pages for ad campaigns.",
-      "Strategic Growth Review: Bi-weekly performance syncs with detailed attribution tracking.",
+      { name: "SEO Friendly Google Business Profile Optimization", included: true },
+      { name: "Targeting Business Blog", included: true },
+      { name: "Five Keywords Targeted with S.E.O", included: true },
+      { name: "Your Area", included: true },
+      { name: "Top Google Position", included: true },
+      { name: "Static Website", included: true },
+      { name: "Domain & Hosting", included: true },
+      { name: "Monthly Performance Reports", included: true },
+      { name: "One Year Duration", included: true },
+      { name: "Activation Up To 30 Days", included: true },
     ],
   },
   {
-    name: "Advanced Performance Plan",
-    bestFor: "Enterprise digital marketing agency needs, high-growth e-commerce, and businesses needing fractional CMO services.",
-    price: "₹1,00,000 – ₹2,50,000+ / mo",
-    timeline: "1 to 2 months for significant conversion improvements.",
+    name: "Impact",
+    pitch: "Elite conversion package with multi-page web setups & SMM.",
+    price: "",
+    billing: "",
+    buttonText: "Deploy Impact Stack",
+    popular: false,
     features: [
-      "Enterprise GEO & Topical Authority: Comprehensive entity SEO to secure brand citations in ChatGPT & Gemini.",
-      "Premium Asset Creation: 4 high-quality video Reels/TikToks per week and custom infographics.",
-      "Omnichannel Ad Execution: Coordination of Google Search, Shopping, Meta, and LinkedIn Ads.",
-      "Conversion Optimization: Weekly A/B testing of landing pages, checkout flows, and CTAs.",
-      "Email Marketing Automation: Setup of automated cart-abandonment, welcome, and retention flows.",
-      "Advanced Analytics Suite: Custom Looker Studio dashboards tracking live CAC and LTV.",
+      { name: "SEO Friendly Google Business Profile Optimization", included: true },
+      { name: "Targeting Business Blog", included: true },
+      { name: "Seven Keywords Targeted with S.E.O", included: true },
+      { name: "Your Area", included: true },
+      { name: "Top Google Position", included: true },
+      { name: "S.E.O Friendly Dynamic website (15 pages)", included: true },
+      { name: "Domain & Hosting", included: true },
+      { name: "Social Media Management", included: true },
+      { name: "Monthly Performance Reports", included: true },
+      { name: "One Year Duration", included: true },
+      { name: "Activation Up To 30 Days", included: true },
     ],
   },
+  {
+    name: "Empower",
+    pitch: "The ultimate scaling plan for brands seeking undisputed industry dominance.",
+    price: "",
+    billing: "",
+    buttonText: "Scale with Empower",
+    popular: false,
+    features: [
+      { name: "SEO Friendly Google Business Profile Optimization", included: true },
+      { name: "Targeting Business Blog", included: true },
+      { name: "Ten Keywords Targeted with S.E.O", included: true },
+      { name: "Your Area", included: true },
+      { name: "Top Google Position", included: true },
+      { name: "S.E.O Friendly Dynamic website(25 pages)", included: true },
+      { name: "Domain & Hosting", included: true },
+      { name: "Social Media Management", included: true },
+      { name: "Monthly Performance Reports", included: true },
+      { name: "One Year Duration", included: true },
+      { name: "Activation Up To 30 Days", included: true },
+    ],
+  }
 ];
 
 const pricingModels = [
@@ -81,82 +150,88 @@ export default function Pricing() {
           __html: JSON.stringify(breadcrumbSchema("Pricing", "/pricing/")),
         }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqSchema(faqs)),
+        }}
+      />
 
-      <section className="bg-gradient-to-b from-primary-soft via-white to-white">
-        <div className="mx-auto max-w-6xl px-4 pb-16 pt-16 sm:px-6 md:pt-24">
-          <p className="text-sm font-semibold tracking-wide text-accent-dark">
-            PRICING & PLANS
+      <section className="bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800 text-white">
+        <div className="mx-auto max-w-6xl px-4 pb-20 pt-20 sm:px-6 md:pt-28 text-center">
+          <p className="text-sm font-bold tracking-widest text-primary uppercase">
+            Pricing & Strategy Plans
           </p>
-          <h1 className="mt-4 max-w-3xl font-heading text-4xl font-bold leading-tight tracking-tight text-ink sm:text-5xl">
-            Comprehensive Digital Marketing Service Plans
+          <h1 className="mt-4 mx-auto max-w-4xl font-heading text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl md:text-6xl text-white">
+            Dominate your market with precise execution.
           </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-600">
-            The right digital marketing plan depends on your business revenue, growth targets, and industry competition. Choose a plan that scales with you.
+          <p className="mt-6 mx-auto max-w-2xl text-lg leading-relaxed text-slate-300">
+            Stop paying for generic packages. Invest in targeted SEO, omnichannel growth, and conversion-focused assets that scale with your revenue.
           </p>
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-20">
-        <ul className="grid gap-8 lg:grid-cols-3">
+      {/* Pricing Cards Section */}
+      <section className="mx-auto max-w-[90rem] px-4 py-16 sm:px-6 md:py-24 -mt-20 relative z-10">
+        <ul className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           {plans.map((plan, i) => (
             <Reveal as="li" key={plan.name} delay={i * 100}>
               <div
-                className={`relative flex h-full flex-col rounded-2xl border ${
+                className={`group relative flex h-full flex-col rounded-3xl border transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl ${
                   plan.popular
-                    ? "border-accent shadow-xl ring-1 ring-accent"
-                    : "border-slate-200 bg-white shadow-sm"
+                    ? "border-primary bg-white shadow-xl ring-2 ring-primary"
+                    : "border-slate-200 bg-white shadow-lg hover:border-primary/50"
                 } p-8`}
               >
                 {plan.popular && (
-                  <span className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-accent px-4 py-1 text-xs font-semibold tracking-wide text-white">
-                    MOST POPULAR
-                  </span>
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-primary to-primary-dark px-5 py-1.5 text-xs font-extrabold tracking-wide text-white uppercase shadow-md">
+                    Most Popular
+                  </div>
                 )}
-                <h3 className="font-heading text-2xl font-bold text-ink">
+                
+                <h3 className="font-heading text-2xl font-black text-slate-900 tracking-tight">
                   {plan.name}
                 </h3>
-                <div className="mt-4 flex items-baseline gap-2">
-                  <span className="text-3xl font-bold text-ink">{plan.price}</span>
-                </div>
-                <p className="mt-4 text-sm font-medium text-slate-700">
-                  <span className="font-semibold">Best for:</span> {plan.bestFor}
-                </p>
-                <p className="mt-2 text-sm font-medium text-slate-700">
-                  <span className="font-semibold">Timeline:</span> {plan.timeline}
+                <p className="mt-3 text-sm font-medium text-slate-500 leading-relaxed min-h-[40px]">
+                  {plan.pitch}
                 </p>
 
+                {/* 
+                <div className="mt-6 flex items-baseline gap-2 pb-6 border-b border-slate-100">
+                  <span className="text-4xl font-black text-slate-900 tracking-tight">{plan.price}</span>
+                  <span className="text-sm font-bold text-slate-400">{plan.billing}</span>
+                </div>
+                */}
+
                 <div className="mt-8 flex-1">
-                  <p className="text-sm font-semibold uppercase tracking-wider text-slate-900">
-                    Core Deliverables
+                  <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-6">
+                    What's Included
                   </p>
-                  <ul className="mt-4 space-y-4 text-sm text-slate-600">
-                    {plan.features.map((feature, idx) => {
-                      const [title, desc] = feature.split(": ");
-                      return (
-                        <li key={idx} className="flex gap-3">
-                          <IconCheck
-                            className="mt-0.5 shrink-0 text-primary"
-                            width={18}
-                            height={18}
-                          />
-                          <div>
-                            <strong className="text-ink">{title}:</strong>{" "}
-                            {desc || ""}
-                          </div>
-                        </li>
-                      );
-                    })}
+                  <ul className="space-y-4 text-sm font-medium text-slate-700">
+                    {plan.features.map((feature, idx) => (
+                      <li key={idx} className="flex gap-3 items-start">
+                        {feature.included ? (
+                          <CheckIcon className="mt-0.5 shrink-0 text-emerald-500" />
+                        ) : (
+                          <CrossIcon className="mt-0.5 shrink-0 text-red-400 opacity-60" />
+                        )}
+                        <span className={feature.included ? "text-slate-700" : "text-slate-400 line-through decoration-slate-300"}>
+                          {feature.name}
+                        </span>
+                      </li>
+                    ))}
                   </ul>
                 </div>
+
                 <a
                   href="/contact/"
-                  className={`mt-10 block w-full rounded-xl px-4 py-3 text-center text-sm font-semibold transition-colors ${
+                  className={`mt-10 block w-full rounded-xl px-4 py-4 text-center text-sm font-extrabold uppercase tracking-wide transition-all duration-300 ${
                     plan.popular
-                      ? "bg-primary text-white hover:bg-primary-dark"
-                      : "bg-primary-soft text-primary hover:bg-amber-100"
+                      ? "bg-primary text-white hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/30"
+                      : "bg-slate-100 text-slate-900 hover:bg-primary hover:text-white"
                   }`}
                 >
-                  Get Started
+                  {plan.buttonText}
                 </a>
               </div>
             </Reveal>
@@ -164,24 +239,24 @@ export default function Pricing() {
         </ul>
       </section>
 
-      <section className="bg-slate-50 py-16 sm:py-20">
+      <section className="bg-slate-50 py-16 sm:py-24">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <Reveal>
-            <h2 className="text-center font-heading text-3xl font-bold tracking-tight text-ink">
-              Comprehensive Pricing Models
+            <h2 className="text-center font-heading text-3xl font-bold tracking-tight text-ink md:text-4xl">
+              Transparent Pricing Models
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-center text-lg text-slate-600">
-              Agencies bill for these plans using three primary structures. We can tailor this to suit your business needs.
+              No hidden fees. You own your assets. Here is how our billing is structured.
             </p>
           </Reveal>
-          <ul className="mt-12 grid gap-6 md:grid-cols-3">
+          <ul className="mt-16 grid gap-8 md:grid-cols-3">
             {pricingModels.map((model, i) => (
               <Reveal as="li" key={model.title} delay={i * 100}>
-                <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                  <h3 className="font-heading text-lg font-semibold text-ink">
+                <div className="h-full rounded-2xl border border-slate-200 bg-white p-8 shadow-sm transition-shadow hover:shadow-md">
+                  <h3 className="font-heading text-xl font-bold text-slate-900">
                     {model.title}
                   </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                  <p className="mt-4 text-sm leading-relaxed text-slate-600">
                     {model.desc}
                   </p>
                 </div>
@@ -191,9 +266,33 @@ export default function Pricing() {
         </div>
       </section>
 
+      <section className="bg-white py-16 sm:py-24 border-t border-slate-100">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6">
+          <Reveal>
+            <h2 className="text-center font-heading text-3xl font-bold tracking-tight text-ink md:text-4xl">
+              Frequently Asked Questions
+            </h2>
+          </Reveal>
+          <div className="mt-16 space-y-10">
+            {faqs.map((faq, idx) => (
+              <Reveal key={idx} delay={idx * 100}>
+                <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100">
+                  <h3 className="font-heading text-lg font-bold text-slate-900">
+                    {faq.q}
+                  </h3>
+                  <p className="mt-3 text-slate-600 leading-relaxed font-medium">
+                    {faq.a}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <CtaBand
-        title="Ready to choose your plan?"
-        subtitle="Let's align your business targets with the perfect growth strategy."
+        title="Ready to dominate your market?"
+        subtitle="Let's align your business targets with the perfect growth strategy today."
       />
     </>
   );
