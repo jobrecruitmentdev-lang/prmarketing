@@ -132,6 +132,10 @@ const faqs = [
     q: "What is the best social media strategy for retail and local business?",
     a: "For businesses in Navrangpura and Ahmedabad, we recommend dominating the local map pack first, followed by a targeted social media marketing strategy to drive foot traffic and direct messages.",
   },
+  {
+    q: "How do I get my business cited in ChatGPT and Google AI Overviews?",
+    a: "We use Generative Engine Optimization (GEO) and Answer Engine Optimization (AEO). By building strong entity architecture, implementing schema, and explicitly structuring your site's data (like using an llms.txt file), we train AI bots to recognize and cite you as the topical authority in your industry.",
+  },
 ];
 
 export default function Home() {
