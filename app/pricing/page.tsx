@@ -20,26 +20,26 @@ const CrossIcon = ({ className }: { className?: string }) => (
 const faqs = [
   {
     q: "How much do digital marketing packages cost in Ahmedabad?",
-    a: "Digital marketing packages in Ahmedabad typically range from ₹25K to ₹2.5L+ per month depending on services, campaign complexity, and business goals."
+    a: "Digital marketing packages in Ahmedabad vary based on the level of SEO competition, web infrastructure needs, and content volume. We offer scalable tiers from entry-level local maps visibility to complete enterprise market dominance."
   },
   {
-    q: "What is included in digital marketing packages?",
-    a: "Digital marketing packages may include SEO, Google Ads, social media marketing, content creation, landing page optimization, conversion tracking, and performance reporting."
+    q: "What exactly do your SEO deliverables include?",
+    a: "Unlike generic agencies, we specify exactly how many target keywords and local Google Business Profile categories we optimize for. Our higher tiers combine advanced website SEO with local maps optimization to capture maximum market share."
+  },
+  {
+    q: "Why do you focus heavily on Instagram instead of broad 'Social Media'?",
+    a: "We believe in precision. Rather than spreading efforts thin across multiple platforms for vanity metrics, we focus strictly on high-quality Instagram posts and Reels to drive real engagement and visual brand authority."
   },
   {
     q: "Which digital marketing package is best for my business?",
-    a: "The best package depends on your business goals, competition level, monthly budget, and whether you need leads, brand awareness, or full-funnel growth."
-  },
-  {
-    q: "Are digital marketing packages better than individual services?",
-    a: "Yes, packages are often better because they combine multiple services like SEO, ads, and social media into a single growth strategy."
+    a: "Our Growth Plan is our most popular tier for services seeking credibility, while our Impact and Empower plans are designed for aggressive conversion and industry dominance."
   }
 ];
 
 export const metadata: Metadata = {
   title: "Pricing — Digital Marketing Service Plans",
   description:
-    "Comprehensive digital marketing service plans and pricing in India. See our Basic, Standard Growth, and Advanced Performance packages.",
+    "Comprehensive digital marketing service plans and pricing in India. See our Essential, Growth, Impact, and Empower packages tailored for business dominance.",
   alternates: { canonical: "/pricing/" },
 };
 
