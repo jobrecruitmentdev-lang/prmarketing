@@ -1,10 +1,9 @@
 /* TEAM */
 Developer: Hemal Shah
+Portfolio: https://hemalshah.vercel.app
 Site: https://prmarketingventures.com
 
 /* SITE */
-Last update: 2026/07/27
+Last update: 2026-07-27
 Language: English
-Standards: HTML5, CSS3, ES6
-Components: Next.js, Tailwind CSS
 Doctype: HTML5
