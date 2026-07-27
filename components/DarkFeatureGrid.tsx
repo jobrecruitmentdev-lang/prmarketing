@@ -17,11 +17,11 @@ export default function DarkFeatureGrid({
   columns?: 2;
 }) {
   return (
-    <div
+    <ul
       className={`mt-12 grid gap-6 ${columns === 2 ? "sm:grid-cols-2" : ""}`}
     >
       {items.map((item, i) => (
-        <Reveal key={item.title} delay={(i % columns) * 90}>
+        <Reveal as="li" key={item.title} delay={(i % columns) * 90}>
           <div className="flex h-full gap-4 rounded-2xl bg-ink-2 p-6">
             <span className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/5 text-accent-bright">
               <item.icon />
@@ -37,6 +37,6 @@ export default function DarkFeatureGrid({
           </div>
         </Reveal>
       ))}
-    </div>
+    </ul>
   );
 }

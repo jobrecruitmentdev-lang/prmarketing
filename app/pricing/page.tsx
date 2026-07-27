@@ -97,9 +97,9 @@ export default function Pricing() {
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-20">
-        <div className="grid gap-8 lg:grid-cols-3">
+        <ul className="grid gap-8 lg:grid-cols-3">
           {plans.map((plan, i) => (
-            <Reveal key={plan.name} delay={i * 100}>
+            <Reveal as="li" key={plan.name} delay={i * 100}>
               <div
                 className={`relative flex h-full flex-col rounded-2xl border ${
                   plan.popular
@@ -161,7 +161,7 @@ export default function Pricing() {
               </div>
             </Reveal>
           ))}
-        </div>
+        </ul>
       </section>
 
       <section className="bg-slate-50 py-16 sm:py-20">
@@ -174,9 +174,9 @@ export default function Pricing() {
               Agencies bill for these plans using three primary structures. We can tailor this to suit your business needs.
             </p>
           </Reveal>
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
+          <ul className="mt-12 grid gap-6 md:grid-cols-3">
             {pricingModels.map((model, i) => (
-              <Reveal key={model.title} delay={i * 100}>
+              <Reveal as="li" key={model.title} delay={i * 100}>
                 <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
                   <h3 className="font-heading text-lg font-semibold text-ink">
                     {model.title}
@@ -187,7 +187,7 @@ export default function Pricing() {
                 </div>
               </Reveal>
             ))}
-          </div>
+          </ul>
         </div>
       </section>
 

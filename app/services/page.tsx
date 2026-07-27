@@ -217,6 +217,7 @@ export default function Services() {
         <section
           key={group.id}
           id={group.id}
+          aria-labelledby={`heading-${group.id}`}
           className={gi % 2 === 1 ? "bg-slate-50" : undefined}
         >
           <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-20">
@@ -224,7 +225,7 @@ export default function Services() {
               <p className="text-sm font-semibold tracking-wide text-accent-dark">
                 {group.eyebrow}
               </p>
-              <h2 className="mt-2 font-heading text-3xl font-bold tracking-tight text-ink">
+              <h2 id={`heading-${group.id}`} className="mt-2 font-heading text-3xl font-bold tracking-tight text-ink">
                 {group.title}
               </h2>
               <p className="mt-3 max-w-2xl text-lg text-slate-600">

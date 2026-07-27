@@ -165,9 +165,9 @@ export default function About() {
             The four pillars of our work
           </h2>
         </Reveal>
-        <div className="mt-12 grid gap-6 sm:grid-cols-2">
+        <ul className="mt-12 grid gap-6 sm:grid-cols-2">
           {pillars.map((p, i) => (
-            <Reveal key={p.title} delay={(i % 2) * 90}>
+            <Reveal as="li" key={p.title} delay={(i % 2) * 90}>
               <div className="h-full rounded-2xl border border-slate-200 p-6">
                 <p className="font-heading text-sm font-bold text-accent-dark">
                   PILLAR {i + 1}
@@ -181,7 +181,7 @@ export default function About() {
               </div>
             </Reveal>
           ))}
-        </div>
+        </ul>
       </section>
 
       <CtaBand

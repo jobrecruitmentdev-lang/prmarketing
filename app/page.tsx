@@ -368,6 +368,53 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Educational Content / Guide */}
+      <article className="border-t border-slate-200 bg-slate-50 py-16">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <Reveal>
+            <h2 className="font-heading text-3xl font-bold tracking-tight text-ink md:text-4xl text-center">
+              How to choose a digital marketing agency in Ahmedabad
+            </h2>
+            <p className="mt-4 text-lg text-slate-600 text-center max-w-3xl mx-auto">
+              Ahmedabad is home to hundreds of marketing firms, but most sell commodity services. 
+              Here is what to look for to ensure you're hiring a partner that actually engineers growth:
+            </p>
+          </Reveal>
+          <div className="mt-12 grid gap-8 md:grid-cols-3">
+            <Reveal delay={0}>
+              <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                <h3 className="font-heading text-lg font-bold text-primary">
+                  1. Deep Industry Expertise
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                  Does the agency understand your specific niche? B2B manufacturing requires a vastly different strategy than a D2C ecommerce brand or a local real estate developer.
+                </p>
+              </section>
+            </Reveal>
+            <Reveal delay={90}>
+              <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                <h3 className="font-heading text-lg font-bold text-primary">
+                  2. Transparent Reporting
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                  Beware of agencies reporting on vanity metrics like "impressions" or "likes." The top agencies track what matters: cost per acquisition, qualified lead volume, and compounding organic traffic. 
+                </p>
+              </section>
+            </Reveal>
+            <Reveal delay={180}>
+              <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                <h3 className="font-heading text-lg font-bold text-primary">
+                  3. A Modern Web Stack
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                  Are they using outdated, slow templates, or are they leveraging high-performance frameworks like Next.js, AI automation, and AEO/GEO strategies to future-proof your visibility?
+                </p>
+              </section>
+            </Reveal>
+          </div>
+        </div>
+      </article>
+
       {/* FAQ / Problem Solving */}
       <section className="mx-auto max-w-4xl px-4 py-20 sm:px-6">
         <Reveal className="text-center">
@@ -378,20 +425,20 @@ export default function Home() {
             Answers to the most common questions we get from business owners.
           </p>
         </Reveal>
-        <div className="mt-12 space-y-6">
+        <dl className="mt-12 space-y-6">
           {faqs.map((faq, i) => (
             <Reveal key={i} delay={i * 80}>
               <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
-                <h3 className="font-heading text-lg font-bold text-ink">
+                <dt className="font-heading text-lg font-bold text-ink">
                   {faq.q}
-                </h3>
-                <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                </dt>
+                <dd className="mt-3 text-sm leading-relaxed text-slate-600">
                   {faq.a}
-                </p>
+                </dd>
               </div>
             </Reveal>
           ))}
-        </div>
+        </dl>
       </section>
 
       <CtaBand />

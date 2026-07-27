@@ -38,6 +38,8 @@ export const metadata: Metadata = {
     "GEO AEO optimization",
     "marketing automation",
     "local SEO Ahmedabad",
+    "pr marketing ventures",
+    "prmarketingventures",
   ],
   openGraph: {
     type: "website",
