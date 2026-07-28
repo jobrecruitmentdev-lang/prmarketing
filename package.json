@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "rm -rf .next",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -12,10 +13,11 @@
     "test:all": "npm run test && npm run build && npm run test:e2e"
   },
   "dependencies": {
+    "@tailwindcss/postcss": "^4",
     "next": "16.2.10",
+    "playwright": "^1.62.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "@tailwindcss/postcss": "^4",
     "tailwindcss": "^4"
   },
   "devDependencies": {
