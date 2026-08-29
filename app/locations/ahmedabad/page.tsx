@@ -14,44 +14,29 @@ export const metadata: Metadata = {
 
 const localities = [
   {
-    name: "C.G. Road (Headquarters & Navrangpura)",
-    desc: "Our primary office location serving central Ahmedabad corporate offices, retail brands, and financial consultancies.",
-    popularServices: ["Digital Marketing", "Custom Software Development", "SEO Services", "Next.js Web Development"],
+    name: "Central Ahmedabad: C.G. Road & Navrangpura (HQ)",
+    desc: "Our primary office at Fairdeal House, serving corporate headquarters, consulting firms, retail brands, and institutions across C.G. Road, Ellisbridge, Paldi, Ambawadi, Law Garden, Ashram Road, Usmanpura, and Naranpura.",
+    popularServices: ["Marketing Agency", "Digital Marketing", "Custom Software Development", "SEO Services", "Next.js Web Development"],
   },
   {
-    name: "SG Highway (Sarkhej–Gandhinagar Highway)",
-    desc: "Serving IT hubs, automobile showrooms, large commercial complexes, and multinational technology enterprises.",
-    popularServices: ["B2B Lead Generation", "Enterprise Software", "Google Ads & PMax", "CRM Automation"],
+    name: "West Ahmedabad: SG Highway, Prahladnagar & SBR",
+    desc: "Serving fast-growing tech companies, multinational enterprises, luxury real estate developers, and premium lifestyle brands across SG Highway, Prahladnagar, Sindhu Bhavan Road (SBR), Bodakdev, Satellite, Vastrapur, Bopal, South Bopal, Ambli, Shilaj, Thaltej, Makarba, and Jodhpur.",
+    popularServices: ["Performance Marketing", "Google Ads & PMax", "AI Agents", "Local 3-Pack SEO", "Website Redesign", "CRM Automation"],
   },
   {
-    name: "Prahladnagar & Corporate Road",
-    desc: "Serving high-growth startups, corporate offices, wealth management firms, and luxury real estate developers.",
-    popularServices: ["Performance Marketing", "AI Agents", "Local 3-Pack SEO", "Website Redesign"],
+    name: "North Ahmedabad: Gota, Chandkheda & Science City",
+    desc: "Serving expanding residential developments, coaching institutes, automobile dealerships, and industrial suppliers across Gota, Chandkheda, Motera, Tragad, Jagatpur, Vaishnodevi, Zundal, and Science City.",
+    popularServices: ["Lead Generation Ads", "Google Maps Ranking", "Local SEO", "WhatsApp CRM", "Responsive Web Design"],
   },
   {
-    name: "Sindhu Bhavan Road (SBR) & Bodakdev",
-    desc: "The premier luxury commercial corridor for high-ticket retail, lifestyle brands, architecture firms, and premium clinics.",
-    popularServices: ["Social Media Marketing", "Ecommerce Development", "Brand Identity", "GEO/AI Search"],
+    name: "East Ahmedabad: GIDC Naroda, Vatva & Changodar",
+    desc: "The industrial backbone of Gujarat, serving chemical manufacturers, engineering OEM suppliers, packaging factories, and exporters across Maninagar, Nikol, Naroda GIDC, Vatva GIDC, Changodar, Sanand, Vastral, Odhav, and Bapunagar.",
+    popularServices: ["B2B Manufacturing SEO", "Export Marketing", "Industrial Web Portals", "Google Search Ads", "WhatsApp Quotation CRM"],
   },
   {
-    name: "Satellite & Vastrapur",
-    desc: "Serving educational institutes, healthcare centers, retail chains, and consumer technology businesses.",
-    popularServices: ["Local SEO", "Google Business Profile", "Custom CRM", "Website Development"],
-  },
-  {
-    name: "Bopal, South Bopal & Ghuma",
-    desc: "Rapidly expanding residential and commercial zone for local retail, clinics, schools, and service providers.",
-    popularServices: ["Google Maps Ranking", "WhatsApp Automation", "Local Business SEO", "Shopify Store"],
-  },
-  {
-    name: "GIFT City & Gandhinagar",
-    desc: "Specialized financial, fintech, and export enterprises requiring international SEO and enterprise software engineering.",
-    popularServices: ["International SEO", "Enterprise SaaS Development", "API Architecture", "Performance Optimization"],
-  },
-  {
-    name: "Gota, Chandkheda & New Ranip",
-    desc: "Northern Ahmedabad commercial belt for industrial suppliers, coaching centers, and residential real estate.",
-    popularServices: ["Lead Generation Ads", "Local SEO", "WhatsApp CRM", "Responsive Web Design"],
+    name: "Fintech & Global Hub: GIFT City & Gandhinagar",
+    desc: "Specialized international financial services center (IFSC), fintech startups, IT exporters, and global consultancies requiring international SEO and enterprise cloud architectures.",
+    popularServices: ["International SEO", "Enterprise SaaS Development", "GEO/AEO AI Optimization", "Performance Optimization"],
   },
 ];
 
