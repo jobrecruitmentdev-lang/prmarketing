@@ -33,7 +33,7 @@ export function multiBreadcrumbSchema(items: { name: string; path: string }[]) {
 export function localBusinessSchema() {
   return {
     "@context": "https://schema.org",
-    "@type": ["ProfessionalService", "MarketingAgency"],
+    "@type": ["ProfessionalService", "MarketingAgency", "Organization"],
     name: site.name,
     image: `${site.url}/logo-mark.png`,
     "@id": site.url,
@@ -41,10 +41,24 @@ export function localBusinessSchema() {
     telephone: site.phoneDisplay,
     priceRange: "$$",
     description: site.description,
-    serviceArea: {
-      "@type": "AdministrativeArea",
-      name: "Ahmedabad, Gujarat, India",
-    },
+    knowsAbout: [
+      "Search Engine Optimization (SEO)",
+      "Generative Engine Optimization (GEO)",
+      "Answer Engine Optimization (AEO)",
+      "Performance Marketing & PPC Management",
+      "Marketing Automation & CRM Pipelines",
+      "Next.js Full-Stack Web Development",
+      "Conversion Rate Optimization (CRO)",
+      "E-commerce Growth Engineering",
+    ],
+    areaServed: [
+      { "@type": "Country", name: "Worldwide" },
+      { "@type": "Country", name: "India" },
+      { "@type": "Country", name: "United States" },
+      { "@type": "Country", name: "United Kingdom" },
+      { "@type": "Country", name: "United Arab Emirates" },
+      { "@type": "Country", name: "Australia" },
+    ],
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: "Marketing & Digital Services",
@@ -198,6 +212,43 @@ export function webPageSchema(type: "AboutPage" | "ContactPage", name: string, d
     publisher: {
       "@type": "Organization",
       name: site.name,
+    },
+  };
+}
+
+/* Article / Technical Guide Schema for GEO & AEO */
+export function articleSchema(article: {
+  title: string;
+  description: string;
+  path: string;
+  datePublished: string;
+  dateModified: string;
+  authorName?: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    headline: article.title,
+    description: article.description,
+    url: `${site.url}${article.path}`,
+    datePublished: article.datePublished,
+    dateModified: article.dateModified,
+    author: {
+      "@type": "Organization",
+      name: article.authorName || site.name,
+      url: site.url,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: site.name,
+      logo: {
+        "@type": "ImageObject",
+        url: `${site.url}/logo-mark.png`,
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${site.url}${article.path}`,
     },
   };
 }

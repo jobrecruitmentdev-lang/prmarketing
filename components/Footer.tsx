@@ -5,6 +5,8 @@ import { site } from "@/lib/site";
 
 const serviceLinks = [
   { label: "Digital Marketing Agency", href: "/services/digital-marketing/" },
+  { label: "Performance Marketing", href: "/services/performance-marketing/" },
+  { label: "International SEO", href: "/services/international-seo/" },
   { label: "SEO & Technical SEO", href: "/services/seo/" },
   { label: "Local SEO & Google Business", href: "/services/local-seo/" },
   { label: "Website Development", href: "/services/web-development/" },
@@ -15,6 +17,7 @@ const serviceLinks = [
 
 const companyLinks = [
   { label: "About Us", href: "/about/" },
+  { label: "Growth Guides", href: "/guides/" },
   { label: "Portfolio", href: "/portfolio/" },
   { label: "Services", href: "/services/" },
   { label: "Contact", href: "/contact/" },
