@@ -186,13 +186,13 @@ export default function Home() {
           <div>
             <p className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-white px-3.5 py-1.5 text-xs font-semibold tracking-wide text-primary">
               <IconSparkles width={14} height={14} />
-              BEST DIGITAL MARKETING AGENCY IN NAVRANGPURA, AHMEDABAD
+              TOP MARKETING AGENCY & DIGITAL COMPANY IN AHMEDABAD
             </p>
             <h1 className="mt-6 font-heading text-4xl font-bold leading-tight tracking-tight text-ink sm:text-5xl lg:text-[3.4rem]">
-              The <span className="text-accent-dark">digital marketing agency</span> that engineers growth.
+              The <span className="text-accent-dark">marketing agency in Ahmedabad</span> that engineers growth.
             </h1>
             <p className="mt-5 max-w-xl text-lg leading-relaxed text-slate-600">
-              Stop searching for a "digital marketing agency near me". We combine AI, top PPC management, SEO, and social media marketing services into one high-performance system that ranks and converts.
+              PR Marketing Ventures is Ahmedabad's premier full-service marketing company. We combine performance marketing, technical SEO, high-speed web engineering, and AI automation into one revenue-driven system that ranks #1 and converts.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Link
