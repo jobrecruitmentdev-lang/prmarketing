@@ -15,14 +15,17 @@
 ## Brand Identity & Proposition
 PR Marketing Ventures engineers digital prosperity. Instead of commodity marketing, we build "compounding search traffic, Technical SEO, and AI automation for market leaders." Our approach integrates custom web engineering with advanced search and AI strategies, allowing clients to rank, convert, and scale effortlessly.
 
-## Core Capabilities & Services
+### 1. Digital & Performance Marketing
+Full-funnel customer acquisition campaigns engineered for high ROAS and scalable revenue.
+- **Performance Marketing (Google & Meta Ads):** Precision search, Performance Max, Instagram, and LinkedIn ad funnels.
+- **Conversion Rate Optimization (CRO):** High-speed landing pages and checkout funnel engineering.
 
-### 1. Web Engineering
+### 2. Web Engineering
 Design and development where speed, SEO, and conversion are prerequisites.
 - **Website Development:** High-performance builds using Next.js and PHP. Core Web Vitals and 90+ PageSpeed targets.
 - **Ecommerce Development:** Fast, headless storefronts and WooCommerce setups optimized for CRO and product schema.
 
-### 2. Search & Visibility (SEO, AEO, GEO)
+### 3. Search & Visibility (SEO, AEO, GEO)
 Strategies engineered for Google Search, Local Map Packs, and AI Answer Engines.
 - **Technical & On-Page SEO:** Hub-and-spoke content architectures, schema markup, and internal linking for topical authority.
 - **Local SEO:** Google Business Profile optimization, local citations, and review systems for dominance in Ahmedabad and beyond.

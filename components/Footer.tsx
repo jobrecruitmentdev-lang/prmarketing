@@ -4,12 +4,13 @@ import { IconMail, IconMapPin, IconPhone } from "./icons";
 import { site } from "@/lib/site";
 
 const serviceLinks = [
-  { label: "Website Design & Development", href: "/services/#web" },
-  { label: "Ecommerce Development", href: "/services/#web" },
-  { label: "SEO & Technical SEO", href: "/services/#seo" },
-  { label: "Local SEO & Google Business", href: "/services/#seo" },
-  { label: "AI SEO (GEO / AEO)", href: "/services/#seo" },
-  { label: "Marketing Automation", href: "/services/#automation" },
+  { label: "Digital Marketing Agency", href: "/services/digital-marketing/" },
+  { label: "SEO & Technical SEO", href: "/services/seo/" },
+  { label: "Local SEO & Google Business", href: "/services/local-seo/" },
+  { label: "Website Development", href: "/services/web-development/" },
+  { label: "Ecommerce Development", href: "/services/ecommerce/" },
+  { label: "AI SEO (GEO / AEO)", href: "/services/ai-seo/" },
+  { label: "Marketing Automation", href: "/services/marketing-automation/" },
 ];
 
 const companyLinks = [

@@ -22,48 +22,48 @@ import { industries } from "@/lib/site";
 import { faqSchema, localBusinessSchema } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "AI-Powered Growth, SEO & Digital Engineering in Ahmedabad",
+  title: "PR Marketing Ventures — Top Marketing Agency in Ahmedabad | Digital & AI Growth",
   description:
-    "PR Marketing Ventures builds high-performance websites, technical SEO, local SEO, AI search optimization and marketing automation for Ahmedabad businesses.",
+    "PR Marketing Ventures is a premier marketing agency in Ahmedabad delivering performance marketing, technical SEO, web development, AI SEO, and marketing automation to scale your revenue.",
   alternates: { canonical: "/" },
 };
 
 const services = [
   {
-    icon: IconCode,
-    title: "Website Design & Development",
-    desc: "SEO-first, blazing-fast websites built on modern stacks — engineered to rank from day one.",
-    href: "/services/#web",
-  },
-  {
-    icon: IconCart,
-    title: "Ecommerce Development",
-    desc: "Online stores that load fast, convert visitors and scale with your catalogue.",
-    href: "/services/#web",
+    icon: IconTarget,
+    title: "Digital & Performance Marketing",
+    desc: "High-ROAS Google Ads, Meta Ads, and full-funnel marketing campaigns engineered for customer acquisition.",
+    href: "/services/digital-marketing/",
   },
   {
     icon: IconSearch,
     title: "SEO & Technical SEO",
-    desc: "Schema, Core Web Vitals, crawlability and content architecture that compounds.",
-    href: "/services/#seo",
+    desc: "Schema, Core Web Vitals, crawlability and content architecture that compounds into first-page rankings.",
+    href: "/services/seo/",
   },
   {
     icon: IconMapPin,
     title: "Local SEO & Google Business",
     desc: "Own the map pack in Ahmedabad — reviews, citations and location pages that win calls.",
-    href: "/services/#seo",
+    href: "/services/local-seo/",
+  },
+  {
+    icon: IconCode,
+    title: "Website Design & Development",
+    desc: "SEO-first, blazing-fast websites built on modern Next.js stacks — engineered to convert.",
+    href: "/services/web-development/",
   },
   {
     icon: IconSparkles,
     title: "AI SEO (GEO / AEO)",
     desc: "Get cited by ChatGPT, Gemini and AI Overviews with generative engine optimization.",
-    href: "/services/#seo",
+    href: "/services/ai-seo/",
   },
   {
     icon: IconWorkflow,
     title: "Marketing Automation",
-    desc: "CRM, WhatsApp, email and AI agents wired into one revenue system with n8n.",
-    href: "/services/#automation",
+    desc: "n8n workflows, CRM integration and WhatsApp lead responders that save 10+ hours a week.",
+    href: "/services/marketing-automation/",
   },
 ];
 
@@ -122,20 +122,24 @@ const process = [
 
 const faqs = [
   {
-    q: "How to increase website traffic consistently?",
-    a: "We use a Hub and Spoke SEO architecture combined with high-performance Next.js development. This ensures your content ranks for both high-intent commercial terms and informational keywords.",
+    q: "Which is the best marketing agency in Ahmedabad for business growth?",
+    a: "PR Marketing Ventures is widely regarded as a top marketing agency in Ahmedabad. We distinguish ourselves by focusing on growth engineering: full-funnel performance ads (Google & Meta), technical SEO, high-speed Next.js websites, and automated WhatsApp/CRM nurturing to generate measurable revenue.",
+  },
+  {
+    q: "What services does your digital marketing agency provide?",
+    a: "We provide end-to-end digital marketing solutions including Performance Marketing (PPC & Social Ads), Technical & Local SEO, Website Development, Conversion Rate Optimization (CRO), Marketing Automation, and AI Search Optimization (AEO/GEO).",
+  },
+  {
+    q: "How to increase website traffic and qualified leads consistently?",
+    a: "We use a Hub and Spoke SEO architecture combined with high-performance Next.js development and targeted PPC campaigns. This ensures your business captures high-intent buyer searches and converts traffic into inquiries.",
   },
   {
     q: "Why is my Google ad spend so high without conversions?",
-    a: "Most campaigns suffer from poor landing page experiences or broad keyword targeting. As a top PPC management company, we fix the funnel first, ensuring every click lands on a conversion-optimized page.",
-  },
-  {
-    q: "What is the best social media strategy for retail and local business?",
-    a: "For businesses in Navrangpura and Ahmedabad, we recommend dominating the local map pack first, followed by a targeted social media marketing strategy to drive foot traffic and direct messages.",
+    a: "Most campaigns suffer from poor landing page experiences or broad keyword targeting. As a top performance marketing agency, we fix the funnel first, ensuring every click lands on a conversion-optimized page.",
   },
   {
     q: "How do I get my business cited in ChatGPT and Google AI Overviews?",
-    a: "We use Generative Engine Optimization (GEO) and Answer Engine Optimization (AEO). By building strong entity architecture, implementing schema, and explicitly structuring your site's data (like using an llms.txt file), we train AI bots to recognize and cite you as the topical authority in your industry.",
+    a: "We use Generative Engine Optimization (GEO) and Answer Engine Optimization (AEO). By building strong entity architecture, implementing schema, and structuring data, we train AI search engines to recognize and cite you as the topical authority in your industry.",
   },
 ];
 
@@ -376,7 +380,7 @@ export default function Home() {
               How to choose a digital marketing agency in Ahmedabad
             </h2>
             <p className="mt-4 text-lg text-slate-600 text-center max-w-3xl mx-auto">
-              Ahmedabad is home to hundreds of marketing firms, but most sell commodity services. 
+              Ahmedabad is home to hundreds of marketing firms, but most sell commodity services.
               Here is what to look for to ensure you're hiring a partner that actually engineers growth:
             </p>
           </Reveal>
@@ -397,7 +401,7 @@ export default function Home() {
                   2. Transparent Reporting
                 </h3>
                 <p className="mt-3 text-sm leading-relaxed text-slate-600">
-                  Beware of agencies reporting on vanity metrics like "impressions" or "likes." The top agencies track what matters: cost per acquisition, qualified lead volume, and compounding organic traffic. 
+                  Beware of agencies reporting on vanity metrics like "impressions" or "likes." The top agencies track what matters: cost per acquisition, qualified lead volume, and compounding organic traffic.
                 </p>
               </section>
             </Reveal>

@@ -26,13 +26,19 @@ const sourceSans = Source_Sans_3({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} — ${site.tagline} in Ahmedabad`,
+    default: `${site.name} — Top Marketing Agency in Ahmedabad`,
     template: `%s | ${site.name}`,
   },
   description: site.description,
   keywords: [
+    "marketing agency",
+    "marketing agency in Ahmedabad",
     "digital marketing agency Ahmedabad",
+    "performance marketing agency",
+    "best marketing company Ahmedabad",
     "SEO company Ahmedabad",
+    "marketing services Ahmedabad",
+    "growth marketing agency",
     "website development Ahmedabad",
     "AI SEO",
     "GEO AEO optimization",
@@ -44,14 +50,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: site.name,
-    title: `${site.name} — ${site.tagline}`,
+    title: `${site.name} — Top Marketing Agency in Ahmedabad`,
     description: site.description,
     url: site.url,
     locale: "en_IN",
   },
   twitter: {
     card: "summary_large_image",
-    title: `${site.name} — ${site.tagline}`,
+    title: `${site.name} — Top Marketing Agency in Ahmedabad`,
     description: site.description,
   },
   robots: { index: true, follow: true },
@@ -63,16 +69,22 @@ export const viewport: Viewport = {
 
 const orgSchema = {
   "@context": "https://schema.org",
-  "@type": "Organization",
+  "@type": ["Organization", "MarketingAgency"],
   name: site.name,
   url: site.url,
   logo: `${site.url}/logo-mark.png`,
   description: site.description,
   email: site.email,
+  telephone: site.phoneDisplay,
+  sameAs: [
+    "https://prmarketingventures.com",
+  ],
   address: {
     "@type": "PostalAddress",
+    streetAddress: "B-910, Fairdeal House, Chimanlal Girdharlal Road (C.G. Road)",
     addressLocality: "Ahmedabad",
     addressRegion: "Gujarat",
+    postalCode: "380009",
     addressCountry: "IN",
   },
 };
@@ -82,6 +94,11 @@ const websiteSchema = {
   "@type": "WebSite",
   name: site.name,
   url: site.url,
+  potentialAction: {
+    "@type": "SearchAction",
+    target: `${site.url}/?s={search_term_string}`,
+    "query-input": "required name=search_term_string",
+  },
 };
 
 export default function RootLayout({

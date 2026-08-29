@@ -4,24 +4,24 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "rm -rf .next",
+    "prebuild": "node -e \"const fs = require('fs'); fs.rmSync('.next', { recursive: true, force: true });\"",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "test:all": "npm run test && npm run build && npm run test:e2e"
+    "test:all": "npm run test && npm run build && npm run test:e2e",
+    "deploy": "npm run build && python ../deploy_to_hostinger.py"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4",
     "next": "16.2.10",
-    "playwright": "^1.62.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "tailwindcss": "^4"
   },
   "devDependencies": {
-    "@playwright/test": "^1.61.1",
+    "@playwright/test": "^1.62.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

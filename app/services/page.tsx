@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import CtaBand from "@/components/CtaBand";
 import { breadcrumbSchema, serviceSchema } from "@/lib/seo";
@@ -16,12 +17,14 @@ import {
   IconWorkflow,
   IconBuilding,
   IconHeart,
+  IconArrowRight,
+  IconTarget,
 } from "@/components/icons";
 
 export const metadata: Metadata = {
-  title: "Services — Web Development, SEO, AI SEO & Automation",
+  title: "Digital Marketing, SEO & Web Development Services | PR Marketing Ventures",
   description:
-    "Full-stack growth services in Ahmedabad: website design and development, ecommerce, technical SEO, local SEO, AI SEO (GEO/AEO), marketing automation, AI chatbots, hosting and domains.",
+    "Full-stack marketing and growth services in Ahmedabad: digital marketing agency, Google & Meta ads, SEO, website development, local SEO, AI search optimization (GEO/AEO), and marketing automation.",
   alternates: { canonical: "/services/" },
 };
 
@@ -30,6 +33,7 @@ type Service = {
   title: string;
   desc: string;
   points: string[];
+  href?: string;
 };
 
 const groups: {
@@ -39,6 +43,59 @@ const groups: {
   intro: string;
   services: Service[];
 }[] = [
+  {
+    id: "marketing",
+    eyebrow: "MARKETING & GROWTH",
+    title: "Performance marketing that scales revenue",
+    intro:
+      "Full-funnel customer acquisition combining precision PPC ads, search rankings, and conversion-optimized funnels.",
+    services: [
+      {
+        icon: IconTarget,
+        title: "Digital & Performance Marketing",
+        desc: "Google Ads, Meta Ads, and multi-channel campaigns built for high ROAS and low CAC.",
+        href: "/services/digital-marketing/",
+        points: [
+          "Google Ads & Performance Max management",
+          "Meta (Facebook & Instagram) ad funnels",
+          "Conversion tracking & ROAS optimization",
+        ],
+      },
+      {
+        icon: IconSearch,
+        title: "SEO & Technical SEO",
+        desc: "Topical authority and technical excellence that compound into first-page rankings.",
+        href: "/services/seo/",
+        points: [
+          "Keyword & content cluster strategy",
+          "On-page, schema & internal linking",
+          "Crawlability, indexing & Core Web Vitals",
+        ],
+      },
+      {
+        icon: IconMapPin,
+        title: "Local SEO & Google Business Profile",
+        desc: "Dominate 'near me' searches across Ahmedabad and Gujarat.",
+        href: "/services/local-seo/",
+        points: [
+          "Google Business Profile optimization",
+          "Reviews, citations & NAP consistency",
+          "Area-specific location pages",
+        ],
+      },
+      {
+        icon: IconSparkles,
+        title: "AI SEO (GEO / AEO)",
+        desc: "Optimization for generative engines — the next front of search.",
+        href: "/services/ai-seo/",
+        points: [
+          "Content structured for AI citation",
+          "Entity & schema optimization",
+          "Visibility in ChatGPT, Gemini & AI Overviews",
+        ],
+      },
+    ],
+  },
   {
     id: "web",
     eyebrow: "WEB ENGINEERING",
@@ -60,6 +117,7 @@ const groups: {
         icon: IconCode,
         title: "Website Development",
         desc: "Next.js, PHP and CMS builds with clean, maintainable code.",
+        href: "/services/web-development/",
         points: [
           "Next.js / React or PHP stacks",
           "90+ PageSpeed performance targets",
@@ -70,6 +128,7 @@ const groups: {
         icon: IconCart,
         title: "Ecommerce Development",
         desc: "Fast storefronts that scale with your catalogue and campaigns.",
+        href: "/services/ecommerce/",
         points: [
           "WooCommerce & headless storefronts",
           "Payment, shipping & catalogue setup",
@@ -89,45 +148,6 @@ const groups: {
     ],
   },
   {
-    id: "seo",
-    eyebrow: "SEARCH & VISIBILITY",
-    title: "Found everywhere search happens",
-    intro:
-      "Google rankings, the local map pack, and AI answers — one strategy that covers every place your customers look.",
-    services: [
-      {
-        icon: IconSearch,
-        title: "SEO & Technical SEO",
-        desc: "Topical authority and technical excellence that compound over time.",
-        points: [
-          "Keyword & content cluster strategy",
-          "On-page, schema & internal linking",
-          "Crawlability, indexing & log analysis",
-        ],
-      },
-      {
-        icon: IconMapPin,
-        title: "Local SEO & Google Business Profile",
-        desc: "Dominate 'near me' searches across Ahmedabad and beyond.",
-        points: [
-          "Google Business Profile optimization",
-          "Reviews, citations & NAP consistency",
-          "Area-specific location pages",
-        ],
-      },
-      {
-        icon: IconSparkles,
-        title: "AI SEO (GEO / AEO)",
-        desc: "Optimization for generative engines — the next front of search.",
-        points: [
-          "Content structured for AI citation",
-          "Entity & schema optimization",
-          "Visibility in ChatGPT, Gemini & AI Overviews",
-        ],
-      },
-    ],
-  },
-  {
     id: "automation",
     eyebrow: "AUTOMATION & AI",
     title: "Systems that work while you sleep",
@@ -138,6 +158,7 @@ const groups: {
         icon: IconWorkflow,
         title: "Marketing & CRM Automation",
         desc: "n8n-powered pipelines connecting your forms, CRM, email and WhatsApp.",
+        href: "/services/marketing-automation/",
         points: [
           "Lead capture & instant routing",
           "WhatsApp & email nurture sequences",
@@ -262,6 +283,17 @@ export default function Services() {
                         </li>
                       ))}
                     </ul>
+                    {s.href && (
+                      <div className="mt-6 pt-4 border-t border-slate-100">
+                        <Link
+                          href={s.href}
+                          className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent-dark transition-colors hover:text-primary"
+                        >
+                          Explore {s.title}
+                          <IconArrowRight width={16} height={16} />
+                        </Link>
+                      </div>
+                    )}
                   </div>
                 </Reveal>
               ))}

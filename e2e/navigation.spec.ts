@@ -1,9 +1,16 @@
 import { test, expect } from "@playwright/test";
 
 const pages = [
-  { path: "/", title: /AI-Powered Growth/i, h1: /rank, convert/i },
+  { path: "/", title: /AI-Powered Growth/i, h1: /digital marketing agency/i },
   { path: "/about/", title: /About Us/i, h1: /typical agency/i },
   { path: "/services/", title: /Services/i, h1: /engineered as one system/i },
+  { path: "/services/seo/", title: /SEO Services/i, h1: /SEO Services/i },
+  { path: "/services/local-seo/", title: /Local SEO/i, h1: /Rank in the Google Local 3-Pack/i },
+  { path: "/services/web-development/", title: /Website Development/i, h1: /High-Performance Websites/i },
+  { path: "/services/ecommerce/", title: /Ecommerce/i, h1: /High-Converting Ecommerce Stores/i },
+  { path: "/services/ai-seo/", title: /AI SEO/i, h1: /Get Your Brand Recommended/i },
+  { path: "/services/marketing-automation/", title: /Marketing Automation/i, h1: /Automate Your Lead/i },
+  { path: "/pricing/", title: /Pricing/i, h1: /Dominate your market/i },
   { path: "/portfolio/", title: /Portfolio/i, h1: /systems we engineer/i },
   { path: "/contact/", title: /Contact/i, h1: /engineer your growth/i },
 ];
@@ -46,20 +53,21 @@ test("header nav links to every page and highlights the active one", async ({
   test.skip(isMobile, "desktop nav links are hidden (md:flex) on small viewports");
   await page.goto("/");
   const header = page.locator("header");
-  const labels: Record<string, string> = {
-    "/": "Home",
-    "/about/": "About",
-    "/services/": "Services",
-    "/portfolio/": "Portfolio",
-    "/contact/": "Contact",
-  };
+  const navItems = [
+    { path: "/", label: "Home" },
+    { path: "/about/", label: "About" },
+    { path: "/services/", label: "Services" },
+    { path: "/pricing/", label: "Pricing" },
+    { path: "/portfolio/", label: "Portfolio" },
+    { path: "/contact/", label: "Contact" },
+  ];
 
-  for (const p of pages) {
-    await header.getByRole("link", { name: labels[p.path], exact: true }).click();
-    await expect(page).toHaveURL(new RegExp(`${p.path.replace(/\//g, "\\/")}$`));
+  for (const item of navItems) {
+    await header.getByRole("link", { name: item.label, exact: true }).click();
+    await expect(page).toHaveURL(new RegExp(`${item.path.replace(/\//g, "\\/")}$`));
     // Active link gets the highlighted style + aria-current
     await expect(
-      header.getByRole("link", { name: labels[p.path], exact: true }),
+      header.getByRole("link", { name: item.label, exact: true }),
     ).toHaveAttribute("aria-current", "page");
   }
 });
@@ -78,11 +86,11 @@ test("mobile: hamburger opens and closes the nav menu", async ({ page, isMobile 
 test("footer contains working links to every main page", async ({ page }) => {
   await page.goto("/");
   const footer = page.locator("footer");
-  await expect(footer.getByRole("link", { name: "About Us" })).toHaveAttribute(
+  await expect(footer.getByRole("link", { name: "About Us", exact: true })).toHaveAttribute(
     "href",
     "/about/",
   );
-  await expect(footer.getByRole("link", { name: "Contact" })).toHaveAttribute(
+  await expect(footer.getByRole("link", { name: "Contact", exact: true })).toHaveAttribute(
     "href",
     "/contact/",
   );

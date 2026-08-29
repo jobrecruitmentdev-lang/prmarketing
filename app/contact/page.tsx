@@ -11,9 +11,9 @@ import { site } from "@/lib/site";
 import { breadcrumbSchema, localBusinessSchema, webPageSchema } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Contact — Get a Free Website & SEO Audit",
+  title: "Contact & Free Website Audit — PR Marketing Ventures",
   description:
-    "Contact the best digital marketing agency in Navrangpura, Ahmedabad for a free website and SEO audit. Tell us about your project and get a clear, prioritized growth plan.",
+    "Request a free website and technical SEO audit from PR Marketing Ventures in Ahmedabad. Tell us about your business goals and receive a clear, actionable growth roadmap.",
   alternates: { canonical: "/contact/" },
 };
 
@@ -60,15 +60,13 @@ export default function Contact() {
       <section className="bg-gradient-to-b from-primary-soft via-white to-white">
         <div className="mx-auto max-w-6xl px-4 pb-12 pt-16 sm:px-6 md:pt-24">
           <p className="text-sm font-semibold tracking-wide text-accent-dark">
-            CONTACT
+            GET IN TOUCH
           </p>
           <h1 className="mt-4 max-w-3xl font-heading text-4xl font-bold leading-tight tracking-tight text-ink sm:text-5xl">
             Let&rsquo;s engineer your growth.
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-600">
-            Looking for a local PPC agency and SEO partner in Ahmedabad? Tell us about your business and goals. We&rsquo;ll reply with a
-            free, no-obligation audit — a clear picture of what&rsquo;s holding
-            you back and what to fix first.
+            Ready to scale your business with engineered web performance, high-converting SEO, and smart automation? Tell us about your goals to receive a complimentary, data-backed diagnostic audit.
           </p>
         </div>
       </section>

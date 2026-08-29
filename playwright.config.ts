@@ -12,13 +12,13 @@ export default defineConfig({
   },
   webServer: {
     // Serves the real production artifact (out/), not `next dev`
-    command: "npx serve out -l 4173",
+    command: "python -m http.server 4173 -d out",
     url: "http://localhost:4173",
     reuseExistingServer: !process.env.CI,
     timeout: 30_000,
   },
   projects: [
     { name: "chromium", use: { ...devices["Desktop Chrome"] } },
-    { name: "Mobile Safari", use: { ...devices["iPhone 14"] } },
+    { name: "Mobile Chrome", use: { ...devices["Pixel 7"] } },
   ],
 });

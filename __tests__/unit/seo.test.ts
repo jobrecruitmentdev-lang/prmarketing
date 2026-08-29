@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { breadcrumbSchema } from "@/lib/seo";
+import {
+  breadcrumbSchema,
+  multiBreadcrumbSchema,
+  singleServiceSchema,
+  localBusinessSchema,
+} from "@/lib/seo";
 import { site, nav, industries } from "@/lib/site";
 
 describe("breadcrumbSchema", () => {
@@ -26,11 +31,52 @@ describe("breadcrumbSchema", () => {
     }
   });
 
-  // Edge case: empty path still produces a well-formed item URL, not "undefined"
   it("handles an empty path without throwing", () => {
     expect(() => breadcrumbSchema("Home", "")).not.toThrow();
     const schema = breadcrumbSchema("Home", "");
     expect(schema.itemListElement[1].item).toBe(site.url);
+  });
+});
+
+describe("multiBreadcrumbSchema", () => {
+  it("builds a valid three-level BreadcrumbList", () => {
+    const schema = multiBreadcrumbSchema([
+      { name: "Services", path: "/services/" },
+      { name: "SEO Services", path: "/services/seo/" },
+    ]);
+    expect(schema["@type"]).toBe("BreadcrumbList");
+    expect(schema.itemListElement).toHaveLength(3);
+    expect(schema.itemListElement[0].name).toBe("Home");
+    expect(schema.itemListElement[1].name).toBe("Services");
+    expect(schema.itemListElement[1].item).toBe(`${site.url}/services/`);
+    expect(schema.itemListElement[2].name).toBe("SEO Services");
+    expect(schema.itemListElement[2].item).toBe(`${site.url}/services/seo/`);
+  });
+});
+
+describe("singleServiceSchema", () => {
+  it("builds a valid Service schema with ProfessionalService provider", () => {
+    const schema = singleServiceSchema({
+      name: "SEO Services",
+      description: "Data-driven SEO services in Ahmedabad",
+      url: "/services/seo/",
+      serviceType: "Search Engine Optimization",
+    });
+    expect(schema["@type"]).toBe("Service");
+    expect(schema.name).toBe("SEO Services");
+    expect(schema.url).toBe(`${site.url}/services/seo/`);
+    expect(schema.provider["@type"]).toBe("ProfessionalService");
+    expect(schema.provider.name).toBe(site.name);
+  });
+});
+
+describe("localBusinessSchema", () => {
+  it("includes MarketingAgency and ProfessionalService entity types with OfferCatalog", () => {
+    const schema = localBusinessSchema();
+    expect(schema["@type"]).toContain("MarketingAgency");
+    expect(schema["@type"]).toContain("ProfessionalService");
+    expect(schema.hasOfferCatalog).toBeDefined();
+    expect(schema.hasOfferCatalog.name).toBe("Marketing & Digital Services");
   });
 });
 
