@@ -45,11 +45,35 @@ export default function SoftwareDevelopmentAhmedabadPage() {
         faqs: [
           {
             q: "Why choose PR Marketing Ventures for software development in Ahmedabad?",
-            a: "We deliver full-stack engineering excellence, modern UI/UX design, 100% intellectual property ownership, and comprehensive post-launch cloud support.",
+            a: "We deliver full-stack engineering excellence, modern UI/UX design, 100% intellectual property ownership, and comprehensive post-launch cloud support from our C.G. Road office.",
           },
           {
             q: "Which tech stacks do you specialize in?",
             a: "Next.js, React, TypeScript, Node.js, Python (FastAPI/Django), PHP/Laravel, PostgreSQL, MySQL, Redis, Docker, and AWS cloud.",
+          },
+          {
+            q: "How much does custom software development cost in Ahmedabad?",
+            a: "Project costs vary based on scope: tailored MVP SaaS platforms and internal business portals typically range from ₹75,000 to ₹3,50,000+.",
+          },
+          {
+            q: "Do we get full 100% source code ownership?",
+            a: "Yes. You retain complete, unrestricted intellectual property rights and full source code ownership upon project completion.",
+          },
+          {
+            q: "What is your development workflow and timeline?",
+            a: "We work in 2-week agile sprints: 1) Architecture & DB design, 2) UI/UX prototyping in Figma, 3) Full-stack development, 4) Automated testing, and 5) Cloud deployment.",
+          },
+          {
+            q: "Can you modernize our legacy desktop software into a cloud web app?",
+            a: "Yes. We specialize in migrating legacy desktop applications (FoxPro, VB6, Tally add-ons) and monolithic PHP codebases to modern, cloud-native web architectures.",
+          },
+          {
+            q: "Do you provide post-launch maintenance and SLA support in Ahmedabad?",
+            a: "Yes. We offer 24/7 server monitoring, database backups, security patching, and ongoing feature enhancement SLAs.",
+          },
+          {
+            q: "How do you protect sensitive company data and intellectual property?",
+            a: "We enforce end-to-end encryption, strict role-based access control (RBAC), signed NDAs, and automated daily off-site cloud backups.",
           },
         ],
       }}

@@ -51,6 +51,30 @@ export default function EcommerceDevelopmentAhmedabadPage() {
             q: "Do you integrate Indian payment gateways (Razorpay, UPI, Cashfree)?",
             a: "Yes. Every ecommerce store includes full UPI, Credit/Debit card, Netbanking, EMI, and COD fraud verification workflows.",
           },
+          {
+            q: "How much does ecommerce website development cost in Ahmedabad?",
+            a: "Standard Shopify and WooCommerce stores range from ₹45,000 to ₹1,20,000. Custom headless Next.js online commerce platforms range from ₹1,25,000 to ₹3,00,000+.",
+          },
+          {
+            q: "Can you automate shipping and courier tracking with Shiprocket / Delhivery?",
+            a: "Yes. We integrate automated shipping label generation, pickup scheduling, COD remittance tracking, and WhatsApp tracking alerts for customers.",
+          },
+          {
+            q: "How do you recover abandoned carts on WhatsApp?",
+            a: "We deploy automated WhatsApp sequences with personalized discount codes sent 15 minutes, 2 hours, and 24 hours after a customer drops off at checkout.",
+          },
+          {
+            q: "Do you implement Product Schema for Google Shopping and Google Search?",
+            a: "Yes. Every product page has structured JSON-LD Product, AggregateRating, Offer, and BreadcrumbList markup for immediate Google Merchant visibility.",
+          },
+          {
+            q: "Can we connect our physical retail store POS/ERP with the online store?",
+            a: "Yes. We integrate real-time inventory synchronization with Tally, Busy, Marg, and custom retail POS software.",
+          },
+          {
+            q: "How long does it take to launch an e-commerce website in Ahmedabad?",
+            a: "A turnkey e-commerce store with catalog setup and payment testing typically launches in 2 to 4 weeks.",
+          },
         ],
       }}
     />

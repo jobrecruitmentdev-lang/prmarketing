@@ -45,11 +45,35 @@ export default function AiAgentsAhmedabadPage() {
         faqs: [
           {
             q: "What can an AI agent do that a regular chatbot cannot?",
-            a: "Regular chatbots only follow button menus. AI agents understand natural conversation, consult private product databases via RAG, answer unpredictable questions, and take multi-step actions autonomously.",
+            a: "Regular chatbots only follow rigid button menus. AI agents understand natural human language, consult private company knowledge bases via RAG, answer complex product queries, and take multi-step actions like booking calendar appointments autonomously.",
+          },
+          {
+            q: "Can the AI agent understand and respond in Gujarati, Hindi, and English?",
+            a: "Yes. Our AI agents are fine-tuned with multilingual LLMs that seamlessly detect language switches and converse naturally in Gujarati, Hindi, and English.",
           },
           {
             q: "How long does it take to deploy an AI agent for my business in Ahmedabad?",
-            a: "A customized AI agent trained on your business documents and integrated with WhatsApp is typically built, tested, and deployed within 7 to 14 days.",
+            a: "A customized AI agent trained on your business catalogs and integrated with WhatsApp is typically built, tested, and deployed within 7 to 14 days.",
+          },
+          {
+            q: "How do you prevent the AI agent from hallucinating or giving incorrect info?",
+            a: "We enforce strict Retrieval-Augmented Generation (RAG) guardrails and system prompt boundaries that prevent the AI from fabricating pricing or details outside your verified company knowledge base.",
+          },
+          {
+            q: "Can the AI agent collect payments via UPI and send Razorpay links on WhatsApp?",
+            a: "Yes. The AI agent can dynamically generate UPI payment links, invoice PDFs, and confirm booking deposits right inside the WhatsApp chat.",
+          },
+          {
+            q: "Can a human sales agent take over the live chat from the AI bot?",
+            a: "Yes. If a customer requests a human representative or meets high-priority VIP criteria, the bot immediately alerts your team and hands over the chat with full history.",
+          },
+          {
+            q: "What industries in Ahmedabad benefit most from AI agents?",
+            a: "Real estate developers, clinics and hospitals, coaching institutes, D2C retail brands, B2B manufacturers, and financial consultancies.",
+          },
+          {
+            q: "How much does a custom AI WhatsApp agent cost in Ahmedabad?",
+            a: "Initial development and document embedding typically range from ₹35,000 to ₹95,000, with nominal monthly LLM token and server hosting fees.",
           },
         ],
       }}

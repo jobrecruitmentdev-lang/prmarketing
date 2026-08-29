@@ -48,12 +48,32 @@ export default function LocalSeoAhmedabadPage() {
             a: "Local SEO captures customers with immediate buying intent. When someone searches 'clinics near me' or 'real estate agency in SG Highway', ranking in the top 3 on Google Maps generates direct phone calls and visits.",
           },
           {
+            q: "What is the Google 3-Pack and why does it matter?",
+            a: "The Google 3-Pack is the block of three prominent local business listings that appear at the top of Google search results for local queries. It captures over 60% of all local clicks and calls.",
+          },
+          {
             q: "How do you improve my Google Business Profile rank on Google Maps?",
             a: "We optimize primary/secondary categories, add geo-tagged photos, build local NAP citations, implement automated review generation, and publish weekly business updates.",
           },
           {
             q: "How long does Local SEO take to show results in Ahmedabad?",
             a: "Most businesses see significant increases in phone calls and Google Maps rankings within 30 to 60 days of starting our Local SEO program.",
+          },
+          {
+            q: "Can you help rank multiple branch locations across Ahmedabad?",
+            a: "Yes. We create unique localized landing pages and separate verified Google Business Profiles for each location (e.g. Navrangpura, SG Highway, Bopal, Maninagar).",
+          },
+          {
+            q: "How do customer reviews with keywords boost local ranking?",
+            a: "When customer reviews naturally mention your services and location (e.g., 'best digital marketing in C.G. Road'), Google's local algorithm recognizes strong relevance signals.",
+          },
+          {
+            q: "What local business directories do you submit citations to in Gujarat?",
+            a: "We submit and verify consistent citations on Justdial, IndiaMART, Sulekha, Google Maps, Apple Maps, Bing Places, YellowPages India, and Gujarat Chamber directories.",
+          },
+          {
+            q: "How do you protect profiles from suspensions and fake negative reviews?",
+            a: "We ensure strict compliance with Google Business Profile policies, handle verification appeals, and flag policy-violating spam reviews for removal.",
           },
         ],
       }}

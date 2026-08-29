@@ -73,6 +73,26 @@ export default function DigitalMarketingAgencyAhmedabadPage() {
             q: "Do you manage both B2B and B2C digital marketing campaigns?",
             a: "Yes. For B2B, we use high-intent Google Search, LinkedIn ABM, and cold email systems. For B2C, we scale Instagram, Meta video ads, Google Shopping, and local map search.",
           },
+          {
+            q: "Can you handle our complete digital marketing on a turnkey basis?",
+            a: "Yes. We manage creative design, ad copy, technical website optimization, ad management, WhatsApp CRM automation, and weekly reporting under one single growth retainer.",
+          },
+          {
+            q: "What is the difference between Performance Marketing and traditional agency marketing?",
+            a: "Traditional agencies report vanity likes and impressions. Performance marketing ties every single rupee spent directly to verified sales, lead acquisition cost (CPA), and return on ad spend (ROAS).",
+          },
+          {
+            q: "How do you track and report campaign ROI every month?",
+            a: "Every client gets access to an automated live dashboard tracking Google Analytics 4, Meta Pixel/CAPI, Google Search Console, and CRM pipeline revenue.",
+          },
+          {
+            q: "Where is your office located in Ahmedabad for in-person meetings?",
+            a: "Our office is centrally located at Fairdeal House, C.G. Road, Navrangpura, Ahmedabad. We also conduct on-site strategy sessions across SG Highway and Prahladnagar.",
+          },
+          {
+            q: "Do you require long-term lock-in contracts?",
+            a: "No rigid annual lock-ins. We work on performance-focused 30-day rolling retainers because our client retention is built on demonstrable results and revenue growth.",
+          },
         ],
       }}
     />

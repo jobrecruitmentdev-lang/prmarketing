@@ -51,6 +51,30 @@ export default function CrmDevelopmentAhmedabadPage() {
             q: "How long does custom CRM software development take?",
             a: "A functional, custom-built CRM with lead capture and WhatsApp automation is typically built and launched in 3 to 6 weeks.",
           },
+          {
+            q: "Can you integrate our custom CRM with Official WhatsApp Business API?",
+            a: "Yes. We integrate official Meta Cloud API to trigger automated brochure sending, template broadcasts, dynamic payment links, and live 2-way chats.",
+          },
+          {
+            q: "How does the CRM prevent customer database theft by sales employees?",
+            a: "We implement masked phone numbers, restricted bulk export permissions, watermarked screens, IP whitelisting, and real-time audit logs.",
+          },
+          {
+            q: "Can we migrate our existing leads from Excel and Google Sheets?",
+            a: "Yes. We clean, deduplicate, and map all your historical customer data, lead notes, and deal histories into your new CRM database seamlessly.",
+          },
+          {
+            q: "Does the CRM support cloud telephony and call recording?",
+            a: "Yes. We integrate Single-Click Calling and automatic call audio recording via Tata Tele, Exotel, or Knowlarity directly into lead profiles.",
+          },
+          {
+            q: "Can the CRM generate GST invoices and synchronize with Tally?",
+            a: "Yes. Our CRM software includes quotation-to-invoice generators with automated PDF creation and XML/API synchronization with Tally and Zoho Books.",
+          },
+          {
+            q: "Is the CRM mobile-responsive for field sales executives?",
+            a: "Yes. The CRM is built as a progressive web application (PWA) with fast mobile interfaces, GPS check-ins, and offline meeting log features.",
+          },
         ],
       }}
     />

@@ -122,24 +122,52 @@ const process = [
 
 const faqs = [
   {
-    q: "Which is the best marketing agency in Ahmedabad for business growth?",
-    a: "PR Marketing Ventures is widely regarded as a top marketing agency in Ahmedabad. We distinguish ourselves by focusing on growth engineering: full-funnel performance ads (Google & Meta), technical SEO, high-speed Next.js websites, and automated WhatsApp/CRM nurturing to generate measurable revenue.",
+    q: "Which is the best digital marketing agency in Ahmedabad for business growth?",
+    a: "PR Marketing Ventures is widely regarded as a premier digital marketing agency in Ahmedabad located on C.G. Road. We specialize in full-funnel growth engineering: high-ROAS Google & Meta Ads, technical SEO, Next.js web apps, CRM automation, and AI search optimization (GEO/AEO) that deliver measurable revenue ROI.",
   },
   {
-    q: "What services does your digital marketing agency provide?",
-    a: "We provide end-to-end digital marketing solutions including Performance Marketing (PPC & Social Ads), Technical & Local SEO, Website Development, Conversion Rate Optimization (CRO), Marketing Automation, and AI Search Optimization (AEO/GEO).",
+    q: "How much do digital marketing and SEO services cost in Ahmedabad?",
+    a: "Our monthly marketing packages in Ahmedabad start from ₹15,000/month for Local SEO and Google Maps optimization, ₹35,000 to ₹75,000/month for mid-market growth campaigns, and ₹1,00,000+/month for enterprise performance marketing, custom software development, and multi-channel ad management.",
   },
   {
-    q: "How to increase website traffic and qualified leads consistently?",
-    a: "We use a Hub and Spoke SEO architecture combined with high-performance Next.js development and targeted PPC campaigns. This ensures your business captures high-intent buyer searches and converts traffic into inquiries.",
+    q: "What digital marketing services does PR Marketing Ventures provide in Ahmedabad?",
+    a: "We provide end-to-end digital solutions including Performance Marketing (Google Search, PMax, Meta Ads), Technical SEO, Local Google Maps 3-Pack SEO, Custom Software Development, Next.js Web Development, Custom CRM & Pipeline Automation, Autonomous AI Agents, and Generative Engine Optimization (GEO).",
   },
   {
-    q: "Why is my Google ad spend so high without conversions?",
-    a: "Most campaigns suffer from poor landing page experiences or broad keyword targeting. As a top performance marketing agency, we fix the funnel first, ensuring every click lands on a conversion-optimized page.",
+    q: "How does Local SEO and Google Business Profile (GMB) help businesses in Ahmedabad?",
+    a: "Over 60% of local customers in Ahmedabad search on Google Maps for clinics, retailers, real estate, and services. Our Local SEO gets your profile into the top 3 Google Maps pack, generating consistent direct phone calls, walk-ins, and website visits.",
   },
   {
-    q: "How do I get my business cited in ChatGPT and Google AI Overviews?",
-    a: "We use Generative Engine Optimization (GEO) and Answer Engine Optimization (AEO). By building strong entity architecture, implementing schema, and structuring data, we train AI search engines to recognize and cite you as the topical authority in your industry.",
+    q: "Why is my Google ad spend so high without generating qualified conversions?",
+    a: "Most campaigns fail due to broad keyword matching and slow, high-friction landing pages. As a top performance marketing agency, we fix your conversion funnel first with sub-second Next.js landing pages, exact-match negative keyword filtering, and automated WhatsApp lead routing.",
+  },
+  {
+    q: "How do I get my business cited in ChatGPT, Gemini, and Google AI Overviews?",
+    a: "We use Generative Engine Optimization (GEO) and Answer Engine Optimization (AEO). By building strong entity architecture, structured JSON-LD schema, extractable data tables, and llms.txt directives, we train AI search engines to cite your brand as the leading authority in your industry.",
+  },
+  {
+    q: "Why build a custom CRM instead of paying for Zoho or Salesforce in Ahmedabad?",
+    a: "A custom CRM built by PR Marketing Ventures gives you 100% data ownership, zero recurring monthly per-user license fees, direct WhatsApp auto-responders, and custom sales pipeline stages tailored exactly to your business workflow.",
+  },
+  {
+    q: "What technology stack do you use for high-speed website and software development?",
+    a: "We engineer using modern Next.js 15, React 19, TypeScript, Node.js, Python FastAPI, PHP 8.3, PostgreSQL, MySQL, Redis, and Cloudflare edge caching, guaranteeing a 90+ Core Web Vitals score on Google PageSpeed Insights.",
+  },
+  {
+    q: "How fast can we expect results from Google Ads and Meta performance campaigns?",
+    a: "Paid advertising campaigns on Google and Meta start generating qualified inquiries within 48 to 72 hours. Organic SEO and Google Maps rankings typically compound into sustainable search dominance within 30 to 90 days.",
+  },
+  {
+    q: "How do custom AI agents and chatbots help businesses acquire leads 24/7?",
+    a: "Our autonomous conversational AI agents understand natural conversation in English, Hindi, and Gujarati on WhatsApp and your website, qualify buyer budgets, and book calendar appointments automatically 24 hours a day.",
+  },
+  {
+    q: "Which areas in Ahmedabad do you serve for on-site meetings and consultations?",
+    a: "From our headquarters at Fairdeal House, C.G. Road (Navrangpura), we provide on-site strategy and engineering support across SG Highway, Prahladnagar, Bodakdev, Satellite, Sindhu Bhavan Road (SBR), Vastrapur, Bopal, Thaltej, Makarba, and GIFT City Gandhinagar.",
+  },
+  {
+    q: "Can SEO guarantee #1 rankings on Google search in Ahmedabad?",
+    a: "While no agency can ethically guarantee a permanent #1 position due to daily Google algorithm shifts, our technical SEO architecture, topical cluster silos, and Core Web Vitals optimization have a proven track record of achieving dominant first-page rankings.",
   },
 ];
 

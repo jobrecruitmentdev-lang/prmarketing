@@ -52,6 +52,10 @@ export default function SeoAgencyAhmedabadPage() {
             a: "Our monthly SEO retainer packages range from ₹15,000/month for local business SEO up to ₹60,000+/month for enterprise, ecommerce, and multi-location technical SEO.",
           },
           {
+            q: "Why is my website not ranking on Google in Ahmedabad?",
+            a: "Common causes include poor mobile Core Web Vitals, missing schema markup, thin duplicate content, crawl indexation blocks in robots.txt, or lack of local NAP citations and high-authority backlinks.",
+          },
+          {
             q: "Do you guarantee #1 rankings on Google?",
             a: "No ethical agency can guarantee a specific position because Google updates its algorithm daily. However, we guarantee strict adherence to white-hat Google guidelines, technical health, and demonstrable organic traffic growth month-over-month.",
           },
@@ -60,8 +64,24 @@ export default function SeoAgencyAhmedabadPage() {
             a: "Local SEO focuses on Google Maps (Local 3-Pack) and 'near me' searches in Ahmedabad. Enterprise SEO targets broad nationwide and global keywords without geographic boundaries.",
           },
           {
+            q: "What is included in your Technical SEO audit for Ahmedabad clients?",
+            a: "We audit server response times, SSL/canonical loops, Core Web Vitals (LCP, INP, CLS), mobile viewport responsiveness, JSON-LD schema validation, XML sitemaps, and internal linking structure.",
+          },
+          {
+            q: "Do you provide Ecommerce SEO for Shopify and WooCommerce stores?",
+            a: "Yes. We optimize category structures, product schema markup, merchant center feeds, faceted navigation canonicals, and high-volume buying intent keywords.",
+          },
+          {
+            q: "How do you select keywords for our Ahmedabad SEO campaign?",
+            a: "We analyze high-commercial intent search volumes, competitor gap matrices, local geo-modifiers (e.g., C.G. Road, SG Highway), and conversational voice/AI query patterns.",
+          },
+          {
             q: "Do you provide transparent monthly SEO reporting?",
             a: "Yes. Every client receives a live Google Search Console and GA4 dashboard tracking keyword movements, organic impressions, clicks, and conversion events.",
+          },
+          {
+            q: "How does SEO compare to Google Ads in long-term ROI?",
+            a: "Google Ads stop generating leads the second your budget runs out. SEO compounds over time, building permanent organic domain equity that delivers free inbound customer leads month after month.",
           },
         ],
       }}
