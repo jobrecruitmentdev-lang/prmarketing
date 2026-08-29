@@ -21,6 +21,30 @@ const guides = [
     readTime: "8 min read",
     icon: IconSparkles,
   },
+  {
+    slug: "seo-cost-in-ahmedabad",
+    title: "How Much Does SEO Cost in Ahmedabad? (2026 Pricing Guide)",
+    desc: "Complete price benchmarks, monthly packages, and ROI expectations for SEO services in Ahmedabad and Gujarat.",
+    tag: "SEO Pricing",
+    readTime: "6 min read",
+    icon: IconSearch,
+  },
+  {
+    slug: "website-development-cost-ahmedabad",
+    title: "How Much Does Website Development Cost in Ahmedabad?",
+    desc: "Transparent price guide for business websites, custom ecommerce stores, and Next.js web applications in Ahmedabad.",
+    tag: "Web Development",
+    readTime: "7 min read",
+    icon: IconCode,
+  },
+  {
+    slug: "how-to-rank-on-google-maps-ahmedabad",
+    title: "How to Rank Your Business on Google Maps in Ahmedabad (3-Pack Guide)",
+    desc: "The actionable 5-step local SEO checklist to dominate Google Maps rankings, local citations, and customer reviews.",
+    tag: "Local Map SEO",
+    readTime: "8 min read",
+    icon: IconSparkles,
+  },
 ];
 
 export default function GuidesIndexPage() {
