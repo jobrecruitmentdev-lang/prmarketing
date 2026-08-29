@@ -5,14 +5,17 @@ import { site } from "@/lib/site";
 
 const serviceLinks = [
   { label: "Digital Marketing Agency", href: "/services/digital-marketing/" },
+  { label: "Custom Software Development", href: "/services/software-development/" },
+  { label: "Custom CRM & Automation", href: "/services/crm-solutions/" },
+  { label: "AI Agents & Chatbots", href: "/services/ai-agents/" },
+  { label: "Google Business Profile (GMB)", href: "/services/google-business-profile/" },
+  { label: "Performance Optimization", href: "/services/performance-optimization/" },
   { label: "Performance Marketing", href: "/services/performance-marketing/" },
   { label: "International SEO", href: "/services/international-seo/" },
   { label: "SEO & Technical SEO", href: "/services/seo/" },
-  { label: "Local SEO & Google Business", href: "/services/local-seo/" },
   { label: "Website Development", href: "/services/web-development/" },
   { label: "Ecommerce Development", href: "/services/ecommerce/" },
   { label: "AI SEO (GEO / AEO)", href: "/services/ai-seo/" },
-  { label: "Marketing Automation", href: "/services/marketing-automation/" },
 ];
 
 const companyLinks = [

@@ -8,6 +8,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: `${site.url}/`, lastModified, changeFrequency: "weekly", priority: 1.0 },
     { url: `${site.url}/services/digital-marketing/`, lastModified, changeFrequency: "weekly", priority: 1.0 },
+    { url: `${site.url}/services/software-development/`, lastModified, changeFrequency: "weekly", priority: 0.95 },
+    { url: `${site.url}/services/crm-solutions/`, lastModified, changeFrequency: "weekly", priority: 0.95 },
+    { url: `${site.url}/services/ai-agents/`, lastModified, changeFrequency: "weekly", priority: 0.95 },
+    { url: `${site.url}/services/google-business-profile/`, lastModified, changeFrequency: "weekly", priority: 0.95 },
+    { url: `${site.url}/services/performance-optimization/`, lastModified, changeFrequency: "weekly", priority: 0.95 },
     { url: `${site.url}/services/performance-marketing/`, lastModified, changeFrequency: "weekly", priority: 0.95 },
     { url: `${site.url}/services/international-seo/`, lastModified, changeFrequency: "weekly", priority: 0.95 },
     { url: `${site.url}/services/`, lastModified, changeFrequency: "weekly", priority: 0.9 },

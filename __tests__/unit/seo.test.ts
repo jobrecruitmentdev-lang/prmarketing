@@ -76,7 +76,7 @@ describe("localBusinessSchema", () => {
     expect(schema["@type"]).toContain("MarketingAgency");
     expect(schema["@type"]).toContain("ProfessionalService");
     expect(schema.hasOfferCatalog).toBeDefined();
-    expect(schema.hasOfferCatalog.name).toBe("Marketing & Digital Services");
+    expect(schema.hasOfferCatalog.name).toBe("Marketing, Software & AI Growth Services");
   });
 });
 

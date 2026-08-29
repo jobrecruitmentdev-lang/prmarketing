@@ -61,14 +61,46 @@ export function localBusinessSchema() {
     ],
     hasOfferCatalog: {
       "@type": "OfferCatalog",
-      name: "Marketing & Digital Services",
+      name: "Marketing, Software & AI Growth Services",
       itemListElement: [
         {
           "@type": "Offer",
           itemOffered: {
             "@type": "Service",
             name: "Digital Marketing & Performance Ads",
-            description: "Full-funnel digital marketing, Meta ads, Google ads, and lead generation campaigns.",
+            description: "Full-funnel digital marketing, Meta ads, Google ads, and lead generation campaigns in Ahmedabad.",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "Custom Software Development",
+            description: "Enterprise SaaS, custom web applications, Node.js, and Python backend engineering in Ahmedabad.",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "Custom CRM & Sales Pipeline Automation",
+            description: "Custom CRM development, WhatsApp automation, and sales pipeline management for Ahmedabad businesses.",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "Custom AI Agents & AI Chatbots",
+            description: "Autonomous LLM AI agents, WhatsApp lead qualification bots, and RAG document search systems.",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "Google Business Profile & Map Pack SEO",
+            description: "Dominating Google Maps 3-Pack, local citations, and review generation in Ahmedabad.",
           },
         },
         {
@@ -83,8 +115,8 @@ export function localBusinessSchema() {
           "@type": "Offer",
           itemOffered: {
             "@type": "Service",
-            name: "Local SEO & Google Business Profile",
-            description: "Dominating local map pack, Google reviews, and local search rankings in Ahmedabad.",
+            name: "Performance Optimization & Core Web Vitals",
+            description: "PageSpeed 90+ optimization, LCP/INP fixes, sub-second caching, and database query tuning.",
           },
         },
         {
