@@ -1,0 +1,8 @@
+requests
+gspread
+google-auth
+groq
+tenacity
+python-dotenv
+beautifulsoup4
+lxml

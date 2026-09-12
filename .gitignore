@@ -1,0 +1,64 @@
+# Dependencies
+node_modules/
+*/node_modules/
+website/node_modules/
+
+# Python Virtual Environments
+venv/
+*/venv/
+blog_automation/venv/
+.venv/
+*/.venv/
+
+# Next.js Build Outputs
+.next/
+*/.next/
+website/.next/
+out/
+*/out/
+website/out/
+build/
+
+# Deployment & Bundles
+deploy_bundle.tar.gz
+website/deploy_bundle.tar.gz
+*.tar.gz
+*.zip
+
+# Python & Environment
+__pycache__/
+*/__pycache__/
+*.pyc
+.env
+.env*.local
+*.pem
+
+# Testing & Logs
+npm-debug.log*
+yarn-debug.log*
+*.log
+coverage/
+playwright-report/
+test-results/
+
+# Temporary / Scratch / Data Scrapings
+scratch/
+submit_urls.py
+cold_calling_pitch.md
+*.csv
+raw_new_leads*.txt
+apify_results.json
+apify_payload.json
+
+# Uploads privacy
+backend/uploads/resumes/*
+!backend/uploads/resumes/.gitkeep
+
+# Secrets & Credentials
+credentials.json
+*/credentials.json
+blog_automation/credentials.json
+token.json
+*/token.json
+client_secret*.json
+
