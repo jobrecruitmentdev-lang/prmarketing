@@ -317,7 +317,7 @@ export default function AttendanceRegisterPage({ params }: { params: Promise<{ t
         return;
       }
 
-      const url = getCrmUrl(`/attendance/export?start_date=${exportStartDate}&end_date=${exportEndDate}&employee_ids=${empIdsParam}&status=${exportStatus}&format=xlsx&export_type=${exportLayoutMode}`);
+      const url = getCrmUrl(`/attendance/export?start_date=${exportStartDate}&end_date=${exportEndDate}&employee_ids=${empIdsParam}&status=${exportStatus}&format=csv&export_type=${exportLayoutMode}&download=1`);
 
       const res = await fetch(url, {
         headers: { Authorization: `Bearer ${token}` }
@@ -332,13 +332,13 @@ export default function AttendanceRegisterPage({ params }: { params: Promise<{ t
       const downloadUrl = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = downloadUrl;
-      a.download = `Attendance_${exportStartDate}_to_${exportEndDate}_${exportLayoutMode}.xlsx`;
+      a.download = `Attendance_${exportStartDate}_to_${exportEndDate}_${exportLayoutMode}.csv`;
       document.body.appendChild(a);
       a.click();
       a.remove();
       window.URL.revokeObjectURL(downloadUrl);
 
-      setExportFeedback('Attendance Excel (.xlsx) report downloaded successfully!');
+      setExportFeedback('Attendance report downloaded successfully! (Opens natively in Excel)');
       setTimeout(() => {
         setExportFeedback(null);
       }, 4000);
@@ -1175,7 +1175,7 @@ export default function AttendanceRegisterPage({ params }: { params: Promise<{ t
                   className="py-2.5 px-5 rounded-xl font-bold text-xs text-[#0F172A] bg-[#d6c180] shadow-sm hover:opacity-90 transition-opacity disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2"
                 >
                   <DownloadIcon size={16} />
-                  <span>{isExporting ? 'Generating Excel...' : 'Download Attendance (.xlsx)'}</span>
+                  <span>{isExporting ? 'Generating Report...' : 'Download Attendance (Excel / CSV)'}</span>
                 </button>
               </div>
             </div>

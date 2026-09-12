@@ -435,9 +435,13 @@ function handleAttendanceRoutes(string $subpath, string $method, PDO $pdo): void
             ];
         }
 
-        // CSV Export stream
-        if ($format === 'csv' || strpos($_SERVER['HTTP_ACCEPT'] ?? '', 'text/csv') !== false || isset($_GET['download'])) {
-            $filename = "Attendance_Report_{$startDate}_to_{$endDate}.csv";
+        // CSV / Excel Export stream
+        $isExport = in_array(strtolower((string)$format), ['csv', 'xlsx', 'excel']) 
+            || strpos($_SERVER['HTTP_ACCEPT'] ?? '', 'text/csv') !== false 
+            || isset($_GET['download']);
+
+        if ($isExport) {
+            $filename = "Attendance_Report_{$startDate}_to_{$endDate}_{$exportType}.csv";
             header('Content-Type: text/csv; charset=utf-8');
             header("Content-Disposition: attachment; filename=\"{$filename}\"");
 
