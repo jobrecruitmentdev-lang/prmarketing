@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PR Marketing Ventures — Client Growth Pitch Deck</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #0a0a0c;
+      --card-bg: #141418;
+      --primary: #d4af37;
+      --accent: #e7c568;
+      --text: #fafaf9;
+      --muted: #a1a1aa;
+      --border: #27272a;
+      --font-heading: 'Space Grotesk', sans-serif;
+      --font-body: 'Source Sans 3', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .slide-container {
+      flex: 1;
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      transform: scale(0.98);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 60px 40px;
+      text-align: center;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 16px;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      font-family: var(--font-heading);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 13px;
+      letter-spacing: 1px;
+      margin-bottom: 24px;
+    }
+
+    h1, h2 {
+      font-family: var(--font-heading);
+      line-height: 1.1;
+    }
+
+    h1 { font-size: 56px; max-width: 900px; margin-bottom: 24px; }
+    h2 { font-size: 40px; max-width: 800px; margin-bottom: 16px; }
+    p.subtitle { font-size: 20px; color: var(--muted); max-width: 650px; line-height: 1.5; margin-bottom: 36px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      width: 100%;
+      max-width: 1000px;
+      margin-top: 24px;
+      text-align: left;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 2px solid var(--border);
+      padding: 28px;
+      border-radius: 0px;
+      transition: border-color 0.3s ease;
+    }
+
+    .card:hover { border-color: var(--primary); }
+    .card h3 { font-family: var(--font-heading); font-size: 20px; color: var(--accent); margin-bottom: 10px; }
+    .card p { font-size: 15px; color: var(--muted); line-height: 1.5; }
+
+    .chart-box {
+      width: 100%;
+      max-width: 750px;
+      height: 340px;
+      background: var(--card-bg);
+      border: 2px solid var(--border);
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    /* Controls */
+    .controls {
+      height: 70px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 40px;
+      background: #000;
+      z-index: 10;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      padding: 10px 24px;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .nav-btn:hover { background: var(--primary); color: #000; }
+
+    .progress-bar {
+      flex: 1;
+      max-width: 400px;
+      height: 6px;
+      background: var(--border);
+      margin: 0 30px;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      width: 20%;
+      transition: width 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="slide-container">
+    
+    <!-- Slide 1 -->
+    <div class="slide active">
+      <span class="badge">PR Marketing Ventures</span>
+      <h1>AI-Powered Digital Engineering & Growth</h1>
+      <p class="subtitle">How we engineer compounding search traffic, Technical SEO, and AI automation for market leaders.</p>
+    </div>
+
+    <!-- Slide 2: Problem -->
+    <div class="slide">
+      <span class="badge">The Growth Bottleneck</span>
+      <h2>Commodity marketing burns budget without compounding.</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Slow Website Builds</h3>
+          <p>Bloated CMS themes fail Core Web Vitals, driving away 40%+ of mobile visitors before load.</p>
+        </div>
+        <div class="card">
+          <h3>Shallow SEO</h3>
+          <p>Keyword stuffing without technical schema or hub-and-spoke content architecture.</p>
+        </div>
+        <div class="card">
+          <h3>Manual Lead Admin</h3>
+          <p>Leads rot in inbox queues without immediate automated CRM & WhatsApp follow-ups.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Solution -->
+    <div class="slide">
+      <span class="badge">The Solution</span>
+      <h2>Unified Digital Engineering Engine</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Next.js Speed</h3>
+          <p>Sub-second loads, 90+ PageSpeed targets, engineered to rank from day one.</p>
+        </div>
+        <div class="card">
+          <h3>AI SEO (GEO / AEO)</h3>
+          <p>Optimized for Google AI Overviews, ChatGPT, Gemini, and local map pack dominance.</p>
+        </div>
+        <div class="card">
+          <h3>n8n Automation</h3>
+          <p>AI agents and automated workflows capturing and qualifying leads 24/7.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Chart -->
+    <div class="slide">
+      <span class="badge">Proven Performance</span>
+      <h2>Compounding Organic Traffic & ROI</h2>
+      <div class="chart-box">
+        <canvas id="growthChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Slide 5: CTA -->
+    <div class="slide">
+      <span class="badge">Get Started</span>
+      <h1>Ready to Engineer Your Growth?</h1>
+      <p class="subtitle">Claim your free technical SEO & AI audit today.</p>
+      <button class="nav-btn" style="padding: 16px 36px; font-size: 18px;" onclick="window.location.href='mailto:contact@prmarketingventures.com'">Book Free Audit</button>
+    </div>
+
+  </div>
+
+  <div class="controls">
+    <button class="nav-btn" id="prevBtn">← Previous</button>
+    <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+    <span id="slideNum" style="font-family: var(--font-heading); font-size: 14px;">1 / 5</span>
+    <button class="nav-btn" id="nextBtn">Next →</button>
+  </div>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const progress = document.getElementById('progress');
+    const slideNum = document.getElementById('slideNum');
+    let current = 0;
+
+    function updateSlide(index) {
+      slides.forEach((s, i) => s.classList.toggle('active', i === index));
+      progress.style.width = `${((index + 1) / slides.length) * 100}%`;
+      slideNum.textContent = `${index + 1} / ${slides.length}`;
+    }
+
+    prevBtn.addEventListener('click', () => { if (current > 0) { current--; updateSlide(current); } });
+    nextBtn.addEventListener('click', () => { if (current < slides.length - 1) { current++; updateSlide(current); } });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' && current < slides.length - 1) { current++; updateSlide(current); }
+      if (e.key === 'ArrowLeft' && current > 0) { current--; updateSlide(current); }
+    });
+
+    // Chart.js initialization
+    const ctx = document.getElementById('growthChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Month 1', 'Month 2', 'Month 3', 'Month 4', 'Month 5', 'Month 6'],
+        datasets: [{
+          label: 'Organic Traffic Growth (Impressions/mo)',
+          data: [2500, 5800, 14200, 31000, 68000, 125000],
+          borderColor: '#d4af37',
+          backgroundColor: 'rgba(212, 175, 55, 0.15)',
+          fill: true,
+          tension: 0.4,
+          borderWidth: 3
+        }, {
+          label: 'Qualified Leads',
+          data: [12, 28, 65, 140, 310, 580],
+          borderColor: '#e7c568',
+          backgroundColor: 'transparent',
+          borderWidth: 3,
+          borderDash: [5, 5]
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { labels: { color: '#a1a1aa', font: { family: 'Space Grotesk' } } }
+        },
+        scales: {
+          x: { ticks: { color: '#a1a1aa' }, grid: { color: '#27272a' } },
+          y: { ticks: { color: '#a1a1aa' }, grid: { color: '#27272a' } }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

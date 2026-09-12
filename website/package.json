@@ -1,0 +1,36 @@
+{
+  "name": "website",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "prebuild": "node -e \"const fs = require('fs'); fs.rmSync('.next', { recursive: true, force: true });\"",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "test:all": "npm run test && npm run build && npm run test:e2e",
+    "deploy": "npm run build && python ../deploy_to_hostinger.py"
+  },
+  "dependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/qrcode": "^1.5.6",
+    "lucide-react": "^1.43.0",
+    "next": "16.2.10",
+    "qrcode": "^1.5.4",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "tailwindcss": "^4"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.62.0",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.10",
+    "typescript": "^5",
+    "vitest": "^4.1.10"
+  }
+}

@@ -1,0 +1,180 @@
+# PR Marketing Ventures — static export headers (Hostinger LiteSpeed/Apache)
+
+# ---------- Compression ----------
+<IfModule mod_brotli.c>
+  AddOutputFilterByType BROTLI_COMPRESS text/html text/css text/plain text/xml application/javascript application/json image/svg+xml
+</IfModule>
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/javascript application/json image/svg+xml
+</IfModule>
+
+# ---------- Rewrite Rules & Fallbacks ----------
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # 1. Block direct external access to internal backend folder
+  RewriteCond %{THE_REQUEST} \s/backend/ [NC]
+  RewriteRule ^backend(/.*)?$ - [F,L]
+
+  # 1b. Force 301 redirect from /index.html to root /
+  RewriteCond %{THE_REQUEST} \s/index\.html[?\s] [NC]
+  RewriteRule ^index\.html$ / [R=301,L]
+
+  # 1c. 301 Redirect direct .html requests to clean trailing-slash directory (excluding error pages)
+  RewriteCond %{THE_REQUEST} \s/([^.]+)\.html[?\s] [NC]
+  RewriteCond %{REQUEST_URI} !^/404\.html$
+  RewriteRule ^([^.]+)\.html$ /$1/ [R=301,L]
+
+  # 2. 301 Redirect direct .php requests to clean extensionless URLs
+  RewriteCond %{THE_REQUEST} \s/jaatumeinaaya/([a-zA-Z0-9_-]+)\.php[?\s] [NC]
+  RewriteRule ^jaatumeinaaya/([a-zA-Z0-9_-]+)\.php$ /jaatumeinaaya/$1 [R=301,L]
+
+  RewriteCond %{THE_REQUEST} \s/api/leads\.php[?\s] [NC]
+  RewriteRule ^api/leads\.php$ /api/leads [R=301,L]
+
+  # 3. Clean Admin & API internal routing
+  RewriteRule ^api/crm(/.*)?$ backend/api/crm/index.php [QSA,L]
+  RewriteRule ^api/v1(/.*)?$ backend/api/v1/index.php [QSA,L]
+  RewriteRule ^api/leads/?$ backend/api/leads.php [QSA,L]
+  RewriteRule ^jaatumeinaaya/login/?$ backend/admin/login.php [QSA,L]
+  RewriteRule ^jaatumeinaaya/logout/?$ backend/admin/logout.php [QSA,L]
+  RewriteRule ^jaatumeinaaya/categories/?$ backend/admin/categories.php [QSA,L]
+  RewriteRule ^jaatumeinaaya/posts/?$ backend/admin/posts.php [QSA,L]
+  RewriteRule ^jaatumeinaaya/media/?$ backend/admin/media.php [QSA,L]
+  RewriteRule ^jaatumeinaaya/leads/?$ backend/admin/leads.php [QSA,L]
+  RewriteRule ^jaatumeinaaya/clients/?$ backend/admin/clients.php [QSA,L]
+  RewriteRule ^jaatumeinaaya/index/?$ backend/admin/index.php [QSA,L]
+  RewriteRule ^jaatumeinaaya/panel/?$ backend/admin/index.php [QSA,L]
+  RewriteRule ^jaatumeinaaya/?$ backend/admin/index.php [QSA,L]
+
+  # 4. Redirect legacy /admin/ paths to /jaatumeinaaya/
+  RewriteRule ^admin(/panel)?/?$ /jaatumeinaaya/ [R=301,L]
+  RewriteRule ^admin/(.*)$ /jaatumeinaaya/$1 [R=301,L]
+
+  # 5. 301 Permanent Redirect: /guides/ -> /startup-stories/
+  RewriteRule ^guides/?$ /startup-stories/ [R=301,L]
+  RewriteRule ^guides/(.*)$ /startup-stories/$1 [R=301,L]
+
+  # 5b. Prune obsolete CMS/WordPress probes with HTTP 410 Gone (Controlled crawl pruning)
+  RewriteRule ^(wp-login|wp-admin|xmlrpc|trackback|feed)(\.php|/|$) - [G,L]
+
+  # 6. Fallback for missing/old CSS chunks
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^_next/static/chunks/([a-zA-Z0-9_\-]+)\.css$ /_next/static/chunks/0rk7xdiriakyt.css [L,QSA]
+
+  # 7. CRM SPA Fallback for dynamic tenant routes
+  RewriteCond %{REQUEST_URI} ^/crm/([^/]+)/dashboard/? [NC]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^crm/([^/]+)/dashboard/?$ /crm/default/dashboard/index.html [L]
+
+  RewriteCond %{REQUEST_URI} ^/crm/([^/]+)/candidates/? [NC]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^crm/([^/]+)/candidates/?$ /crm/default/candidates/index.html [L]
+
+  RewriteCond %{REQUEST_URI} ^/crm/([^/]+)/jobs/? [NC]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^crm/([^/]+)/jobs/?$ /crm/default/jobs/index.html [L]
+
+  RewriteCond %{REQUEST_URI} ^/crm/([^/]+)/attendance/? [NC]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^crm/([^/]+)/attendance/?$ /crm/default/attendance/index.html [L]
+
+  RewriteCond %{REQUEST_URI} ^/crm/([^/]+)/sales/? [NC]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^crm/([^/]+)/sales/?$ /crm/default/sales/index.html [L]
+
+  RewriteCond %{REQUEST_URI} ^/crm/([^/]+)/employees/? [NC]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^crm/([^/]+)/employees/?$ /crm/default/employees/index.html [L]
+
+  # 8. Public Career Portal SPA Fallback
+  RewriteCond %{REQUEST_URI} ^/c/([^/]+)/careers/([^/]+)/?$ [NC]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^c/([^/]+)/careers/([^/]+)/?$ /c/default/careers/default/index.html [L]
+
+  RewriteCond %{REQUEST_URI} ^/c/([^/]+)/careers/?$ [NC]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^c/([^/]+)/careers/?$ /c/default/careers/index.html [L]
+</IfModule>
+
+# ---------- Sensitive File Protection ----------
+<FilesMatch "\.(sql|env|ini|log|sh|py|md|git|bak|backup)$">
+  Require all denied
+</FilesMatch>
+
+# ---------- Caching ----------
+<IfModule mod_headers.c>
+  # 1. Hashed build assets — safe to cache forever
+  <FilesMatch "\.(js|css|woff2)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # 2. Images / icons — a week, revalidate after
+  <FilesMatch "\.(svg|png|jpg|jpeg|webp|avif|ico)$">
+    Header set Cache-Control "public, max-age=604800, stale-while-revalidate=86400"
+  </FilesMatch>
+
+  # 3. HTML + sitemap/robots/JSON — ALWAYS revalidate with zero caching
+  <FilesMatch "\.(html|xml|txt|json|htm)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate, max-age=0, s-maxage=0"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+  </FilesMatch>
+
+  # 4. Also match directory requests (trailing slash URLs like /services/, /guides/, /about/)
+  <If "%{REQUEST_URI} =~ m#/$#">
+    Header set Cache-Control "no-cache, no-store, must-revalidate, max-age=0, s-maxage=0"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+  </If>
+
+  # ---------- Security ----------
+  Header set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  Header set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+  # 'unsafe-inline' and 'unsafe-eval' for Next.js runtime + extensions; font-src data: for embedded fonts
+  Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: blob: https:; font-src 'self' data: https:; connect-src 'self' https: http:; object-src 'none'; base-uri 'self'; frame-ancestors 'self'; form-action 'self'"
+</IfModule>
+
+# ---------- LiteSpeed Cache Control — COMPLETELY DISABLED ----------
+<IfModule LiteSpeed>
+  CacheDisable public /
+  CacheLookup off
+  RewriteEngine On
+  RewriteRule .* - [E=no-cache:1]
+</IfModule>
+# Force LiteSpeed to not cache via environment variable
+<IfModule mod_headers.c>
+  # Tells LiteSpeed Cache plugin to NOT cache this response
+  Header always set X-LiteSpeed-Cache-Control "no-cache"
+  # Tells downstream CDNs/proxies not to cache
+  Header always set Surrogate-Control "no-store, max-age=0"
+  Header always set CDN-Cache-Control "no-cache"
+</IfModule>
+
+# ---------- Error pages ----------
+ErrorDocument 404 /404.html
+
+# ---------- Misc ----------
+Options -Indexes +FollowSymLinks
+AddDefaultCharset utf-8
+
+# Next.js exports the OG image without a file extension
+<Files "opengraph-image">
+  ForceType image/png
+  <IfModule mod_headers.c>
+    Header set Cache-Control "public, max-age=604800"
+  </IfModule>
+</Files>
+
