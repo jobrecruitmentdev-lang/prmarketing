@@ -486,7 +486,7 @@ function handleAttendanceRoutes(string $subpath, string $method, PDO $pdo): void
                 fputcsv($out, ['Date', 'Day', 'Employee Code', 'Employee Name', 'Department', 'Designation', 'Attendance Status', 'Check-In Time', 'Check-Out Time', 'Total Working Hours', 'Remarks']);
                 foreach ($detailedLogRows as $r) {
                     fputcsv($out, [
-                        $r['date'],
+                        '="' . $r['date'] . '"',
                         $r['day'],
                         $r['employee_code'],
                         $r['employee_name'],
