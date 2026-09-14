@@ -151,9 +151,31 @@
         return `<div class="cw-empty">No positions currently open in this category. Check back soon!</div>`;
       }
       return filteredJobs.map(job => {
-        const salaryText = (job.salary_min && job.salary_max) 
-          ? `₹${(job.salary_min/100000).toFixed(1)}-${(job.salary_max/100000).toFixed(1)} LPA`
-          : null;
+        let salaryText = null;
+        if (job.is_salary_disclosed !== 0 && job.is_salary_disclosed !== false && job.is_salary_disclosed !== '0' && (!job.salary_range || !job.salary_range.toLowerCase().includes('not disclosed'))) {
+          if (job.salary_min && job.salary_max) {
+            const min = Number(job.salary_min);
+            const max = Number(job.salary_max);
+            if (min >= 100000 || max >= 100000) {
+              salaryText = `₹${(min/100000).toFixed(1)} - ${(max/100000).toFixed(1)} LPA`;
+            } else {
+              salaryText = `₹${min.toLocaleString('en-IN')} - ₹${max.toLocaleString('en-IN')}`;
+            }
+          } else if (job.salary_range) {
+            const match = job.salary_range.match(/(\d+(?:\.\d+)?)\s*[-–to]+\s*(\d+(?:\.\d+)?)/i);
+            if (match) {
+              const num1 = Number(match[1]);
+              const num2 = Number(match[2]);
+              if (num1 >= 100000 || num2 >= 100000) {
+                salaryText = `₹${(num1/100000).toFixed(1)} - ${(num2/100000).toFixed(1)} LPA`;
+              } else {
+                salaryText = `₹${num1.toLocaleString('en-IN')} - ₹${num2.toLocaleString('en-IN')}`;
+              }
+            } else {
+              salaryText = job.salary_range;
+            }
+          }
+        }
         
         return `
           <div class="cw-card" data-id="${job.id}">

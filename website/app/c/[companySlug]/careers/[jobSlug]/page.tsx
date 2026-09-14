@@ -12,11 +12,13 @@ interface JobDetail {
   location: string;
   type: string;
   work_mode: string;
-  salary_min: number;
-  salary_max: number;
-  salary_currency: string;
-  experience_min: number;
-  experience_max: number;
+  salary_min?: number | null;
+  salary_max?: number | null;
+  salary_range?: string | null;
+  is_salary_disclosed?: number | boolean | null;
+  salary_currency?: string;
+  experience_min?: number;
+  experience_max?: number;
   skills: string;
   qualification: string;
   vacancies: number;
@@ -170,6 +172,42 @@ export default function JobDetailPage({
     );
   }
 
+  const salaryText = (() => {
+    if (!job) return null;
+    if (job.is_salary_disclosed === 0 || job.is_salary_disclosed === false) return null;
+    if (job.salary_range && job.salary_range.toLowerCase().includes('not disclosed')) return null;
+    const sMin = (job.salary_min !== undefined && job.salary_min !== null) ? Number(job.salary_min) : null;
+    const sMax = (job.salary_max !== undefined && job.salary_max !== null) ? Number(job.salary_max) : null;
+    if (sMin && sMax) {
+      if (sMin >= 100000 || sMax >= 100000) {
+        const minLpa = (sMin / 100000).toFixed(sMin % 100000 === 0 ? 0 : 1);
+        const maxLpa = (sMax / 100000).toFixed(sMax % 100000 === 0 ? 0 : 1);
+        return `₹${minLpa} - ${maxLpa} LPA`;
+      }
+      return `₹${sMin.toLocaleString('en-IN')} - ₹${sMax.toLocaleString('en-IN')}`;
+    }
+    if (sMin) {
+      return sMin >= 100000 ? `₹${(sMin / 100000).toFixed(1)} LPA` : `₹${sMin.toLocaleString('en-IN')}`;
+    }
+    if (job.salary_range) {
+      const range = job.salary_range.trim();
+      if (range.includes('LPA') || range.includes('₹')) return range;
+      const match = range.match(/(\d+(?:\.\d+)?)\s*[-–to]+\s*(\d+(?:\.\d+)?)/i);
+      if (match) {
+        const num1 = Number(match[1]);
+        const num2 = Number(match[2]);
+        if (num1 >= 100000 || num2 >= 100000) {
+          const minLpa = (num1 / 100000).toFixed(num1 % 100000 === 0 ? 0 : 1);
+          const maxLpa = (num2 / 100000).toFixed(num2 % 100000 === 0 ? 0 : 1);
+          return `₹${minLpa} - ${maxLpa} LPA`;
+        }
+        return `₹${num1.toLocaleString('en-IN')} - ₹${num2.toLocaleString('en-IN')}`;
+      }
+      return range;
+    }
+    return null;
+  })();
+
   // Google JobPosting JSON-LD Schema
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -191,7 +229,7 @@ export default function JobDetailPage({
         addressCountry: 'IN',
       },
     },
-    baseSalary: (job.salary_min && job.salary_max) ? {
+    baseSalary: (salaryText && job.salary_min && job.salary_max) ? {
       '@type': 'MonetaryAmount',
       currency: job.salary_currency || 'INR',
       value: {
@@ -202,10 +240,6 @@ export default function JobDetailPage({
       },
     } : undefined,
   };
-
-  const salaryText = (job.salary_min && job.salary_max)
-    ? `₹${(job.salary_min / 100000).toFixed(1)} - ${(job.salary_max / 100000).toFixed(1)} LPA`
-    : null;
 
   return (
     <div className="min-h-screen bg-[#FAF9F5] text-[#0F172A]">
@@ -262,7 +296,7 @@ export default function JobDetailPage({
                 <div>
                   <span className="text-slate-500 block">Experience</span>
                   <strong className="text-slate-800 text-sm font-semibold">
-                    {job.experience_min > 0 ? `${job.experience_min}-${job.experience_max} Years` : 'Any Experience'}
+                    {(job.experience_min !== undefined && job.experience_min > 0) ? `${job.experience_min}-${job.experience_max} Years` : 'Any Experience'}
                   </strong>
                 </div>
               </div>

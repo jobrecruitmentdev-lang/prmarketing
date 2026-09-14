@@ -104,9 +104,25 @@ function handleJobsRoutes(string $subpath, string $method, PDO $pdo): void {
         $location = trim($body['location'] ?? 'Remote');
         $jobType = trim($body['type'] ?? $body['job_type'] ?? 'Full-time');
         $workMode = trim($body['work_mode'] ?? 'On-site');
+        $isSalaryDisclosed = isset($body['is_salary_disclosed']) ? (!empty($body['is_salary_disclosed']) ? 1 : 0) : 1;
+        $salaryMin = (isset($body['salary_min']) && is_numeric($body['salary_min'])) ? (float)$body['salary_min'] : null;
+        $salaryMax = (isset($body['salary_max']) && is_numeric($body['salary_max'])) ? (float)$body['salary_max'] : null;
+
         $salaryRange = trim($body['salary_range'] ?? '');
-        if (!$salaryRange && (isset($body['salary_min']) || isset($body['salary_max']))) {
-            $salaryRange = trim(($body['salary_min'] ?? '') . ' - ' . ($body['salary_max'] ?? ''));
+        if (!$salaryRange) {
+            if (!$isSalaryDisclosed) {
+                $salaryRange = 'Not disclosed';
+            } elseif ($salaryMin !== null && $salaryMax !== null) {
+                if ($salaryMin >= 100000 || $salaryMax >= 100000) {
+                    $minLpa = round($salaryMin / 100000, 1);
+                    $maxLpa = round($salaryMax / 100000, 1);
+                    $salaryRange = "₹{$minLpa} - {$maxLpa} LPA";
+                } else {
+                    $salaryRange = "₹" . number_format($salaryMin) . " - ₹" . number_format($salaryMax);
+                }
+            } elseif ($salaryMin !== null) {
+                $salaryRange = "From ₹" . number_format($salaryMin);
+            }
         }
         $experience = trim($body['experience'] ?? '');
         if (!$experience && (isset($body['experience_min']) || isset($body['experience_max']))) {
@@ -125,8 +141,9 @@ function handleJobsRoutes(string $subpath, string $method, PDO $pdo): void {
         $stmt = $pdo->prepare("
             INSERT INTO crm_jobs (
                 admin_id, title, slug, department, location, work_mode,
-                job_type, experience, salary_range, description, requirements, status
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                job_type, experience, salary_range, salary_min, salary_max, is_salary_disclosed,
+                description, requirements, status
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ");
         $stmt->execute([
             $adminId,
@@ -138,6 +155,9 @@ function handleJobsRoutes(string $subpath, string $method, PDO $pdo): void {
             $jobType,
             $experience ?: null,
             $salaryRange ?: null,
+            $salaryMin,
+            $salaryMax,
+            $isSalaryDisclosed,
             $description,
             $requirements,
             $status
@@ -176,9 +196,26 @@ function handleJobsRoutes(string $subpath, string $method, PDO $pdo): void {
         $location = trim($body['location'] ?? 'Remote');
         $jobType = trim($body['type'] ?? $body['job_type'] ?? 'Full-time');
         $workMode = trim($body['work_mode'] ?? 'On-site');
+
+        $isSalaryDisclosed = isset($body['is_salary_disclosed']) ? (!empty($body['is_salary_disclosed']) ? 1 : 0) : 1;
+        $salaryMin = (isset($body['salary_min']) && is_numeric($body['salary_min'])) ? (float)$body['salary_min'] : null;
+        $salaryMax = (isset($body['salary_max']) && is_numeric($body['salary_max'])) ? (float)$body['salary_max'] : null;
+
         $salaryRange = trim($body['salary_range'] ?? '');
-        if (!$salaryRange && (isset($body['salary_min']) || isset($body['salary_max']))) {
-            $salaryRange = trim(($body['salary_min'] ?? '') . ' - ' . ($body['salary_max'] ?? ''));
+        if (!$salaryRange) {
+            if (!$isSalaryDisclosed) {
+                $salaryRange = 'Not disclosed';
+            } elseif ($salaryMin !== null && $salaryMax !== null) {
+                if ($salaryMin >= 100000 || $salaryMax >= 100000) {
+                    $minLpa = round($salaryMin / 100000, 1);
+                    $maxLpa = round($salaryMax / 100000, 1);
+                    $salaryRange = "₹{$minLpa} - {$maxLpa} LPA";
+                } else {
+                    $salaryRange = "₹" . number_format($salaryMin) . " - ₹" . number_format($salaryMax);
+                }
+            } elseif ($salaryMin !== null) {
+                $salaryRange = "From ₹" . number_format($salaryMin);
+            }
         }
         $experience = trim($body['experience'] ?? '');
         if (!$experience && (isset($body['experience_min']) || isset($body['experience_max']))) {
@@ -197,6 +234,9 @@ function handleJobsRoutes(string $subpath, string $method, PDO $pdo): void {
                 job_type = ?,
                 experience = ?,
                 salary_range = ?,
+                salary_min = ?,
+                salary_max = ?,
+                is_salary_disclosed = ?,
                 description = ?,
                 requirements = ?,
                 status = ?
@@ -210,6 +250,9 @@ function handleJobsRoutes(string $subpath, string $method, PDO $pdo): void {
             $jobType,
             $experience ?: null,
             $salaryRange ?: null,
+            $salaryMin,
+            $salaryMax,
+            $isSalaryDisclosed,
             $description,
             $requirements,
             $status,

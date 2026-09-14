@@ -48,6 +48,11 @@ try {
             'contact' => 'VARCHAR(50) NULL',
             'company' => 'VARCHAR(150) NULL',
             'value' => 'DECIMAL(12,2) DEFAULT 0.00'
+        ],
+        'crm_jobs' => [
+            'salary_min' => 'DECIMAL(12,2) NULL',
+            'salary_max' => 'DECIMAL(12,2) NULL',
+            'is_salary_disclosed' => 'TINYINT(1) DEFAULT 1'
         ]
     ];
 
@@ -77,6 +82,40 @@ try {
         $pdo->exec("ALTER TABLE crm_employees MODIFY COLUMN status VARCHAR(50) DEFAULT 'active'");
     } catch (Exception $e) {}
     echo "CRM column patches and enum loosenings applied successfully.\n";
+
+    // 2.2 Backfill salary_min, salary_max, is_salary_disclosed for existing jobs
+    try {
+        $existingJobs = $pdo->query("SELECT id, salary_range, salary_min, salary_max, is_salary_disclosed FROM crm_jobs")->fetchAll();
+        $updJob = $pdo->prepare("UPDATE crm_jobs SET salary_min = ?, salary_max = ?, is_salary_disclosed = ? WHERE id = ?");
+        foreach ($existingJobs as $j) {
+            $sMin = $j['salary_min'];
+            $sMax = $j['salary_max'];
+            $disclosed = ($j['is_salary_disclosed'] !== null) ? (int)$j['is_salary_disclosed'] : 1;
+
+            if (($sMin === null || $sMax === null) && !empty($j['salary_range'])) {
+                $range = trim($j['salary_range']);
+                if (strtolower($range) === 'not disclosed' || strtolower($range) === 'not_disclosed') {
+                    $disclosed = 0;
+                    $updJob->execute([null, null, 0, $j['id']]);
+                    echo "Marked job ID {$j['id']} as not disclosed.\n";
+                } elseif (preg_match('/(\d+(?:\.\d+)?)\s*[-–to]+\s*(\d+(?:\.\d+)?)/i', $range, $m)) {
+                    $val1 = (float)$m[1];
+                    $val2 = (float)$m[2];
+                    if (stripos($range, 'lpa') !== false && $val1 < 100) {
+                        $val1 *= 100000;
+                        $val2 *= 100000;
+                    }
+                    $sMin = $val1;
+                    $sMax = $val2;
+                    $disclosed = 1;
+                    $updJob->execute([$sMin, $sMax, $disclosed, $j['id']]);
+                    echo "Backfilled salary for job ID {$j['id']}: min={$sMin}, max={$sMax}, disclosed=1\n";
+                }
+            }
+        }
+    } catch (Exception $e) {
+        echo "Notice: Salary backfill: " . $e->getMessage() . "\n";
+    }
 
     // 3. Seed Master Super Admin if not exists
     $stmt = $pdo->prepare("SELECT id FROM crm_users WHERE email = ?");

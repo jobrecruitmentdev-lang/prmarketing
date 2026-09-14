@@ -12,6 +12,70 @@ import {
   CheckIcon,
 } from '@/components/crm/CrmIcons';
 
+export function formatSalary(job: {
+  salary_min?: number | string | null;
+  salary_max?: number | string | null;
+  salary_range?: string | null;
+  is_salary_disclosed?: number | boolean | string | null;
+}): string {
+  // If explicitly marked as not disclosed or hidden
+  if (
+    job.is_salary_disclosed === 0 ||
+    job.is_salary_disclosed === false ||
+    job.is_salary_disclosed === '0' ||
+    job.salary_range === 'Not disclosed' ||
+    job.salary_range === 'not disclosed'
+  ) {
+    return 'Not disclosed';
+  }
+
+  const sMin = job.salary_min !== undefined && job.salary_min !== null && job.salary_min !== ''
+    ? Number(job.salary_min)
+    : null;
+  const sMax = job.salary_max !== undefined && job.salary_max !== null && job.salary_max !== ''
+    ? Number(job.salary_max)
+    : null;
+
+  if (sMin && sMax) {
+    if (sMin >= 100000 || sMax >= 100000) {
+      const minLpa = (sMin / 100000).toFixed(sMin % 100000 === 0 ? 0 : 1);
+      const maxLpa = (sMax / 100000).toFixed(sMax % 100000 === 0 ? 0 : 1);
+      return `₹${minLpa} - ${maxLpa} LPA`;
+    }
+    return `₹${sMin.toLocaleString('en-IN')} - ₹${sMax.toLocaleString('en-IN')}`;
+  }
+
+  if (sMin) {
+    if (sMin >= 100000) {
+      const minLpa = (sMin / 100000).toFixed(sMin % 100000 === 0 ? 0 : 1);
+      return `₹${minLpa} LPA`;
+    }
+    return `₹${sMin.toLocaleString('en-IN')}`;
+  }
+
+  // Fallback if salary_range string contains numbers (e.g. "500000 - 900000" or "80000 - 110000")
+  if (job.salary_range) {
+    const range = job.salary_range.trim();
+    if (range.toLowerCase() === 'not disclosed') return 'Not disclosed';
+    if (range.includes('LPA') || range.includes('₹')) return range;
+
+    const match = range.match(/(\d+(?:\.\d+)?)\s*[-–to]+\s*(\d+(?:\.\d+)?)/i);
+    if (match) {
+      const num1 = Number(match[1]);
+      const num2 = Number(match[2]);
+      if (num1 >= 100000 || num2 >= 100000) {
+        const minLpa = (num1 / 100000).toFixed(num1 % 100000 === 0 ? 0 : 1);
+        const maxLpa = (num2 / 100000).toFixed(num2 % 100000 === 0 ? 0 : 1);
+        return `₹${minLpa} - ${maxLpa} LPA`;
+      }
+      return `₹${num1.toLocaleString('en-IN')} - ₹${num2.toLocaleString('en-IN')}`;
+    }
+    return range;
+  }
+
+  return 'Not disclosed';
+}
+
 export default function JobsManagementPage({ params }: { params: Promise<{ tenant: string }> }) {
   const resolvedParams = use(params);
   const tenantSlug = resolvedParams.tenant;
@@ -31,6 +95,7 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
   const [workMode, setWorkMode] = useState('On-site');
   const [salaryMin, setSalaryMin] = useState('500000');
   const [salaryMax, setSalaryMax] = useState('900000');
+  const [isSalaryDisclosed, setIsSalaryDisclosed] = useState(true);
   const [expMin, setExpMin] = useState('2');
   const [expMax, setExpMax] = useState('5');
   const [skills, setSkills] = useState('');
@@ -48,6 +113,7 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
   const [editWorkMode, setEditWorkMode] = useState('On-site');
   const [editSalaryMin, setEditSalaryMin] = useState('500000');
   const [editSalaryMax, setEditSalaryMax] = useState('900000');
+  const [editIsSalaryDisclosed, setEditIsSalaryDisclosed] = useState(true);
   const [editExpMin, setEditExpMin] = useState('2');
   const [editExpMax, setEditExpMax] = useState('5');
   const [editSkills, setEditSkills] = useState('');
@@ -102,8 +168,9 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
           location,
           type,
           work_mode: workMode,
-          salary_min: salaryMin,
-          salary_max: salaryMax,
+          salary_min: isSalaryDisclosed ? salaryMin : null,
+          salary_max: isSalaryDisclosed ? salaryMax : null,
+          is_salary_disclosed: isSalaryDisclosed ? 1 : 0,
           experience_min: expMin,
           experience_max: expMax,
           skills,
@@ -117,6 +184,7 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
       setTitle('');
       setSkills('');
       setDescription('');
+      setIsSalaryDisclosed(true);
     } catch (err: any) {
       alert('Error: ' + err.message);
     } finally {
@@ -144,8 +212,30 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
     setEditLocation(job.location || 'Ahmedabad, India');
     setEditType(job.type || 'Full Time');
     setEditWorkMode(job.work_mode || 'On-site');
-    setEditSalaryMin(job.salary_min ? String(job.salary_min) : '500000');
-    setEditSalaryMax(job.salary_max ? String(job.salary_max) : '900000');
+
+    const dis = job.is_salary_disclosed !== undefined && job.is_salary_disclosed !== null
+      ? Boolean(Number(job.is_salary_disclosed))
+      : (job.salary_range !== 'Not disclosed' && job.salary_range !== 'not disclosed');
+    setEditIsSalaryDisclosed(dis);
+
+    let sMin = job.salary_min !== undefined && job.salary_min !== null ? String(Math.round(Number(job.salary_min))) : '';
+    let sMax = job.salary_max !== undefined && job.salary_max !== null ? String(Math.round(Number(job.salary_max))) : '';
+    if ((!sMin || !sMax) && job.salary_range) {
+      const match = job.salary_range.match(/(\d+(?:\.\d+)?)\s*[-–to]+\s*(\d+(?:\.\d+)?)/i);
+      if (match) {
+        let n1 = Number(match[1]);
+        let n2 = Number(match[2]);
+        if (job.salary_range.toLowerCase().includes('lpa') && n1 < 100) {
+          n1 *= 100000;
+          n2 *= 100000;
+        }
+        sMin = String(Math.round(n1));
+        sMax = String(Math.round(n2));
+      }
+    }
+    setEditSalaryMin(sMin || '500000');
+    setEditSalaryMax(sMax || '900000');
+
     setEditExpMin(job.experience_min ? String(job.experience_min) : '2');
     setEditExpMax(job.experience_max ? String(job.experience_max) : '5');
     setEditSkills(job.skills || '');
@@ -168,8 +258,9 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
           location: editLocation,
           type: editType,
           work_mode: editWorkMode,
-          salary_min: editSalaryMin,
-          salary_max: editSalaryMax,
+          salary_min: editIsSalaryDisclosed ? editSalaryMin : null,
+          salary_max: editIsSalaryDisclosed ? editSalaryMax : null,
+          is_salary_disclosed: editIsSalaryDisclosed ? 1 : 0,
           experience_min: editExpMin,
           experience_max: editExpMax,
           skills: editSkills,
@@ -319,9 +410,7 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
               <tbody className="divide-y divide-slate-100">
                 {jobs.map((job) => {
                   const isPub = job.status === 'published' || job.status === 'Open';
-                  const sal = (job.salary_min && job.salary_max)
-                    ? `₹${(job.salary_min/100000).toFixed(1)} - ${(job.salary_max/100000).toFixed(1)} LPA`
-                    : 'Not disclosed';
+                  const sal = formatSalary(job);
 
                   return (
                     <tr key={job.id} className="hover:bg-slate-50 transition-colors">
@@ -588,7 +677,10 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
                     value={salaryMin}
                     onChange={(e) => setSalaryMin(e.target.value)}
                     placeholder="500000"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-[#d6c180]"
+                    disabled={!isSalaryDisclosed}
+                    className={`w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-[#d6c180] ${
+                      !isSalaryDisclosed ? 'bg-slate-100 text-slate-400' : ''
+                    }`}
                   />
                 </div>
 
@@ -599,9 +691,32 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
                     value={salaryMax}
                     onChange={(e) => setSalaryMax(e.target.value)}
                     placeholder="1000000"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-[#d6c180]"
+                    disabled={!isSalaryDisclosed}
+                    className={`w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-[#d6c180] ${
+                      !isSalaryDisclosed ? 'bg-slate-100 text-slate-400' : ''
+                    }`}
                   />
                 </div>
+              </div>
+
+              <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                <div>
+                  <span className="text-xs font-bold text-slate-800 block">Disclose Salary on Job Posting</span>
+                  <span className="text-[11px] text-slate-500">
+                    {isSalaryDisclosed
+                      ? 'Salary range will be visible to applicants on career pages and job listings'
+                      : 'Salary is confidential and will be displayed as "Not disclosed"'}
+                  </span>
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={isSalaryDisclosed}
+                    onChange={(e) => setIsSalaryDisclosed(e.target.checked)}
+                    className="sr-only peer"
+                  />
+                  <div className="w-10 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#0F172A]"></div>
+                </label>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
@@ -729,7 +844,10 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
                     type="number"
                     value={editSalaryMin}
                     onChange={(e) => setEditSalaryMin(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-[#d6c180]"
+                    disabled={!editIsSalaryDisclosed}
+                    className={`w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-[#d6c180] ${
+                      !editIsSalaryDisclosed ? 'bg-slate-100 text-slate-400' : ''
+                    }`}
                   />
                 </div>
 
@@ -739,7 +857,10 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
                     type="number"
                     value={editSalaryMax}
                     onChange={(e) => setEditSalaryMax(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-[#d6c180]"
+                    disabled={!editIsSalaryDisclosed}
+                    className={`w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-[#d6c180] ${
+                      !editIsSalaryDisclosed ? 'bg-slate-100 text-slate-400' : ''
+                    }`}
                   />
                 </div>
 
@@ -755,6 +876,26 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
                     <option value="closed">Closed</option>
                   </select>
                 </div>
+              </div>
+
+              <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                <div>
+                  <span className="text-xs font-bold text-slate-800 block">Disclose Salary on Job Posting</span>
+                  <span className="text-[11px] text-slate-500">
+                    {editIsSalaryDisclosed
+                      ? 'Salary range will be visible to applicants on career pages and job listings'
+                      : 'Salary is confidential and will be displayed as "Not disclosed"'}
+                  </span>
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={editIsSalaryDisclosed}
+                    onChange={(e) => setEditIsSalaryDisclosed(e.target.checked)}
+                    className="sr-only peer"
+                  />
+                  <div className="w-10 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#0F172A]"></div>
+                </label>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
