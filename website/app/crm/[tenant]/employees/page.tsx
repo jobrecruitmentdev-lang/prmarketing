@@ -85,6 +85,14 @@ export default function EmployeesManagementPage({ params }: { params: Promise<{ 
   useEffect(() => {
     setCurrentUser(getCurrentUser());
     loadEmployees();
+
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'crm_token' || e.key === 'crm_user') {
+        setCurrentUser(getCurrentUser());
+      }
+    };
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, [tenantSlug]);
 
   const handleCreateEmployee = async (e: React.FormEvent) => {
@@ -132,6 +140,11 @@ export default function EmployeesManagementPage({ params }: { params: Promise<{ 
 
   const handleResetEmployeePassword = async () => {
     if (!activeEmp || !newEmployeePassword) return;
+    const activeSessionUser = getCurrentUser();
+    if (!activeSessionUser || (activeSessionUser.role !== 'master' && activeSessionUser.role !== 'admin')) {
+      alert(`Access Denied: You are currently active as "${activeSessionUser?.name || 'Employee'}" with role "${activeSessionUser?.role || 'employee'}". Only Organization Administrators can reset employee passwords. Please log in with your Admin account.`);
+      return;
+    }
     if (newEmployeePassword.length < 6) {
       alert('Password must be at least 6 characters');
       return;
@@ -157,6 +170,11 @@ export default function EmployeesManagementPage({ params }: { params: Promise<{ 
 
   const handleSaveModules = async () => {
     if (!activeEmp) return;
+    const activeSessionUser = getCurrentUser();
+    if (!activeSessionUser || (activeSessionUser.role !== 'master' && activeSessionUser.role !== 'admin')) {
+      alert(`Access Denied: You are currently active as "${activeSessionUser?.name || 'Employee'}" with role "${activeSessionUser?.role || 'employee'}". Only Organization Administrators can assign modules. Please log in with your Admin account.`);
+      return;
+    }
     try {
       setIsSavingModules(true);
       await crmFetch('/api/admin/employees/assign-modules', {
@@ -604,6 +622,18 @@ export default function EmployeesManagementPage({ params }: { params: Promise<{ 
             </div>
 
             <div className="flex-1 overflow-y-auto p-6 space-y-5">
+              {currentUser && currentUser.role !== 'master' && currentUser.role !== 'admin' && (
+                <div className="p-3 bg-amber-50 border border-amber-200 rounded-2xl text-amber-900 text-xs">
+                  <p className="font-bold flex items-center gap-1.5 mb-1 text-amber-800">
+                    <span>⚠️</span>
+                    <span>Employee Session Detected</span>
+                  </p>
+                  <p className="text-[11px] leading-relaxed text-amber-700">
+                    You are currently signed in as <strong>{currentUser?.name || 'Employee'}</strong> with role <span className="font-bold underline">{currentUser?.role}</span>. Managing module access and passwords requires an Administrator account. Please re-login with your Admin account.
+                  </p>
+                </div>
+              )}
+
               {/* Modules Checkboxes */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-2">Assigned CRM Modules:</label>

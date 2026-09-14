@@ -94,6 +94,10 @@
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule ^crm/([^/]+)/employees/?$ /crm/default/employees/index.html [L]
 
+  # 7b. CRM Dynamic Tenant RSC prefetch files fallback (prevents 404 for __next.*.txt)
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^crm/([^/]+)/([a-zA-Z0-9_-]+)/(.+\.txt)$ /crm/default/$2/$3 [L]
+
   # 8. Public Career Portal SPA Fallback
   RewriteCond %{REQUEST_URI} ^/c/([^/]+)/careers/([^/]+)/?$ [NC]
   RewriteCond %{REQUEST_FILENAME} !-f

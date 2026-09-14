@@ -30,6 +30,22 @@ export default function CrmLayout({ children }: { children: React.ReactNode }) {
       return;
     }
     setUser(currentUser);
+
+    // Multi-tab session synchronization: update active session if changed in another tab
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'crm_token' || e.key === 'crm_user') {
+        const updatedUser = getCurrentUser();
+        const updatedToken = getAuthToken();
+        if ((!updatedUser || !updatedToken) && !pathname.includes('/crm/login')) {
+          router.push('/crm/login');
+        } else {
+          setUser(updatedUser);
+        }
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, [pathname, router]);
 
   if (!mounted) return null;
@@ -149,6 +165,7 @@ export default function CrmLayout({ children }: { children: React.ReactNode }) {
               <Link
                 key={item.href}
                 href={item.href}
+                prefetch={false}
                 className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-colors ${
                   isActive
                     ? 'bg-[#F5EFE0] text-[#856E2E] border border-[#E5DECB]'
@@ -269,6 +286,7 @@ export default function CrmLayout({ children }: { children: React.ReactNode }) {
               <Link
                 key={item.href}
                 href={item.href}
+                prefetch={false}
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="block px-3 py-2 rounded-lg text-xs font-bold text-slate-700 hover:bg-slate-50"
               >
@@ -296,6 +314,7 @@ export default function CrmLayout({ children }: { children: React.ReactNode }) {
               </p>
               <Link
                 href={`/crm/${tenantSlug}/dashboard`}
+                prefetch={false}
                 className="inline-block px-5 py-2.5 rounded-xl bg-[#d6c180] text-[#0F172A] text-xs font-bold hover:opacity-90"
               >
                 Back to Allowed Dashboard

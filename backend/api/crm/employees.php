@@ -40,7 +40,10 @@ function handleEmployeesRoutes(string $subpath, string $method, PDO $pdo): void 
     // 2. POST / (Create Employee)
     if (($subpath === '' || $subpath === '/') && $method === 'POST') {
         if (!in_array($user['role'], ['master', 'admin'])) {
-            jsonResponse(['success' => false, 'error' => 'Forbidden: Insufficient privileges'], 403);
+            jsonResponse([
+                'success' => false,
+                'error' => "Forbidden: Insufficient privileges. Administrator access required (currently logged in as '{$user['name']}' with role '{$user['role']}'). Please sign in as the Company Administrator."
+            ], 403);
         }
 
         $body = getJsonInput();
@@ -141,7 +144,10 @@ function handleEmployeesRoutes(string $subpath, string $method, PDO $pdo): void 
     // 3. POST /assign-modules
     if ($subpath === '/assign-modules' && $method === 'POST') {
         if (!in_array($user['role'], ['master', 'admin'])) {
-            jsonResponse(['success' => false, 'error' => 'Forbidden: Insufficient privileges'], 403);
+            jsonResponse([
+                'success' => false,
+                'error' => "Forbidden: Insufficient privileges. Administrator access required (currently logged in as '{$user['name']}' with role '{$user['role']}'). Please sign in as the Company Administrator."
+            ], 403);
         }
 
         $body = getJsonInput();
@@ -172,7 +178,10 @@ function handleEmployeesRoutes(string $subpath, string $method, PDO $pdo): void 
     // 4. POST /offboard
     if ($subpath === '/offboard' && $method === 'POST') {
         if (!in_array($user['role'], ['master', 'admin'])) {
-            jsonResponse(['success' => false, 'error' => 'Forbidden: Insufficient privileges'], 403);
+            jsonResponse([
+                'success' => false,
+                'error' => "Forbidden: Insufficient privileges. Administrator access required (currently logged in as '{$user['name']}' with role '{$user['role']}'). Please sign in as the Company Administrator."
+            ], 403);
         }
 
         $body = getJsonInput();
@@ -199,7 +208,10 @@ function handleEmployeesRoutes(string $subpath, string $method, PDO $pdo): void 
     // 5. POST /reset-password
     if ($subpath === '/reset-password' && $method === 'POST') {
         if (!in_array($user['role'], ['master', 'admin'])) {
-            jsonResponse(['success' => false, 'error' => 'Forbidden: Insufficient privileges'], 403);
+            jsonResponse([
+                'success' => false,
+                'error' => "Forbidden: Insufficient privileges. Administrator access required (currently logged in as '{$user['name']}' with role '{$user['role']}'). Please sign in as the Company Administrator."
+            ], 403);
         }
 
         $body = getJsonInput();
