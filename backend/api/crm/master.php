@@ -183,6 +183,23 @@ function handleMasterRoutes(string $subpath, string $method, PDO $pdo): void {
         $jStmt->execute([$adminId]);
         $jobs = $jStmt->fetchAll();
 
+        // Career Page Branding & Settings
+        $cpStmt = $pdo->prepare("SELECT * FROM crm_career_pages WHERE admin_id = ?");
+        $cpStmt->execute([$adminId]);
+        $careerPage = $cpStmt->fetch() ?: [
+            'admin_id' => $adminId,
+            'enabled' => 1,
+            'page_title' => 'Careers at ' . ($tenant['company_display_name'] ?? 'Company'),
+            'headline' => 'Build your career with us.',
+            'description' => 'Explore exciting career opportunities across departments.',
+            'primary_color' => '#d6c180',
+            'secondary_color' => '#0F172A',
+            'button_color' => '#d6c180',
+            'show_salary' => 1,
+            'show_location' => 1,
+            'show_company_description' => 1
+        ];
+
         jsonResponse([
             'success' => true,
             'data' => [
@@ -191,7 +208,8 @@ function handleMasterRoutes(string $subpath, string $method, PDO $pdo): void {
                 'attendance' => $attendance,
                 'sales' => $sales,
                 'leads' => $leads,
-                'jobs' => $jobs
+                'jobs' => $jobs,
+                'career_page' => $careerPage
             ]
         ]);
     }
@@ -310,6 +328,95 @@ function handleMasterRoutes(string $subpath, string $method, PDO $pdo): void {
             $pdo->rollBack();
             jsonResponse(['success' => false, 'error' => 'Database error: ' . $e->getMessage()], 500);
         }
+    }
+
+    // 9. GET /tenants/:id/career-settings
+    if (preg_match('#^/tenants/(\d+)/career-settings$#', $subpath, $matches) && $method === 'GET') {
+        $adminId = (int)$matches[1];
+        $tStmt = $pdo->prepare("SELECT id, slug, company_display_name, website_url FROM crm_admins WHERE id = ?");
+        $tStmt->execute([$adminId]);
+        $tenant = $tStmt->fetch();
+        if (!$tenant) {
+            jsonResponse(['success' => false, 'error' => 'Tenant not found'], 404);
+        }
+
+        $cStmt = $pdo->prepare("SELECT * FROM crm_career_pages WHERE admin_id = ?");
+        $cStmt->execute([$adminId]);
+        $settings = $cStmt->fetch();
+
+        if (!$settings) {
+            $settings = [
+                'admin_id' => $adminId,
+                'enabled' => 1,
+                'page_title' => 'Careers at ' . ($tenant['company_display_name'] ?? 'Company'),
+                'headline' => 'Build your career with us.',
+                'description' => 'Explore exciting career opportunities across departments.',
+                'primary_color' => '#d6c180',
+                'secondary_color' => '#0F172A',
+                'button_color' => '#d6c180',
+                'show_salary' => 1,
+                'show_location' => 1,
+                'show_company_description' => 1
+            ];
+        }
+
+        jsonResponse([
+            'success' => true,
+            'tenant' => $tenant,
+            'data' => $settings
+        ]);
+    }
+
+    // 10. PUT /tenants/:id/career-settings (Update Branding & Career Portal Settings)
+    if (preg_match('#^/tenants/(\d+)/career-settings$#', $subpath, $matches) && in_array($method, ['PUT', 'POST'])) {
+        $adminId = (int)$matches[1];
+        $tStmt = $pdo->prepare("SELECT id FROM crm_admins WHERE id = ?");
+        $tStmt->execute([$adminId]);
+        if (!$tStmt->fetch()) {
+            jsonResponse(['success' => false, 'error' => 'Tenant not found'], 404);
+        }
+
+        $body = getJsonInput();
+        $enabled = isset($body['enabled']) ? (!empty($body['enabled']) ? 1 : 0) : 1;
+        $headline = $body['headline'] ?? null;
+        $description = $body['description'] ?? null;
+        $primaryColor = $body['primary_color'] ?? '#d6c180';
+        $secondaryColor = $body['secondary_color'] ?? '#0F172A';
+        $buttonColor = $body['button_color'] ?? '#d6c180';
+        $showSalary = isset($body['show_salary']) ? (!empty($body['show_salary']) ? 1 : 0) : 1;
+        $showLocation = isset($body['show_location']) ? (!empty($body['show_location']) ? 1 : 0) : 1;
+        $showCompanyDesc = isset($body['show_company_description']) ? (!empty($body['show_company_description']) ? 1 : 0) : 1;
+
+        $stmt = $pdo->prepare("
+            INSERT INTO crm_career_pages (
+                admin_id, enabled, headline, description, primary_color,
+                secondary_color, button_color, show_salary, show_location, show_company_description
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON DUPLICATE KEY UPDATE
+                enabled = VALUES(enabled),
+                headline = VALUES(headline),
+                description = VALUES(description),
+                primary_color = VALUES(primary_color),
+                secondary_color = VALUES(secondary_color),
+                button_color = VALUES(button_color),
+                show_salary = VALUES(show_salary),
+                show_location = VALUES(show_location),
+                show_company_description = VALUES(show_company_description)
+        ");
+        $stmt->execute([
+            $adminId,
+            $enabled,
+            $headline,
+            $description,
+            $primaryColor,
+            $secondaryColor,
+            $buttonColor,
+            $showSalary,
+            $showLocation,
+            $showCompanyDesc
+        ]);
+
+        jsonResponse(['success' => true, 'message' => 'Career page branding & widget settings saved successfully']);
     }
 
     jsonResponse(['success' => false, 'error' => "Master route '{$subpath}' not found"], 404);

@@ -12,7 +12,10 @@ import {
   CalendarCheckIcon,
   ExternalLinkIcon,
   CheckIcon,
-  XIcon
+  XIcon,
+  CodeIcon,
+  SettingsIcon,
+  CopyIcon,
 } from '@/components/crm/CrmIcons';
 
 export default function MasterDashboardPage() {
@@ -25,7 +28,18 @@ export default function MasterDashboardPage() {
   const [selectedTenantId, setSelectedTenantId] = useState<number | null>(null);
   const [drilldownData, setDrilldownData] = useState<any>(null);
   const [drilldownLoading, setDrilldownLoading] = useState(false);
-  const [drilldownTab, setDrilldownTab] = useState<'employees' | 'attendance' | 'sales' | 'jobs'>('employees');
+  const [drilldownTab, setDrilldownTab] = useState<'employees' | 'attendance' | 'sales' | 'jobs' | 'career'>('employees');
+
+  // Career & Widget settings state
+  const [careerHeadline, setCareerHeadline] = useState('Build your career with us.');
+  const [careerDesc, setCareerDesc] = useState('');
+  const [careerColor, setCareerColor] = useState('#d6c180');
+  const [careerEnabled, setCareerEnabled] = useState(true);
+  const [careerShowSalary, setCareerShowSalary] = useState(true);
+  const [careerShowLocation, setCareerShowLocation] = useState(true);
+  const [careerFeedback, setCareerFeedback] = useState<string | null>(null);
+  const [isSavingCareer, setIsSavingCareer] = useState(false);
+  const [isWidgetCopied, setIsWidgetCopied] = useState(false);
 
   // New Tenant Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -88,6 +102,15 @@ export default function MasterDashboardPage() {
         setDrilldownLoading(true);
         const res = await crmFetch(`/api/master/drilldown/${selectedTenantId}`);
         setDrilldownData(res.data);
+        if (res.data?.career_page) {
+          const cp = res.data.career_page;
+          setCareerHeadline(cp.headline || 'Build your career with us.');
+          setCareerDesc(cp.description || '');
+          setCareerColor(cp.primary_color || '#d6c180');
+          setCareerEnabled(cp.enabled !== undefined ? Boolean(Number(cp.enabled)) : true);
+          setCareerShowSalary(cp.show_salary !== undefined ? Boolean(Number(cp.show_salary)) : true);
+          setCareerShowLocation(cp.show_location !== undefined ? Boolean(Number(cp.show_location)) : true);
+        }
       } catch (err) {
         console.error('Failed to load drilldown:', err);
       } finally {
@@ -96,6 +119,38 @@ export default function MasterDashboardPage() {
     }
     loadDrilldown();
   }, [selectedTenantId]);
+
+  const handleSaveCareerSettings = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedTenantId) return;
+    try {
+      setIsSavingCareer(true);
+      setCareerFeedback(null);
+      await crmFetch(`/api/master/tenants/${selectedTenantId}/career-settings`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          enabled: careerEnabled ? 1 : 0,
+          headline: careerHeadline,
+          description: careerDesc,
+          primary_color: careerColor,
+          show_salary: careerShowSalary ? 1 : 0,
+          show_location: careerShowLocation ? 1 : 0,
+        }),
+      });
+      setCareerFeedback('Career page branding & widget configuration saved successfully!');
+      setTimeout(() => setCareerFeedback(null), 4000);
+    } catch (err: any) {
+      setCareerFeedback('Failed to save settings: ' + err.message);
+    } finally {
+      setIsSavingCareer(false);
+    }
+  };
+
+  const copyWidgetEmbedCode = (code: string) => {
+    navigator.clipboard.writeText(code);
+    setIsWidgetCopied(true);
+    setTimeout(() => setIsWidgetCopied(false), 2000);
+  };
 
   const handleCreateTenant = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -334,6 +389,15 @@ export default function MasterDashboardPage() {
               >
                 Job Openings ({drilldownData?.jobs?.length || 0})
               </button>
+              <button
+                onClick={() => setDrilldownTab('career')}
+                className={`pb-3 border-b-2 transition-colors flex items-center gap-1.5 ${
+                  drilldownTab === 'career' ? 'border-[#856E2E] text-[#856E2E]' : 'border-transparent text-slate-500 hover:text-slate-800'
+                }`}
+              >
+                <SettingsIcon size={14} />
+                <span>Career &amp; Widget (Options A &amp; B)</span>
+              </button>
             </div>
 
             {drilldownLoading ? (
@@ -490,6 +554,182 @@ export default function MasterDashboardPage() {
                         )}
                       </tbody>
                     </table>
+                  </div>
+                )}
+
+                {/* 5. Career & Widget Settings (Options A & B) */}
+                {drilldownTab === 'career' && selectedTenant && (
+                  <div className="space-y-6">
+                    {careerFeedback && (
+                      <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-xs font-semibold text-emerald-800 flex items-center justify-between">
+                        <span>{careerFeedback}</span>
+                        <button onClick={() => setCareerFeedback(null)} className="text-emerald-600 font-bold hover:text-emerald-900">✕</button>
+                      </div>
+                    )}
+
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                      {/* Option A: Hosted Portal Branding */}
+                      <div className="bg-[#FAF9F5] border border-slate-200 rounded-2xl p-5 sm:p-6 space-y-4">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-900 mb-1.5">
+                              Option A
+                            </span>
+                            <h3 className="text-sm font-extrabold text-slate-900">Hosted Career Portal Branding</h3>
+                            <p className="text-xs text-slate-500">
+                              Direct portal at <code className="text-[#856E2E] font-mono">/c/{selectedTenant.slug}/careers</code>
+                            </p>
+                          </div>
+                          <a
+                            href={`/c/${selectedTenant.slug}/careers`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl border border-slate-200 bg-white text-xs font-bold text-slate-700 hover:bg-slate-50 shadow-sm"
+                          >
+                            <span>Live Portal</span>
+                            <ExternalLinkIcon size={14} />
+                          </a>
+                        </div>
+
+                        <form onSubmit={handleSaveCareerSettings} className="space-y-3 pt-2">
+                          <div>
+                            <label className="block text-xs font-bold text-slate-700 mb-1">Hero Headline</label>
+                            <input
+                              type="text"
+                              value={careerHeadline}
+                              onChange={(e) => setCareerHeadline(e.target.value)}
+                              placeholder="Build your career with us."
+                              className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs focus:outline-none focus:border-[#d6c180]"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-xs font-bold text-slate-700 mb-1">Company Pitch / Description</label>
+                            <textarea
+                              rows={3}
+                              value={careerDesc}
+                              onChange={(e) => setCareerDesc(e.target.value)}
+                              placeholder="Describe why candidates should join this company..."
+                              className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs focus:outline-none focus:border-[#d6c180]"
+                            />
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-3 items-center">
+                            <div>
+                              <label className="block text-xs font-bold text-slate-700 mb-1">Brand Accent Color</label>
+                              <div className="flex items-center gap-2">
+                                <input
+                                  type="color"
+                                  value={careerColor}
+                                  onChange={(e) => setCareerColor(e.target.value)}
+                                  className="w-8 h-8 rounded-lg cursor-pointer border border-slate-300"
+                                />
+                                <input
+                                  type="text"
+                                  value={careerColor}
+                                  onChange={(e) => setCareerColor(e.target.value)}
+                                  className="w-24 px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-xs font-mono"
+                                />
+                              </div>
+                            </div>
+                            <div className="space-y-1.5 pt-1">
+                              <label className="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  checked={careerShowSalary}
+                                  onChange={(e) => setCareerShowSalary(e.target.checked)}
+                                  className="rounded border-slate-300 text-[#856E2E] focus:ring-0"
+                                />
+                                <span>Show Salary Ranges</span>
+                              </label>
+                              <label className="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  checked={careerShowLocation}
+                                  onChange={(e) => setCareerShowLocation(e.target.checked)}
+                                  className="rounded border-slate-300 text-[#856E2E] focus:ring-0"
+                                />
+                                <span>Show Office Location</span>
+                              </label>
+                            </div>
+                          </div>
+
+                          <div className="pt-1">
+                            <label className="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
+                              <input
+                                type="checkbox"
+                                checked={careerEnabled}
+                                onChange={(e) => setCareerEnabled(e.target.checked)}
+                                className="rounded border-slate-300 text-[#856E2E] focus:ring-0"
+                              />
+                              <span>Enable Public Hosted Career Page</span>
+                            </label>
+                          </div>
+
+                          <button
+                            type="submit"
+                            disabled={isSavingCareer}
+                            className="w-full px-4 py-2.5 rounded-xl font-bold text-xs text-[#0F172A] bg-[#d6c180] hover:opacity-90 transition-opacity shadow-sm disabled:opacity-50 mt-3"
+                          >
+                            {isSavingCareer ? 'Saving Branding Settings...' : 'Save Hosted Portal Branding'}
+                          </button>
+                        </form>
+                      </div>
+
+                      {/* Option B: Universal Embed Widget */}
+                      <div className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 space-y-4 flex flex-col justify-between">
+                        <div>
+                          <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-blue-50 text-blue-800 mb-1.5">
+                            Option B
+                          </span>
+                          <h3 className="text-sm font-extrabold text-slate-900">Universal Website Embed Widget</h3>
+                          <p className="text-xs text-slate-500 mb-4">
+                            Provide this 2-line snippet to <strong>{selectedTenant.company_display_name}</strong>. Their open vacancies &amp; candidate application flow will embed live directly on their official website (WordPress, Shopify, Webflow, React, HTML).
+                          </p>
+
+                          {/* Embed Code Snippet */}
+                          <div className="bg-[#0F172A] rounded-xl p-4 text-slate-200 font-mono text-xs relative">
+                            <button
+                              onClick={() => {
+                                const siteOrigin = typeof window !== 'undefined' ? window.location.origin : 'https://prmarketingventures.com';
+                                const code = `<!-- PR Marketing Careers Widget for ${selectedTenant.company_display_name} -->\n<div id="crm-careers" data-company="${selectedTenant.slug}"></div>\n<script src="${siteOrigin}/assets/career-widget.js" async></script>`;
+                                copyWidgetEmbedCode(code);
+                              }}
+                              className="absolute top-3 right-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white text-[11px] font-bold transition-colors"
+                            >
+                              {isWidgetCopied ? <CheckIcon size={14} className="text-emerald-400" /> : <CopyIcon size={14} />}
+                              <span>{isWidgetCopied ? 'Copied!' : 'Copy Code'}</span>
+                            </button>
+                            <pre className="overflow-x-auto text-[#d6c180] pr-20 whitespace-pre-wrap">
+{`<!-- PR Marketing Careers Widget for ${selectedTenant.company_display_name} -->
+<div id="crm-careers" data-company="${selectedTenant.slug}"></div>
+<script src="${typeof window !== 'undefined' ? window.location.origin : 'https://prmarketingventures.com'}/assets/career-widget.js" async></script>`}
+                            </pre>
+                          </div>
+
+                          <div className="mt-4 p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-1.5">
+                            <div className="font-bold text-slate-800">Master Integration Controls:</div>
+                            <ul className="list-disc pl-4 space-y-1 text-[11px]">
+                              <li><strong>Shadow DOM Isolation:</strong> Client website styles cannot alter or conflict with application modal styles.</li>
+                              <li><strong>Zero Maintenance:</strong> When tenant adds/edits jobs in CRM, client website updates instantly.</li>
+                              <li><strong>Direct Pipeline:</strong> Candidate resumes and details feed directly into this tenant&apos;s CRM module.</li>
+                            </ul>
+                          </div>
+                        </div>
+
+                        <div className="pt-2 flex items-center gap-3">
+                          <a
+                            href={`/widget-demo.html?company=${selectedTenant.slug}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#0F172A] text-white text-xs font-bold hover:bg-slate-800 transition-colors shadow-sm"
+                          >
+                            <CodeIcon size={14} />
+                            <span>Launch Live Client Website Demo ↗</span>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>

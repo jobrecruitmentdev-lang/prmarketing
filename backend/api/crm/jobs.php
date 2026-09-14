@@ -43,6 +43,12 @@ function handleJobsRoutes(string $subpath, string $method, PDO $pdo): void {
     }
 
     if ($subpath === '/career-settings' && in_array($method, ['PUT', 'POST'])) {
+        if ($user['role'] !== 'master') {
+            jsonResponse([
+                'success' => false,
+                'error' => 'Career page branding and widget configuration are centrally managed by Master Super Admin.'
+            ], 403);
+        }
         $body = getJsonInput();
         $enabled = !empty($body['enabled']) ? 1 : 0;
         $headline = $body['headline'] ?? null;

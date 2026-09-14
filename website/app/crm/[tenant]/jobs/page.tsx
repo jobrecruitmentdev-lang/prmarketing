@@ -5,11 +5,7 @@ import { crmFetch, CRM_API_BASE } from '@/lib/crmApi';
 import {
   BriefcaseIcon,
   PlusIcon,
-  CodeIcon,
-  SettingsIcon,
   ExternalLinkIcon,
-  CopyIcon,
-  CheckIcon,
 } from '@/components/crm/CrmIcons';
 
 export function formatSalary(job: {
@@ -80,11 +76,8 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
   const resolvedParams = use(params);
   const tenantSlug = resolvedParams.tenant;
 
-  const [activeTab, setActiveTab] = useState<'jobs' | 'settings' | 'widget'>('jobs');
   const [jobs, setJobs] = useState<any[]>([]);
-  const [careerSettings, setCareerSettings] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [isCopied, setIsCopied] = useState(false);
 
   // Job Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -122,29 +115,11 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
   const [editStatus, setEditStatus] = useState('published');
   const [isUpdating, setIsUpdating] = useState(false);
 
-  // Career settings form
-  const [pageHeadline, setPageHeadline] = useState('');
-  const [pageDesc, setPageDesc] = useState('');
-  const [primaryColor, setPrimaryColor] = useState('#d6c180');
-  const [showSalary, setShowSalary] = useState(true);
-  const [showLocation, setShowLocation] = useState(true);
-  const [settingsFeedback, setSettingsFeedback] = useState<string | null>(null);
-
   const loadData = async () => {
     try {
       setLoading(true);
-      const [jobsRes, setRes] = await Promise.all([
-        crmFetch('/api/recruitment/jobs'),
-        crmFetch('/api/recruitment/career-settings'),
-      ]);
+      const jobsRes = await crmFetch('/api/recruitment/jobs');
       setJobs(jobsRes.data || []);
-      const s = setRes.data || {};
-      setCareerSettings(s);
-      setPageHeadline(s.headline || '');
-      setPageDesc(s.description || '');
-      setPrimaryColor(s.primary_color || '#d6c180');
-      setShowSalary(Boolean(s.show_salary));
-      setShowLocation(Boolean(s.show_location));
     } catch (err) {
       console.error('Failed to load jobs data:', err);
     } finally {
@@ -290,38 +265,6 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
     }
   };
 
-  const handleSaveSettings = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      setSettingsFeedback(null);
-      await crmFetch('/api/recruitment/career-settings', {
-        method: 'PUT',
-        body: JSON.stringify({
-          enabled: 1,
-          headline: pageHeadline,
-          description: pageDesc,
-          primary_color: primaryColor,
-          show_salary: showSalary ? 1 : 0,
-          show_location: showLocation ? 1 : 0,
-        }),
-      });
-      setSettingsFeedback('Career page settings saved successfully!');
-    } catch (err: any) {
-      setSettingsFeedback('Failed to save settings: ' + err.message);
-    }
-  };
-
-  const siteOrigin = typeof window !== 'undefined' ? window.location.origin : 'https://prmarketingventures.com';
-  const widgetEmbedCode = `<!-- PR Marketing Careers Widget -->
-<div id="crm-careers" data-company="${tenantSlug}"></div>
-<script src="${siteOrigin}/assets/career-widget.js" async></script>`;
-
-  const copyWidgetCode = () => {
-    navigator.clipboard.writeText(widgetEmbedCode);
-    setIsCopied(true);
-    setTimeout(() => setIsCopied(false), 2000);
-  };
-
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
@@ -335,8 +278,8 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
       {/* Top Title Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-[#0F172A] tracking-tight">Jobs & Career Engine</h1>
-          <p className="text-xs text-slate-500 mt-1">Multi-tenant job listings, career page customization & embed widget</p>
+          <h1 className="text-2xl font-extrabold text-[#0F172A] tracking-tight">Job Openings & Vacancies</h1>
+          <p className="text-xs text-slate-500 mt-1">Manage active job listings, review applicant counts, and publish vacancies</p>
         </div>
         <div className="flex items-center gap-3">
           <a
@@ -358,57 +301,38 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
         </div>
       </div>
 
-      {/* Tabs */}
-      <div className="border-b border-[#E2E8F0] flex gap-6 text-xs font-bold">
-        <button
-          onClick={() => setActiveTab('jobs')}
-          className={`pb-3 flex items-center gap-2 border-b-2 transition-colors ${
-            activeTab === 'jobs' ? 'border-[#856E2E] text-[#856E2E]' : 'border-transparent text-slate-500 hover:text-slate-800'
-          }`}
-        >
-          <BriefcaseIcon size={16} />
-          <span>Active Vacancies ({jobs.length})</span>
-        </button>
-
-        <button
-          onClick={() => setActiveTab('widget')}
-          className={`pb-3 flex items-center gap-2 border-b-2 transition-colors ${
-            activeTab === 'widget' ? 'border-[#856E2E] text-[#856E2E]' : 'border-transparent text-slate-500 hover:text-slate-800'
-          }`}
-        >
-          <CodeIcon size={16} />
-          <span>Website Widget (Option B)</span>
-        </button>
-
-        <button
-          onClick={() => setActiveTab('settings')}
-          className={`pb-3 flex items-center gap-2 border-b-2 transition-colors ${
-            activeTab === 'settings' ? 'border-[#856E2E] text-[#856E2E]' : 'border-transparent text-slate-500 hover:text-slate-800'
-          }`}
-        >
-          <SettingsIcon size={16} />
-          <span>Hosted Page Branding (Option A)</span>
-        </button>
-      </div>
-
-      {/* TAB 1: Jobs List */}
-      {activeTab === 'jobs' && (
-        <div className="bg-white border border-[#E2E8F0] rounded-2xl overflow-hidden shadow-sm">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-700">
-              <thead className="bg-[#FAF9F5] border-b border-slate-200 text-slate-500 uppercase text-[10px] font-bold tracking-wider">
+      {/* Jobs List Table */}
+      <div className="bg-white border border-[#E2E8F0] rounded-2xl overflow-hidden shadow-sm">
+        <div className="px-5 py-4 border-b border-[#E2E8F0] flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <BriefcaseIcon size={18} className="text-[#856E2E]" />
+            <h2 className="text-sm font-bold text-slate-900">Active Vacancies ({jobs.length})</h2>
+          </div>
+          <span className="text-xs text-slate-400">Total {jobs.length} listed positions</span>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs text-slate-700">
+            <thead className="bg-[#FAF9F5] border-b border-slate-200 text-slate-500 uppercase text-[10px] font-bold tracking-wider">
+              <tr>
+                <th className="px-5 py-3.5">Position Title</th>
+                <th className="px-5 py-3.5">Department</th>
+                <th className="px-5 py-3.5">Mode / Type</th>
+                <th className="px-5 py-3.5">Salary Range</th>
+                <th className="px-5 py-3.5">Applicants</th>
+                <th className="px-5 py-3.5">Status</th>
+                <th className="px-5 py-3.5 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {jobs.length === 0 ? (
                 <tr>
-                  <th className="px-5 py-3.5">Position Title</th>
-                  <th className="px-5 py-3.5">Department</th>
-                  <th className="px-5 py-3.5">Mode / Type</th>
-                  <th className="px-5 py-3.5">Salary Range</th>
-                  <th className="px-5 py-3.5">Applicants</th>
-                  <th className="px-5 py-3.5">Status</th>
-                  <th className="px-5 py-3.5 text-right">Actions</th>
+                  <td colSpan={7} className="px-5 py-12 text-center text-slate-400">
+                    <BriefcaseIcon size={32} className="mx-auto text-slate-300 mb-2" />
+                    No job openings posted yet. Click &quot;Create Job Opening&quot; above to create your first opening.
+                  </td>
                 </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
-                {jobs.map((job) => {
+              ) : (
+                jobs.map((job) => {
                   const isPub = job.status === 'published' || job.status === 'Open';
                   const sal = formatSalary(job);
 
@@ -467,135 +391,12 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
                       </td>
                     </tr>
                   );
-                })}
-              </tbody>
-            </table>
-          </div>
+                })
+              )}
+            </tbody>
+          </table>
         </div>
-      )}
-
-      {/* TAB 2: Website Widget (Option B) */}
-      {activeTab === 'widget' && (
-        <div className="space-y-6">
-          <div className="bg-white border border-[#E2E8F0] rounded-3xl p-6 sm:p-8 shadow-sm">
-            <h2 className="text-base font-extrabold text-slate-900 mb-1">Universal Embed Widget (Option B)</h2>
-            <p className="text-xs text-slate-500 leading-relaxed max-w-2xl mb-6">
-              Give this 2-line code snippet to your client company. When they paste it into any website (WordPress, Shopify, React, HTML, Webflow), their open jobs and application form will automatically load live from your CRM database without them needing any backend!
-            </p>
-
-            <div className="bg-[#0F172A] rounded-2xl p-5 text-slate-200 font-mono text-xs relative">
-              <button
-                onClick={copyWidgetCode}
-                className="absolute top-4 right-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-[11px] font-bold transition-colors"
-              >
-                {isCopied ? <CheckIcon size={14} className="text-emerald-400" /> : <CopyIcon size={14} />}
-                <span>{isCopied ? 'Copied!' : 'Copy Code'}</span>
-              </button>
-              <pre className="overflow-x-auto text-[#d6c180] pr-20">{widgetEmbedCode}</pre>
-            </div>
-
-            <div className="mt-6 flex flex-wrap items-center gap-4">
-              <a
-                href="/widget-demo"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#d6c180] text-[#0F172A] text-xs font-bold hover:opacity-90 shadow-sm"
-              >
-                <span>Open Simulated Client Website Demo ↗</span>
-              </a>
-              <span className="text-xs text-slate-500">
-                Tests Shadow DOM isolation and direct application flow.
-              </span>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* TAB 3: Career Page Settings */}
-      {activeTab === 'settings' && (
-        <div className="bg-white border border-[#E2E8F0] rounded-3xl p-6 sm:p-8 shadow-sm max-w-3xl">
-          <h2 className="text-base font-extrabold text-slate-900 mb-1">Hosted Career Page Branding (Option A)</h2>
-          <p className="text-xs text-slate-500 mb-6">Customize the headline, colors, and information displayed on your hosted portal at <code>/c/{tenantSlug}/careers</code></p>
-
-          {settingsFeedback && (
-            <div className="mb-6 p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-xs font-semibold text-emerald-800">
-              {settingsFeedback}
-            </div>
-          )}
-
-          <form onSubmit={handleSaveSettings} className="space-y-4">
-            <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">Hero Headline</label>
-              <input
-                type="text"
-                value={pageHeadline}
-                onChange={(e) => setPageHeadline(e.target.value)}
-                placeholder="Build your career with us."
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-[#d6c180]"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">Subheadline / Description</label>
-              <textarea
-                rows={3}
-                value={pageDesc}
-                onChange={(e) => setPageDesc(e.target.value)}
-                placeholder="Describe your company culture, mission, and benefits..."
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-[#d6c180]"
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Brand Accent Color</label>
-                <div className="flex items-center gap-3">
-                  <input
-                    type="color"
-                    value={primaryColor}
-                    onChange={(e) => setPrimaryColor(e.target.value)}
-                    className="w-10 h-10 rounded-xl cursor-pointer border border-slate-200"
-                  />
-                  <input
-                    type="text"
-                    value={primaryColor}
-                    onChange={(e) => setPrimaryColor(e.target.value)}
-                    className="w-28 px-3 py-2 rounded-xl border border-slate-200 text-xs font-mono"
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2 pt-2">
-                <label className="flex items-center gap-2 text-xs font-bold text-slate-700 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={showSalary}
-                    onChange={(e) => setShowSalary(e.target.checked)}
-                    className="rounded border-slate-300 text-[#856E2E] focus:ring-0"
-                  />
-                  <span>Show Salary Ranges to Candidates</span>
-                </label>
-                <label className="flex items-center gap-2 text-xs font-bold text-slate-700 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={showLocation}
-                    onChange={(e) => setShowLocation(e.target.checked)}
-                    className="rounded border-slate-300 text-[#856E2E] focus:ring-0"
-                  />
-                  <span>Show Office Location & Work Mode</span>
-                </label>
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              className="px-6 py-3 rounded-xl font-bold text-xs text-[#0F172A] bg-[#d6c180] shadow-sm hover:opacity-90 mt-4"
-            >
-              Save Career Page Settings
-            </button>
-          </form>
-        </div>
-      )}
+      </div>
 
       {/* Create Job Modal */}
       {isModalOpen && (

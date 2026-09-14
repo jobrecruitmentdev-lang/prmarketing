@@ -100,8 +100,32 @@
     <div id="crm-careers" data-company="abc-technologies"></div>
   </main>
 
+  <script>
+    (function() {
+      try {
+        var params = new URLSearchParams(window.location.search);
+        var comp = params.get('company');
+        if (comp) {
+          var el = document.getElementById('crm-careers');
+          if (el) el.setAttribute('data-company', comp);
+          var formattedName = comp.replace(/[-_]/g, ' ').toUpperCase();
+          var logo = document.querySelector('.demo-logo');
+          if (logo) logo.textContent = formattedName;
+          var h1 = document.querySelector('.demo-banner h1');
+          if (h1) h1.textContent = formattedName + ' - Careers';
+          var code = document.querySelector('.demo-code-box');
+          if (code) {
+            code.innerHTML = '&lt;div id="crm-careers" data-company="' + comp + '"&gt;&lt;/div&gt;<br>' +
+              '&lt;script src="' + window.location.origin + '/assets/career-widget.js" async&gt;&lt;/script&gt;';
+          }
+        }
+      } catch (e) {
+        console.error('Failed to configure dynamic demo company:', e);
+      }
+    })();
+  </script>
+
   <!-- Load Widget -->
   <script src="/assets/career-widget.js" async></script>
-
 </body>
 </html>
