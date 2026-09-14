@@ -102,7 +102,19 @@ function handleJobsRoutes(string $subpath, string $method, PDO $pdo): void {
         $title = trim($body['title'] ?? '');
         $department = trim($body['department'] ?? 'General');
         $location = trim($body['location'] ?? 'Remote');
-        $jobType = trim($body['type'] ?? $body['job_type'] ?? 'Full-time');
+        $rawType = trim($body['type'] ?? $body['job_type'] ?? 'Full-time');
+        $cleanType = strtolower(str_replace([' ', '_'], '-', $rawType));
+        if ($cleanType === 'full-time' || $cleanType === 'fulltime') {
+            $jobType = 'Full-time';
+        } elseif ($cleanType === 'part-time' || $cleanType === 'parttime') {
+            $jobType = 'Part-time';
+        } elseif ($cleanType === 'contract') {
+            $jobType = 'Contract';
+        } elseif ($cleanType === 'internship') {
+            $jobType = 'Internship';
+        } else {
+            $jobType = !empty($rawType) ? $rawType : 'Full-time';
+        }
         $workMode = trim($body['work_mode'] ?? 'On-site');
         $isSalaryDisclosed = isset($body['is_salary_disclosed']) ? (!empty($body['is_salary_disclosed']) ? 1 : 0) : 1;
         $salaryMin = (isset($body['salary_min']) && is_numeric($body['salary_min'])) ? (float)$body['salary_min'] : null;
@@ -194,7 +206,19 @@ function handleJobsRoutes(string $subpath, string $method, PDO $pdo): void {
         $title = trim($body['title'] ?? '');
         $department = trim($body['department'] ?? 'General');
         $location = trim($body['location'] ?? 'Remote');
-        $jobType = trim($body['type'] ?? $body['job_type'] ?? 'Full-time');
+        $rawType = trim($body['type'] ?? $body['job_type'] ?? 'Full-time');
+        $cleanType = strtolower(str_replace([' ', '_'], '-', $rawType));
+        if ($cleanType === 'full-time' || $cleanType === 'fulltime') {
+            $jobType = 'Full-time';
+        } elseif ($cleanType === 'part-time' || $cleanType === 'parttime') {
+            $jobType = 'Part-time';
+        } elseif ($cleanType === 'contract') {
+            $jobType = 'Contract';
+        } elseif ($cleanType === 'internship') {
+            $jobType = 'Internship';
+        } else {
+            $jobType = !empty($rawType) ? $rawType : 'Full-time';
+        }
         $workMode = trim($body['work_mode'] ?? 'On-site');
 
         $isSalaryDisclosed = isset($body['is_salary_disclosed']) ? (!empty($body['is_salary_disclosed']) ? 1 : 0) : 1;

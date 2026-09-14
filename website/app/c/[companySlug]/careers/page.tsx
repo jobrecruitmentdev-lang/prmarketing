@@ -635,17 +635,23 @@ export default function HostedCareerPage({ params }: { params: Promise<{ company
                         <div>
                           {/* Badges */}
                           <div className="flex flex-wrap items-center gap-2 mb-2.5">
-                            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-slate-100 text-slate-700 text-xs font-bold">
-                              <span className="w-1.5 h-1.5 rounded-full bg-[#856E2E]"></span>
-                              {job.department}
-                            </span>
-                            <span className="px-2.5 py-0.5 rounded-md bg-[#F5EFE0] text-[#856E2E] text-xs font-bold">
-                              {job.work_mode}
-                            </span>
-                            <span className="px-2.5 py-0.5 rounded-md bg-slate-100 text-slate-600 text-xs font-semibold">
-                              {job.type}
-                            </span>
-                            <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 ml-auto sm:ml-0">
+                            {job.department && (
+                              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-slate-100 text-slate-700 text-xs font-bold">
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#856E2E]"></span>
+                                {job.department}
+                              </span>
+                            )}
+                            {job.work_mode && (
+                              <span className="px-2.5 py-0.5 rounded-md bg-[#F5EFE0] text-[#856E2E] text-xs font-bold">
+                                {job.work_mode}
+                              </span>
+                            )}
+                            {(job.type || 'Full-time') && (
+                              <span className="px-2.5 py-0.5 rounded-md bg-slate-100 text-slate-600 text-xs font-semibold">
+                                {job.type || 'Full-time'}
+                              </span>
+                            )}
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/70 text-[11px] font-bold ml-auto sm:ml-0 shadow-2xs">
                               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                               Active
                             </span>

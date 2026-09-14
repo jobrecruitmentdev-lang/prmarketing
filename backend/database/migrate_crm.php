@@ -81,6 +81,10 @@ try {
     try {
         $pdo->exec("ALTER TABLE crm_employees MODIFY COLUMN status VARCHAR(50) DEFAULT 'active'");
     } catch (Exception $e) {}
+    try {
+        $pdo->exec("ALTER TABLE crm_jobs MODIFY COLUMN job_type VARCHAR(50) DEFAULT 'Full-time'");
+        $pdo->exec("UPDATE crm_jobs SET job_type = 'Full-time' WHERE job_type IS NULL OR job_type = '' OR job_type = 'Full Time'");
+    } catch (Exception $e) {}
     echo "CRM column patches and enum loosenings applied successfully.\n";
 
     // 2.2 Backfill salary_min, salary_max, is_salary_disclosed for existing jobs

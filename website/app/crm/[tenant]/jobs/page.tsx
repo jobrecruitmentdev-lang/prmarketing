@@ -91,7 +91,7 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
   const [title, setTitle] = useState('');
   const [department, setDepartment] = useState('Engineering');
   const [location, setLocation] = useState('Ahmedabad, India');
-  const [type, setType] = useState('Full Time');
+  const [type, setType] = useState('Full-time');
   const [workMode, setWorkMode] = useState('On-site');
   const [salaryMin, setSalaryMin] = useState('500000');
   const [salaryMax, setSalaryMax] = useState('900000');
@@ -109,7 +109,7 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
   const [editTitle, setEditTitle] = useState('');
   const [editDepartment, setEditDepartment] = useState('Engineering');
   const [editLocation, setEditLocation] = useState('Ahmedabad, India');
-  const [editType, setEditType] = useState('Full Time');
+  const [editType, setEditType] = useState('Full-time');
   const [editWorkMode, setEditWorkMode] = useState('On-site');
   const [editSalaryMin, setEditSalaryMin] = useState('500000');
   const [editSalaryMax, setEditSalaryMax] = useState('900000');
@@ -210,7 +210,7 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
     setEditTitle(job.title || '');
     setEditDepartment(job.department || 'Engineering');
     setEditLocation(job.location || 'Ahmedabad, India');
-    setEditType(job.type || 'Full Time');
+    setEditType(job.type || job.job_type || 'Full-time');
     setEditWorkMode(job.work_mode || 'On-site');
 
     const dis = job.is_salary_disclosed !== undefined && job.is_salary_disclosed !== null
@@ -661,8 +661,8 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
                     onChange={(e) => setType(e.target.value)}
                     className="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-xs bg-white"
                   >
-                    <option value="Full Time">Full Time</option>
-                    <option value="Part Time">Part Time</option>
+                    <option value="Full-time">Full-time</option>
+                    <option value="Part-time">Part-time</option>
                     <option value="Contract">Contract</option>
                     <option value="Internship">Internship</option>
                   </select>
@@ -829,8 +829,8 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
                     onChange={(e) => setEditType(e.target.value)}
                     className="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-xs bg-white"
                   >
-                    <option value="Full Time">Full Time</option>
-                    <option value="Part Time">Part Time</option>
+                    <option value="Full-time">Full-time</option>
+                    <option value="Part-time">Part-time</option>
                     <option value="Contract">Contract</option>
                     <option value="Internship">Internship</option>
                   </select>

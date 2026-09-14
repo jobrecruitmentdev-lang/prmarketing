@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS crm_jobs (
     department VARCHAR(100) NULL,
     location VARCHAR(100) NULL,
     work_mode ENUM('On-site', 'Remote', 'Hybrid') DEFAULT 'On-site',
-    job_type ENUM('Full-time', 'Part-time', 'Contract', 'Internship') DEFAULT 'Full-time',
+    job_type VARCHAR(50) DEFAULT 'Full-time',
     experience VARCHAR(100) NULL,
     salary_range VARCHAR(100) NULL,
     salary_min DECIMAL(12,2) NULL,

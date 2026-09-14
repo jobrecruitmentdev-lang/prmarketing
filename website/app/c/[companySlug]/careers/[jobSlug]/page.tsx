@@ -267,15 +267,21 @@ export default function JobDetailPage({
           <div className="lg:col-span-2 space-y-6">
             <div className="bg-white border border-[#E2E8F0] rounded-3xl p-6 sm:p-8 shadow-sm">
               <div className="flex flex-wrap items-center gap-2 mb-3">
-                <span className="px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 text-xs font-bold uppercase tracking-wider">
-                  {job.department}
-                </span>
-                <span className="px-2.5 py-1 rounded-md bg-[#F4EEDF] text-[#856E2E] text-xs font-bold">
-                  {job.work_mode}
-                </span>
-                <span className="px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 text-xs font-medium">
-                  {job.type}
-                </span>
+                {job.department && (
+                  <span className="px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 text-xs font-bold uppercase tracking-wider">
+                    {job.department}
+                  </span>
+                )}
+                {job.work_mode && (
+                  <span className="px-2.5 py-1 rounded-md bg-[#F4EEDF] text-[#856E2E] text-xs font-bold">
+                    {job.work_mode}
+                  </span>
+                )}
+                {(job.type || 'Full-time') && (
+                  <span className="px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 text-xs font-medium">
+                    {job.type || 'Full-time'}
+                  </span>
+                )}
               </div>
 
               <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0F172A] tracking-tight mb-4">

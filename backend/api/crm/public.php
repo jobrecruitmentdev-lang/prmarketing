@@ -114,7 +114,10 @@ function handlePublicRoutes(string $subpath, string $method, PDO $pdo): void {
 
         $query = "
             SELECT 
-                id, title, slug, department, location, job_type as type, job_type, work_mode,
+                id, title, slug, department, location, 
+                COALESCE(NULLIF(job_type, ''), 'Full-time') as type, 
+                COALESCE(NULLIF(job_type, ''), 'Full-time') as job_type, 
+                work_mode,
                 salary_range, salary_min, salary_max, is_salary_disclosed, experience, requirements as skills, description, created_at as published_at, created_at
             FROM crm_jobs
             WHERE admin_id = ? AND (status = 'published' OR status = 'Open')
@@ -179,7 +182,10 @@ function handlePublicRoutes(string $subpath, string $method, PDO $pdo): void {
 
         $jStmt = $pdo->prepare("
             SELECT 
-                id, title, slug, department, location, job_type as type, job_type, work_mode,
+                id, title, slug, department, location, 
+                COALESCE(NULLIF(job_type, ''), 'Full-time') as type, 
+                COALESCE(NULLIF(job_type, ''), 'Full-time') as job_type, 
+                work_mode,
                 salary_range, salary_min, salary_max, is_salary_disclosed, experience, requirements as skills, description, created_at as published_at, created_at
             FROM crm_jobs
             WHERE admin_id = ? AND (slug = ? OR id = ?) AND (status = 'published' OR status = 'Open')
