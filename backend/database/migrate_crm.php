@@ -53,6 +53,9 @@ try {
             'salary_min' => 'DECIMAL(12,2) NULL',
             'salary_max' => 'DECIMAL(12,2) NULL',
             'is_salary_disclosed' => 'TINYINT(1) DEFAULT 1'
+        ],
+        'crm_career_pages' => [
+            'widget_enabled' => 'TINYINT(1) DEFAULT 1'
         ]
     ];
 

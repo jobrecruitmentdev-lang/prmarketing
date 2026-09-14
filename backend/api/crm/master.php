@@ -189,6 +189,7 @@ function handleMasterRoutes(string $subpath, string $method, PDO $pdo): void {
         $careerPage = $cpStmt->fetch() ?: [
             'admin_id' => $adminId,
             'enabled' => 1,
+            'widget_enabled' => 1,
             'page_title' => 'Careers at ' . ($tenant['company_display_name'] ?? 'Company'),
             'headline' => 'Build your career with us.',
             'description' => 'Explore exciting career opportunities across departments.',
@@ -199,6 +200,9 @@ function handleMasterRoutes(string $subpath, string $method, PDO $pdo): void {
             'show_location' => 1,
             'show_company_description' => 1
         ];
+        if ($careerPage && !isset($careerPage['widget_enabled'])) {
+            $careerPage['widget_enabled'] = 1;
+        }
 
         jsonResponse([
             'success' => true,
@@ -348,6 +352,7 @@ function handleMasterRoutes(string $subpath, string $method, PDO $pdo): void {
             $settings = [
                 'admin_id' => $adminId,
                 'enabled' => 1,
+                'widget_enabled' => 1,
                 'page_title' => 'Careers at ' . ($tenant['company_display_name'] ?? 'Company'),
                 'headline' => 'Build your career with us.',
                 'description' => 'Explore exciting career opportunities across departments.',
@@ -358,6 +363,8 @@ function handleMasterRoutes(string $subpath, string $method, PDO $pdo): void {
                 'show_location' => 1,
                 'show_company_description' => 1
             ];
+        } elseif (!isset($settings['widget_enabled'])) {
+            $settings['widget_enabled'] = 1;
         }
 
         jsonResponse([
@@ -378,6 +385,7 @@ function handleMasterRoutes(string $subpath, string $method, PDO $pdo): void {
 
         $body = getJsonInput();
         $enabled = isset($body['enabled']) ? (!empty($body['enabled']) ? 1 : 0) : 1;
+        $widgetEnabled = isset($body['widget_enabled']) ? (!empty($body['widget_enabled']) ? 1 : 0) : 1;
         $headline = $body['headline'] ?? null;
         $description = $body['description'] ?? null;
         $primaryColor = $body['primary_color'] ?? '#d6c180';
@@ -389,11 +397,12 @@ function handleMasterRoutes(string $subpath, string $method, PDO $pdo): void {
 
         $stmt = $pdo->prepare("
             INSERT INTO crm_career_pages (
-                admin_id, enabled, headline, description, primary_color,
+                admin_id, enabled, widget_enabled, headline, description, primary_color,
                 secondary_color, button_color, show_salary, show_location, show_company_description
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ON DUPLICATE KEY UPDATE
                 enabled = VALUES(enabled),
+                widget_enabled = VALUES(widget_enabled),
                 headline = VALUES(headline),
                 description = VALUES(description),
                 primary_color = VALUES(primary_color),
@@ -406,6 +415,7 @@ function handleMasterRoutes(string $subpath, string $method, PDO $pdo): void {
         $stmt->execute([
             $adminId,
             $enabled,
+            $widgetEnabled,
             $headline,
             $description,
             $primaryColor,
@@ -416,7 +426,14 @@ function handleMasterRoutes(string $subpath, string $method, PDO $pdo): void {
             $showCompanyDesc
         ]);
 
-        jsonResponse(['success' => true, 'message' => 'Career page branding & widget settings saved successfully']);
+        jsonResponse([
+            'success' => true,
+            'message' => 'Career portal branding & widget settings saved successfully',
+            'data' => [
+                'enabled' => $enabled,
+                'widget_enabled' => $widgetEnabled
+            ]
+        ]);
     }
 
     jsonResponse(['success' => false, 'error' => "Master route '{$subpath}' not found"], 404);

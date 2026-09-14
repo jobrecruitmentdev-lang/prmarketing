@@ -61,7 +61,7 @@
 
   # 6. Fallback for missing/old CSS chunks
   RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteRule ^_next/static/chunks/([a-zA-Z0-9_\-]+)\.css$ /_next/static/chunks/1enf5z2vh_g2d.css [L,QSA]
+  RewriteRule ^_next/static/chunks/([a-zA-Z0-9_\-]+)\.css$ /_next/static/chunks/0jxey4y63n2l_.css [L,QSA]
 
   # 7. CRM SPA Fallback for dynamic tenant routes
   RewriteCond %{REQUEST_URI} ^/crm/([^/]+)/dashboard/? [NC]

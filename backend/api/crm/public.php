@@ -63,13 +63,32 @@ function handlePublicRoutes(string $subpath, string $method, PDO $pdo): void {
             jsonResponse(['success' => false, 'error' => 'Company career portal not found or inactive'], 404);
         }
 
-        $cStmt = $pdo->prepare("SELECT * FROM crm_career_pages WHERE admin_id = ? AND enabled = 1");
+        $cStmt = $pdo->prepare("SELECT * FROM crm_career_pages WHERE admin_id = ?");
         $cStmt->execute([$company['id']]);
         $settings = $cStmt->fetch();
+
+        $isWidgetSource = isset($_GET['source']) && $_GET['source'] === 'widget';
+
+        if (!$isWidgetSource && $settings && empty($settings['enabled'])) {
+            jsonResponse([
+                'success' => false,
+                'portal_disabled' => true,
+                'error' => 'This career portal is currently deactivated by the administrator.'
+            ], 403);
+        }
+
+        if ($isWidgetSource && $settings && isset($settings['widget_enabled']) && empty($settings['widget_enabled'])) {
+            jsonResponse([
+                'success' => false,
+                'widget_disabled' => true,
+                'error' => 'Career widget service is currently deactivated for this organization.'
+            ], 403);
+        }
 
         if (!$settings) {
             $settings = [
                 'enabled' => 1,
+                'widget_enabled' => 1,
                 'page_title' => "Careers at {$company['company_display_name']}",
                 'headline' => 'Build your career with us.',
                 'description' => $company['description'] ?: 'Explore exciting engineering, product, and operations positions.',
@@ -81,6 +100,8 @@ function handlePublicRoutes(string $subpath, string $method, PDO $pdo): void {
                 'show_location' => 1,
                 'show_company_description' => 1
             ];
+        } elseif (!isset($settings['widget_enabled'])) {
+            $settings['widget_enabled'] = 1;
         }
 
         jsonResponse([
@@ -110,6 +131,26 @@ function handlePublicRoutes(string $subpath, string $method, PDO $pdo): void {
 
         if (!$company) {
             jsonResponse(['success' => false, 'error' => 'Company not found'], 404);
+        }
+
+        $cStmt = $pdo->prepare("SELECT enabled, widget_enabled FROM crm_career_pages WHERE admin_id = ?");
+        $cStmt->execute([$company['id']]);
+        $cSettings = $cStmt->fetch();
+
+        $isWidgetSource = isset($_GET['source']) && $_GET['source'] === 'widget';
+        if ($isWidgetSource && $cSettings && isset($cSettings['widget_enabled']) && empty($cSettings['widget_enabled'])) {
+            jsonResponse([
+                'success' => false,
+                'widget_disabled' => true,
+                'error' => 'Career widget service is currently deactivated for this organization.'
+            ], 403);
+        }
+        if (!$isWidgetSource && $cSettings && empty($cSettings['enabled'])) {
+            jsonResponse([
+                'success' => false,
+                'portal_disabled' => true,
+                'error' => 'Career portal is currently deactivated for this organization.'
+            ], 403);
         }
 
         $query = "

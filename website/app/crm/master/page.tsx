@@ -35,6 +35,7 @@ export default function MasterDashboardPage() {
   const [careerDesc, setCareerDesc] = useState('');
   const [careerColor, setCareerColor] = useState('#d6c180');
   const [careerEnabled, setCareerEnabled] = useState(true);
+  const [widgetEnabled, setWidgetEnabled] = useState(true);
   const [careerShowSalary, setCareerShowSalary] = useState(true);
   const [careerShowLocation, setCareerShowLocation] = useState(true);
   const [careerFeedback, setCareerFeedback] = useState<string | null>(null);
@@ -108,6 +109,7 @@ export default function MasterDashboardPage() {
           setCareerDesc(cp.description || '');
           setCareerColor(cp.primary_color || '#d6c180');
           setCareerEnabled(cp.enabled !== undefined ? Boolean(Number(cp.enabled)) : true);
+          setWidgetEnabled(cp.widget_enabled !== undefined ? Boolean(Number(cp.widget_enabled)) : true);
           setCareerShowSalary(cp.show_salary !== undefined ? Boolean(Number(cp.show_salary)) : true);
           setCareerShowLocation(cp.show_location !== undefined ? Boolean(Number(cp.show_location)) : true);
         }
@@ -120,16 +122,23 @@ export default function MasterDashboardPage() {
     loadDrilldown();
   }, [selectedTenantId]);
 
-  const handleSaveCareerSettings = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSaveCareerSettings = async (
+    e?: React.FormEvent,
+    overrides?: { enabled?: boolean; widget_enabled?: boolean }
+  ) => {
+    if (e) e.preventDefault();
     if (!selectedTenantId) return;
     try {
       setIsSavingCareer(true);
       setCareerFeedback(null);
+      const isEnabled = overrides?.enabled !== undefined ? overrides.enabled : careerEnabled;
+      const isWidget = overrides?.widget_enabled !== undefined ? overrides.widget_enabled : widgetEnabled;
+
       await crmFetch(`/api/master/tenants/${selectedTenantId}/career-settings`, {
         method: 'PUT',
         body: JSON.stringify({
-          enabled: careerEnabled ? 1 : 0,
+          enabled: isEnabled ? 1 : 0,
+          widget_enabled: isWidget ? 1 : 0,
           headline: careerHeadline,
           description: careerDesc,
           primary_color: careerColor,
@@ -137,7 +146,7 @@ export default function MasterDashboardPage() {
           show_location: careerShowLocation ? 1 : 0,
         }),
       });
-      setCareerFeedback('Career page branding & widget configuration saved successfully!');
+      setCareerFeedback('Branding & licensing permissions saved successfully!');
       setTimeout(() => setCareerFeedback(null), 4000);
     } catch (err: any) {
       setCareerFeedback('Failed to save settings: ' + err.message);
@@ -560,38 +569,115 @@ export default function MasterDashboardPage() {
                 {/* 5. Career & Widget Settings (Options A & B) */}
                 {drilldownTab === 'career' && selectedTenant && (
                   <div className="space-y-6">
+                    {/* Top Licensing Summary Strip */}
+                    <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-[10px] font-bold text-[#856E2E] uppercase tracking-wider bg-[#F5EFE0] px-2 py-0.5 rounded">
+                            Client Delivery &amp; Licensing
+                          </span>
+                          <span className="text-xs font-mono font-bold text-slate-500">
+                            slug: {selectedTenant.slug}
+                          </span>
+                        </div>
+                        <h3 className="text-base font-extrabold text-slate-900 mt-1">
+                          {selectedTenant.company_display_name} — Career Engine Controls
+                        </h3>
+                        <p className="text-xs text-slate-500">
+                          Configure independent public visibility for Hosted Portal (Option A) and Website Embed Widget (Option B).
+                        </p>
+                      </div>
+
+                      <div className="flex flex-wrap items-center gap-2 text-xs">
+                        <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-bold text-[11px] ${
+                          careerEnabled ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-100 text-slate-600 border border-slate-200'
+                        }`}>
+                          <span className={`w-2 h-2 rounded-full ${careerEnabled ? 'bg-emerald-500' : 'bg-slate-400'}`}></span>
+                          Option A: {careerEnabled ? 'Hosted Portal Live' : 'Portal Inactive'}
+                        </span>
+
+                        <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-bold text-[11px] ${
+                          widgetEnabled ? 'bg-blue-50 text-blue-700 border border-blue-200' : 'bg-rose-50 text-rose-700 border border-rose-200'
+                        }`}>
+                          <span className={`w-2 h-2 rounded-full ${widgetEnabled ? 'bg-blue-500' : 'bg-rose-500'}`}></span>
+                          Option B: {widgetEnabled ? 'Widget Authorized' : 'Widget Blocked'}
+                        </span>
+                      </div>
+                    </div>
+
                     {careerFeedback && (
-                      <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-xs font-semibold text-emerald-800 flex items-center justify-between">
-                        <span>{careerFeedback}</span>
-                        <button onClick={() => setCareerFeedback(null)} className="text-emerald-600 font-bold hover:text-emerald-900">✕</button>
+                      <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-xs font-semibold text-emerald-800 flex items-center justify-between shadow-sm animate-fade-in">
+                        <div className="flex items-center gap-2">
+                          <CheckIcon size={16} className="text-emerald-600" />
+                          <span>{careerFeedback}</span>
+                        </div>
+                        <button onClick={() => setCareerFeedback(null)} className="text-emerald-600 font-bold hover:text-emerald-900 text-sm">✕</button>
                       </div>
                     )}
 
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                      {/* Option A: Hosted Portal Branding */}
-                      <div className="bg-[#FAF9F5] border border-slate-200 rounded-2xl p-5 sm:p-6 space-y-4">
-                        <div className="flex items-center justify-between">
+                    {/* Dual Feature Cards */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                      {/* CARD A: Option A — Hosted Portal Branding */}
+                      <div className={`bg-white border rounded-2xl overflow-hidden shadow-sm transition-all ${
+                        careerEnabled ? 'border-slate-200' : 'border-slate-300 opacity-95'
+                      }`}>
+                        {/* Card Header with Master Toggle */}
+                        <div className="p-5 border-b border-slate-100 bg-[#FAF9F5] flex items-center justify-between gap-4">
                           <div>
-                            <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-900 mb-1.5">
-                              Option A
-                            </span>
-                            <h3 className="text-sm font-extrabold text-slate-900">Hosted Career Portal Branding</h3>
-                            <p className="text-xs text-slate-500">
-                              Direct portal at <code className="text-[#856E2E] font-mono">/c/{selectedTenant.slug}/careers</code>
+                            <div className="flex items-center gap-2">
+                              <span className="inline-block px-2 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wider bg-amber-100 text-amber-900">
+                                Option A
+                              </span>
+                              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                                careerEnabled ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700'
+                              }`}>
+                                {careerEnabled ? '● LIVE' : '○ DISABLED'}
+                              </span>
+                            </div>
+                            <h4 className="text-sm font-extrabold text-slate-900 mt-1">Hosted Career Portal</h4>
+                            <p className="text-[11px] text-slate-500">
+                              Direct public URL: <code className="text-[#856E2E] font-mono">/c/{selectedTenant.slug}/careers</code>
                             </p>
                           </div>
-                          <a
-                            href={`/c/${selectedTenant.slug}/careers`}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl border border-slate-200 bg-white text-xs font-bold text-slate-700 hover:bg-slate-50 shadow-sm"
-                          >
-                            <span>Live Portal</span>
-                            <ExternalLinkIcon size={14} />
-                          </a>
+
+                          {/* iOS-Style Toggle Switch */}
+                          <div className="flex flex-col items-end gap-1">
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                              {careerEnabled ? 'Portal ON' : 'Portal OFF'}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const nextState = !careerEnabled;
+                                setCareerEnabled(nextState);
+                                handleSaveCareerSettings(undefined, { enabled: nextState });
+                              }}
+                              className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                                careerEnabled ? 'bg-emerald-600' : 'bg-slate-300'
+                              }`}
+                              role="switch"
+                              aria-checked={careerEnabled}
+                              title="Toggle Hosted Career Portal ON or OFF"
+                            >
+                              <span
+                                aria-hidden="true"
+                                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                                  careerEnabled ? 'translate-x-5' : 'translate-x-0'
+                                }`}
+                              />
+                            </button>
+                          </div>
                         </div>
 
-                        <form onSubmit={handleSaveCareerSettings} className="space-y-3 pt-2">
+                        {/* Card Body */}
+                        <div className="p-5 sm:p-6 space-y-4">
+                          {!careerEnabled && (
+                            <div className="p-3 rounded-xl bg-slate-100 border border-slate-200 text-xs text-slate-600 flex items-center gap-2">
+                              <span className="text-base">ℹ️</span>
+                              <span><strong>Hosted Portal is Deactivated:</strong> Candidates visiting the public URL will see an inactive portal notice.</span>
+                            </div>
+                          )}
+
                           <div>
                             <label className="block text-xs font-bold text-slate-700 mb-1">Hero Headline</label>
                             <input
@@ -599,7 +685,7 @@ export default function MasterDashboardPage() {
                               value={careerHeadline}
                               onChange={(e) => setCareerHeadline(e.target.value)}
                               placeholder="Build your career with us."
-                              className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs focus:outline-none focus:border-[#d6c180]"
+                              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-[#d6c180]"
                             />
                           </div>
 
@@ -609,30 +695,31 @@ export default function MasterDashboardPage() {
                               rows={3}
                               value={careerDesc}
                               onChange={(e) => setCareerDesc(e.target.value)}
-                              placeholder="Describe why candidates should join this company..."
-                              className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs focus:outline-none focus:border-[#d6c180]"
+                              placeholder="Describe your company culture, mission, and benefits..."
+                              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-[#d6c180]"
                             />
                           </div>
 
-                          <div className="grid grid-cols-2 gap-3 items-center">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center pt-1">
                             <div>
                               <label className="block text-xs font-bold text-slate-700 mb-1">Brand Accent Color</label>
-                              <div className="flex items-center gap-2">
+                              <div className="flex items-center gap-3">
                                 <input
                                   type="color"
                                   value={careerColor}
                                   onChange={(e) => setCareerColor(e.target.value)}
-                                  className="w-8 h-8 rounded-lg cursor-pointer border border-slate-300"
+                                  className="w-10 h-10 rounded-xl cursor-pointer border border-slate-200"
                                 />
                                 <input
                                   type="text"
                                   value={careerColor}
                                   onChange={(e) => setCareerColor(e.target.value)}
-                                  className="w-24 px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-xs font-mono"
+                                  className="w-28 px-3 py-2 rounded-xl border border-slate-200 text-xs font-mono"
                                 />
                               </div>
                             </div>
-                            <div className="space-y-1.5 pt-1">
+
+                            <div className="space-y-2 pt-1">
                               <label className="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
                                 <input
                                   type="checkbox"
@@ -649,45 +736,106 @@ export default function MasterDashboardPage() {
                                   onChange={(e) => setCareerShowLocation(e.target.checked)}
                                   className="rounded border-slate-300 text-[#856E2E] focus:ring-0"
                                 />
-                                <span>Show Office Location</span>
+                                <span>Show Location &amp; Mode</span>
                               </label>
                             </div>
                           </div>
+                        </div>
 
-                          <div className="pt-1">
-                            <label className="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
-                              <input
-                                type="checkbox"
-                                checked={careerEnabled}
-                                onChange={(e) => setCareerEnabled(e.target.checked)}
-                                className="rounded border-slate-300 text-[#856E2E] focus:ring-0"
-                              />
-                              <span>Enable Public Hosted Career Page</span>
-                            </label>
-                          </div>
-
+                        {/* Card Footer */}
+                        <div className="p-4 sm:p-5 bg-slate-50 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
                           <button
-                            type="submit"
+                            type="button"
+                            onClick={(e) => handleSaveCareerSettings(e)}
                             disabled={isSavingCareer}
-                            className="w-full px-4 py-2.5 rounded-xl font-bold text-xs text-[#0F172A] bg-[#d6c180] hover:opacity-90 transition-opacity shadow-sm disabled:opacity-50 mt-3"
+                            className="px-5 py-2.5 rounded-xl font-bold text-xs text-[#0F172A] bg-[#d6c180] hover:opacity-90 shadow-sm disabled:opacity-50"
                           >
-                            {isSavingCareer ? 'Saving Branding Settings...' : 'Save Hosted Portal Branding'}
+                            {isSavingCareer ? 'Saving Settings...' : 'Save Hosted Portal Settings'}
                           </button>
-                        </form>
+
+                          <a
+                            href={`/c/${selectedTenant.slug}/careers`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-200 bg-white text-xs font-bold text-slate-700 hover:bg-slate-100 shadow-sm"
+                          >
+                            <span>Live Portal</span>
+                            <ExternalLinkIcon size={14} />
+                          </a>
+                        </div>
                       </div>
 
-                      {/* Option B: Universal Embed Widget */}
-                      <div className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 space-y-4 flex flex-col justify-between">
-                        <div>
-                          <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-blue-50 text-blue-800 mb-1.5">
-                            Option B
-                          </span>
-                          <h3 className="text-sm font-extrabold text-slate-900">Universal Website Embed Widget</h3>
-                          <p className="text-xs text-slate-500 mb-4">
-                            Provide this 2-line snippet to <strong>{selectedTenant.company_display_name}</strong>. Their open vacancies &amp; candidate application flow will embed live directly on their official website (WordPress, Shopify, Webflow, React, HTML).
+                      {/* CARD B: Option B — Universal Embed Widget */}
+                      <div className={`bg-white border rounded-2xl overflow-hidden shadow-sm transition-all ${
+                        widgetEnabled ? 'border-slate-200' : 'border-rose-200'
+                      }`}>
+                        {/* Card Header with Master Toggle */}
+                        <div className="p-5 border-b border-slate-100 bg-[#FAF9F5] flex items-center justify-between gap-4">
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="inline-block px-2 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wider bg-blue-100 text-blue-900">
+                                Option B
+                              </span>
+                              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                                widgetEnabled ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
+                              }`}>
+                                {widgetEnabled ? '● AUTHORIZED' : '○ BLOCKED'}
+                              </span>
+                            </div>
+                            <h4 className="text-sm font-extrabold text-slate-900 mt-1">Universal Embed Widget</h4>
+                            <p className="text-[11px] text-slate-500">
+                              Embed into WordPress, Shopify, Webflow, React, HTML
+                            </p>
+                          </div>
+
+                          {/* iOS-Style Toggle Switch */}
+                          <div className="flex flex-col items-end gap-1">
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                              {widgetEnabled ? 'Widget ON' : 'Widget OFF'}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const nextState = !widgetEnabled;
+                                setWidgetEnabled(nextState);
+                                handleSaveCareerSettings(undefined, { widget_enabled: nextState });
+                              }}
+                              className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                                widgetEnabled ? 'bg-blue-600' : 'bg-slate-300'
+                              }`}
+                              role="switch"
+                              aria-checked={widgetEnabled}
+                              title="Authorize or Block External Website Embed Widget"
+                            >
+                              <span
+                                aria-hidden="true"
+                                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                                  widgetEnabled ? 'translate-x-5' : 'translate-x-0'
+                                }`}
+                              />
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Card Body */}
+                        <div className="p-5 sm:p-6 space-y-4">
+                          {widgetEnabled ? (
+                            <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-800 flex items-center gap-2">
+                              <span className="text-base">✓</span>
+                              <span><strong>Widget is Authorized:</strong> External client websites with this snippet can stream live jobs from this CRM.</span>
+                            </div>
+                          ) : (
+                            <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-800 flex items-center gap-2">
+                              <span className="text-base">⚠️</span>
+                              <span><strong>Widget Access Blocked:</strong> Client websites embedding this snippet will NOT load jobs until Master switches Widget ON.</span>
+                            </div>
+                          )}
+
+                          <p className="text-xs text-slate-500 leading-relaxed">
+                            Provide this 2-line snippet to <strong>{selectedTenant.company_display_name}</strong>&apos;s webmaster. All vacancies &amp; candidate applications will sync with CRM automatically.
                           </p>
 
-                          {/* Embed Code Snippet */}
+                          {/* Embed Code Container */}
                           <div className="bg-[#0F172A] rounded-xl p-4 text-slate-200 font-mono text-xs relative">
                             <button
                               onClick={() => {
@@ -707,25 +855,35 @@ export default function MasterDashboardPage() {
                             </pre>
                           </div>
 
-                          <div className="mt-4 p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-1.5">
-                            <div className="font-bold text-slate-800">Master Integration Controls:</div>
+                          <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-1.5">
+                            <div className="font-bold text-slate-800">Master Integration Guarantees:</div>
                             <ul className="list-disc pl-4 space-y-1 text-[11px]">
-                              <li><strong>Shadow DOM Isolation:</strong> Client website styles cannot alter or conflict with application modal styles.</li>
-                              <li><strong>Zero Maintenance:</strong> When tenant adds/edits jobs in CRM, client website updates instantly.</li>
-                              <li><strong>Direct Pipeline:</strong> Candidate resumes and details feed directly into this tenant&apos;s CRM module.</li>
+                              <li><strong>Shadow DOM Isolation:</strong> Client CSS cannot clash or alter modal styles.</li>
+                              <li><strong>CORS &amp; Licensing Guard:</strong> API blocks external requests if Option B toggle is OFF.</li>
+                              <li><strong>Direct Pipeline:</strong> Resumes and applicant details flow directly into this tenant&apos;s CRM.</li>
                             </ul>
                           </div>
                         </div>
 
-                        <div className="pt-2 flex items-center gap-3">
+                        {/* Card Footer */}
+                        <div className="p-4 sm:p-5 bg-slate-50 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
+                          <button
+                            type="button"
+                            onClick={(e) => handleSaveCareerSettings(e)}
+                            disabled={isSavingCareer}
+                            className="px-5 py-2.5 rounded-xl font-bold text-xs text-white bg-[#0F172A] hover:bg-slate-800 shadow-sm disabled:opacity-50"
+                          >
+                            {isSavingCareer ? 'Saving Permissions...' : 'Save Widget Permissions'}
+                          </button>
+
                           <a
                             href={`/widget-demo.html?company=${selectedTenant.slug}`}
                             target="_blank"
                             rel="noreferrer"
-                            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#0F172A] text-white text-xs font-bold hover:bg-slate-800 transition-colors shadow-sm"
+                            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-200 bg-white text-xs font-bold text-slate-700 hover:bg-slate-100 shadow-sm"
                           >
                             <CodeIcon size={14} />
-                            <span>Launch Live Client Website Demo ↗</span>
+                            <span>Launch Live Demo ↗</span>
                           </a>
                         </div>
                       </div>

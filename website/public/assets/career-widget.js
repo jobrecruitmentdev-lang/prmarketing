@@ -59,17 +59,24 @@
   async function loadCareerPortal() {
     try {
       const [compRes, jobsRes] = await Promise.all([
-        fetch(`${scriptBaseUrl}/api/public/v1/companies/${encodeURIComponent(companySlug)}`).then(r => r.json()),
-        fetch(`${scriptBaseUrl}/api/public/v1/companies/${encodeURIComponent(companySlug)}/jobs`).then(r => r.json())
+        fetch(`${scriptBaseUrl}/api/public/v1/companies/${encodeURIComponent(companySlug)}?source=widget`).then(r => r.json()),
+        fetch(`${scriptBaseUrl}/api/public/v1/companies/${encodeURIComponent(companySlug)}/jobs?source=widget`).then(r => r.json())
       ]);
 
       if (!compRes.success || !jobsRes.success) {
-        renderError('Unable to load career listings. Please try again later.');
+        const errorMsg = compRes.error || jobsRes.error || 'Unable to load career listings. Please try again later.';
+        renderError(errorMsg);
         return;
       }
 
       const company = compRes.data.company;
       const settings = compRes.data.career_page || {};
+
+      if (settings.widget_enabled === 0 || settings.widget_enabled === false || settings.widget_enabled === '0') {
+        renderError('Career widget service is currently deactivated for this organization.');
+        return;
+      }
+
       const jobs = jobsRes.jobs || [];
 
       renderPortal(company, settings, jobs);

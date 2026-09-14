@@ -228,6 +228,7 @@ CREATE TABLE IF NOT EXISTS crm_career_pages (
     id INT AUTO_INCREMENT PRIMARY KEY,
     admin_id INT NOT NULL,
     enabled TINYINT(1) DEFAULT 1,
+    widget_enabled TINYINT(1) DEFAULT 1,
     page_title VARCHAR(200) NULL,
     headline VARCHAR(255) NULL,
     description TEXT NULL,
