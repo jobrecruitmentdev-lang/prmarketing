@@ -58,9 +58,18 @@
   // Fetch company jobs and career settings
   async function loadCareerPortal() {
     try {
+      const fetchJson = async (url) => {
+        const r = await fetch(url);
+        const data = await r.json().catch(() => null);
+        if (!data) {
+          throw new Error('Could not parse response from career services.');
+        }
+        return data;
+      };
+
       const [compRes, jobsRes] = await Promise.all([
-        fetch(`${scriptBaseUrl}/api/public/v1/companies/${encodeURIComponent(companySlug)}?source=widget`).then(r => r.json()),
-        fetch(`${scriptBaseUrl}/api/public/v1/companies/${encodeURIComponent(companySlug)}/jobs?source=widget`).then(r => r.json())
+        fetchJson(`${scriptBaseUrl}/api/crm/public/v1/companies/${encodeURIComponent(companySlug)}?source=widget`),
+        fetchJson(`${scriptBaseUrl}/api/crm/public/v1/companies/${encodeURIComponent(companySlug)}/jobs?source=widget`)
       ]);
 
       if (!compRes.success || !jobsRes.success) {
@@ -82,7 +91,7 @@
       renderPortal(company, settings, jobs);
     } catch (err) {
       console.error('Widget error:', err);
-      renderError('Could not connect to career services.');
+      renderError(err.message || 'Could not connect to career services.');
     }
   }
 
@@ -377,11 +386,11 @@
       }
 
       try {
-        const res = await fetch(`${scriptBaseUrl}/api/public/v1/jobs/${jobId}/applications`, {
+        const res = await fetch(`${scriptBaseUrl}/api/crm/public/v1/jobs/${jobId}/applications`, {
           method: 'POST',
           body: formData
         });
-        const result = await res.json();
+        const result = await res.json().catch(() => ({ success: false, error: 'Invalid response from server' }));
 
         if (result.success) {
           formToast.className = 'cw-toast success';

@@ -18,9 +18,10 @@ require_once __DIR__ . '/public.php';
 
 $pdo = Database::getConnection();
 
-// Extract path relative to /api/crm
+// Extract path relative to /api/crm or /api/public/v1
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $path = preg_replace('#^.*?/api/crm#', '', $uri);
+$path = preg_replace('#^.*?/api(?=/public/v1)#', '', $path);
 $path = '/' . ltrim($path, '/');
 $method = $_SERVER['REQUEST_METHOD'];
 

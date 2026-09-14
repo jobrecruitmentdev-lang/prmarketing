@@ -35,6 +35,7 @@
 
   # 3. Clean Admin & API internal routing
   RewriteRule ^api/crm(/.*)?$ backend/api/crm/index.php [QSA,L]
+  RewriteRule ^api/public/v1(/.*)?$ backend/api/crm/index.php [QSA,L]
   RewriteRule ^api/v1(/.*)?$ backend/api/v1/index.php [QSA,L]
   RewriteRule ^api/leads/?$ backend/api/leads.php [QSA,L]
   RewriteRule ^jaatumeinaaya/login/?$ backend/admin/login.php [QSA,L]
@@ -61,7 +62,7 @@
 
   # 6. Fallback for missing/old CSS chunks
   RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteRule ^_next/static/chunks/([a-zA-Z0-9_\-]+)\.css$ /_next/static/chunks/0jxey4y63n2l_.css [L,QSA]
+  RewriteRule ^_next/static/chunks/([a-zA-Z0-9_\-]+)\.css$ /_next/static/chunks/0y0_bfgvm9-pb.css [L,QSA]
 
   # 7. CRM SPA Fallback for dynamic tenant routes
   RewriteCond %{REQUEST_URI} ^/crm/([^/]+)/dashboard/? [NC]
