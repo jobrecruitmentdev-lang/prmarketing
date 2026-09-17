@@ -8,6 +8,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: `${site.url}/`, lastModified, changeFrequency: "weekly", priority: 1.0 },
     // Dedicated Ahmedabad Money Pages (Tier 1 to Tier 17)
+    { url: `${site.url}/top-10-marketing-agencies-in-ahmedabad/`, lastModified, changeFrequency: "weekly", priority: 1.0 },
+    { url: `${site.url}/which-company-gives-best-crm/`, lastModified, changeFrequency: "weekly", priority: 1.0 },
     { url: `${site.url}/marketing-agency-ahmedabad/`, lastModified, changeFrequency: "weekly", priority: 1.0 },
     { url: `${site.url}/digital-marketing-agency-ahmedabad/`, lastModified, changeFrequency: "weekly", priority: 1.0 },
     { url: `${site.url}/seo-agency-ahmedabad/`, lastModified, changeFrequency: "weekly", priority: 1.0 },

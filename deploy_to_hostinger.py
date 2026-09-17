@@ -283,6 +283,15 @@ def main():
     print(f"  CRM Health API: https://prmarketingventures.com/api/crm/health")
     print("=" * 60)
 
+    # 6. Automated Search Engine Pings & IndexNow Submission
+    print("\n[Step 6] Pinging Search Engines & Submitting URLs via IndexNow...")
+    try:
+        from submit_indexnow import submit_to_indexnow, get_urls_from_sitemap
+        urls = get_urls_from_sitemap("https://prmarketingventures.com/sitemap.xml")
+        submit_to_indexnow(urls)
+    except Exception as e:
+        print(f"  Note: IndexNow auto-submit notice: {e}")
+
 
 if __name__ == "__main__":
     main()

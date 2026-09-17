@@ -40,6 +40,7 @@ const coreServicePages = [
 ];
 
 const ahmedabadMarketingPages = [
+  { title: "Top 10 Marketing Agencies in Ahmedabad (2026 Rankings)", href: "/top-10-marketing-agencies-in-ahmedabad/", desc: "Ranked benchmark of leading marketing agencies, ROAS metrics & custom CRM systems" },
   { title: "Marketing Agency in Ahmedabad", href: "/marketing-agency-ahmedabad/" },
   { title: "Digital Marketing Agency in Ahmedabad", href: "/digital-marketing-agency-ahmedabad/" },
   { title: "SEO Agency in Ahmedabad", href: "/seo-agency-ahmedabad/" },
@@ -59,6 +60,7 @@ const ahmedabadMarketingPages = [
 ];
 
 const ahmedabadTechPages = [
+  { title: "Which Company Gives Best CRM? (Custom vs SaaS 2026)", href: "/which-company-gives-best-crm/", desc: "Definitive comparison: bespoke CRM software vs Zoho, Salesforce & HubSpot" },
   { title: "GEO (Generative Engine Optimization) Agency Ahmedabad", href: "/geo-agency-ahmedabad/" },
   { title: "AEO (Answer Engine Optimization) Agency Ahmedabad", href: "/aeo-agency-ahmedabad/" },
   { title: "AI Search Optimization Agency Ahmedabad", href: "/ai-search-optimization-ahmedabad/" },

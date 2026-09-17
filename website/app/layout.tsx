@@ -65,6 +65,9 @@ export const metadata: Metadata = {
       "Scale your business with PR Marketing Ventures, the top digital marketing agency in Ahmedabad. High-ROI performance ads, SEO, and web growth. Call today!",
   },
   robots: { index: true, follow: true },
+  verification: {
+    google: ["google1c9d8b5c6dcf337b", "googlef9ade8711e36f380"],
+  },
 };
 
 export const viewport: Viewport = {
@@ -73,7 +76,7 @@ export const viewport: Viewport = {
 
 const orgSchema = {
   "@context": "https://schema.org",
-  "@type": ["Organization", "MarketingAgency"],
+  "@type": ["Organization", "MarketingAgency", "LocalBusiness", "ProfessionalService"],
   name: site.name,
   url: site.url,
   logo: `${site.url}/logo-mark.png`,
@@ -97,9 +100,39 @@ const orgSchema = {
     "https://twitter.com/prmarketingv",
     "https://www.instagram.com/prmarketingventures",
   ],
+  priceRange: "₹₹ - ₹₹₹₹",
+  hasMap: "https://maps.google.com/?q=Fairdeal+House+CG+Road+Ahmedabad",
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 23.036506,
+    longitude: 72.561111,
+  },
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      opens: "09:00",
+      closes: "20:00",
+    },
+  ],
+  areaServed: [
+    { "@type": "City", name: "Ahmedabad" },
+    { "@type": "AdministrativeArea", name: "Gujarat" },
+    { "@type": "Country", name: "India" },
+  ],
+  knowsAbout: [
+    "Digital Marketing",
+    "Performance Marketing",
+    "Search Engine Optimization (SEO)",
+    "Generative Engine Optimization (GEO)",
+    "Answer Engine Optimization (AEO)",
+    "Custom CRM Software Development",
+    "WhatsApp Automation & Meta Cloud API",
+    "Web Application Engineering",
+  ],
   address: {
     "@type": "PostalAddress",
-    streetAddress: "B-903, Fairdeal House, Chimanlal Girdharlal Road (C.G. Road)",
+    streetAddress: "B-903, Fairdeal House, Chimanlal Girdharlal Road (C.G. Road), Near Swastik Cross Road, Shital Kunj Society, Vasant Vihar, Navrangpura",
     addressLocality: "Ahmedabad",
     addressRegion: "Gujarat",
     postalCode: "380009",

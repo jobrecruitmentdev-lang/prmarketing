@@ -33,6 +33,10 @@ export const metadata: Metadata = {
     "Scale your business with PR Marketing Ventures, the top digital marketing agency in Ahmedabad. High-ROI performance ads, SEO, and web growth. Call today!",
   keywords: [
     "top 10 marketing agency in ahmedabad",
+    "top 10 marketing company in ahmedabad",
+    "marketing company in ahmedabad",
+    "marketing agency in ahmedabad",
+    "which company gives best crm",
     "digital agency ahmedabad",
     "digital marketing company",
     "digital marketing company in ahmedabad",

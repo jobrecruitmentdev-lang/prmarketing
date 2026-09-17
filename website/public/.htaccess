@@ -21,10 +21,11 @@
   RewriteCond %{THE_REQUEST} \s/index\.html[?\s] [NC]
   RewriteRule ^index\.html$ / [R=301,L]
 
-  # 1c. 301 Redirect direct .html requests to clean trailing-slash directory (excluding error pages and standalone demos)
+  # 1c. 301 Redirect direct .html requests to clean trailing-slash directory (excluding error pages, standalone demos & Google verification)
   RewriteCond %{THE_REQUEST} \s/([^.]+)\.html[?\s] [NC]
   RewriteCond %{REQUEST_URI} !^/404\.html$
   RewriteCond %{REQUEST_URI} !^/widget-demo\.html$
+  RewriteCond %{REQUEST_URI} !^/google[a-zA-Z0-9_\-]+\.html$
   RewriteRule ^([^.]+)\.html$ /$1/ [R=301,L]
 
   # Route /widget-demo/ to /widget-demo.html

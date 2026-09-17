@@ -3,15 +3,18 @@ import AhmedabadLandingPage from "@/components/AhmedabadLandingPage";
 import { IconTarget, IconSearch, IconTrendingUp, IconWorkflow, IconSparkles, IconBuilding } from "@/components/icons";
 
 export const metadata: Metadata = {
-  title: "Top Marketing Agency in Ahmedabad | PR Marketing Co.",
+  title: "Top 10 Marketing Agency in Ahmedabad | Best Marketing Company",
   description:
-    "Partner with PR Marketing Ventures, the leading marketing agency in Ahmedabad. Full-spectrum digital marketing, personal PR, web development, and media ads.",
+    "Partner with PR Marketing Ventures, the top marketing agency and marketing company in Ahmedabad. High-ROAS performance ads, SEO rankings, Next.js web apps & WhatsApp CRM.",
   keywords: [
     "top 10 marketing agency in ahmedabad",
-    "digital agency ahmedabad",
-    "digital marketing company",
-    "digital marketing company in ahmedabad",
+    "top 10 marketing company in ahmedabad",
+    "marketing company in ahmedabad",
     "marketing agency in ahmedabad",
+    "digital agency ahmedabad",
+    "digital marketing company in ahmedabad",
+    "best marketing agency in ahmedabad",
+    "best marketing company in ahmedabad",
   ],
   alternates: { canonical: "/marketing-agency-ahmedabad/" },
 };

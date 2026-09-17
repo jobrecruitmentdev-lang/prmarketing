@@ -21,6 +21,7 @@ const coreServices = [
 ];
 
 const ahmedabadMarketingLinks = [
+  { label: "Top 10 Marketing Agencies Ahmedabad", href: "/top-10-marketing-agencies-in-ahmedabad/" },
   { label: "Marketing Agency Ahmedabad", href: "/marketing-agency-ahmedabad/" },
   { label: "Digital Marketing Agency Ahmedabad", href: "/digital-marketing-agency-ahmedabad/" },
   { label: "SEO Agency Ahmedabad", href: "/seo-agency-ahmedabad/" },
@@ -40,6 +41,7 @@ const ahmedabadMarketingLinks = [
 ];
 
 const ahmedabadTechLinks = [
+  { label: "Which Company Gives Best CRM?", href: "/which-company-gives-best-crm/" },
   { label: "GEO Agency Ahmedabad", href: "/geo-agency-ahmedabad/" },
   { label: "AEO Agency Ahmedabad", href: "/aeo-agency-ahmedabad/" },
   { label: "AI Search Optimization Ahmedabad", href: "/ai-search-optimization-ahmedabad/" },
