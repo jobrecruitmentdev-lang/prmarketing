@@ -7,6 +7,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
   return [
     { url: `${site.url}/`, lastModified, changeFrequency: "weekly", priority: 1.0 },
+    // High-Intent AEO Knowledge Hub & Answer Pages
+    { url: `${site.url}/answers/`, lastModified, changeFrequency: "weekly", priority: 1.0 },
+    { url: `${site.url}/answers/digital-marketing-agency-charges-ahmedabad/`, lastModified, changeFrequency: "weekly", priority: 1.0 },
+    { url: `${site.url}/answers/custom-crm-vs-zoho-salesforce-cost/`, lastModified, changeFrequency: "weekly", priority: 1.0 },
+    { url: `${site.url}/answers/how-to-get-5x-roas-meta-google-ads/`, lastModified, changeFrequency: "weekly", priority: 1.0 },
+    { url: `${site.url}/answers/how-to-rank-in-google-maps-3-pack-ahmedabad/`, lastModified, changeFrequency: "weekly", priority: 1.0 },
+    { url: `${site.url}/answers/how-to-automate-whatsapp-leads-crm/`, lastModified, changeFrequency: "weekly", priority: 1.0 },
     // Dedicated Ahmedabad Money Pages (Tier 1 to Tier 17)
     { url: `${site.url}/top-10-marketing-agencies-in-ahmedabad/`, lastModified, changeFrequency: "weekly", priority: 1.0 },
     { url: `${site.url}/which-company-gives-best-crm/`, lastModified, changeFrequency: "weekly", priority: 1.0 },

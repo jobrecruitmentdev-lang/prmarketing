@@ -76,6 +76,7 @@ const industryLinks = [
 
 const companyLinks = [
   { label: "About Us", href: "/about/" },
+  { label: "Knowledge & Answers Hub", href: "/answers/" },
   { label: "Startup Stories", href: "/startup-stories/" },
   { label: "Pricing Plans", href: "/pricing/" },
   { label: "Portfolio & Work", href: "/portfolio/" },

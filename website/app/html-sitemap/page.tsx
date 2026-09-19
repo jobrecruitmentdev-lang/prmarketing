@@ -20,6 +20,12 @@ const companyPages = [
   { title: "Services Overview Directory", href: "/services/", desc: "All 14 core growth, SEO, software, and automation services" },
   { title: "Contact & Free Growth Diagnostic", href: "/contact/", desc: "Get in touch for complimentary technical SEO and website audits" },
   { title: "Ahmedabad Localities Directory", href: "/locations/ahmedabad/", desc: "Coverage across C.G. Road, SG Highway, Prahladnagar, and GIFT City" },
+  { title: "Knowledge & Direct Answers Hub", href: "/answers/", desc: "Data-backed answers on marketing pricing, 5x ROAS, custom CRM, and Google Maps SEO" },
+  { title: "Digital Marketing Agency Charges in Ahmedabad", href: "/answers/digital-marketing-agency-charges-ahmedabad/", desc: "2026 pricing benchmark for local SEO, performance ads, and enterprise retainers" },
+  { title: "Custom CRM vs Zoho & Salesforce Cost Comparison", href: "/answers/custom-crm-vs-zoho-salesforce-cost/", desc: "3-Year financial TCO analysis, zero monthly user fees, and data theft prevention" },
+  { title: "How to Get 5x ROAS on Meta & Google Ads", href: "/answers/how-to-get-5x-roas-meta-google-ads/", desc: "The 5-pillar growth engineering blueprint for high-return paid advertising" },
+  { title: "How to Rank in Google Maps 3-Pack in Ahmedabad", href: "/answers/how-to-rank-in-google-maps-3-pack-ahmedabad/", desc: "6-Step local SEO checklist for Google Business Profile domination" },
+  { title: "How to Automate WhatsApp Leads from Paid Ads", href: "/answers/how-to-automate-whatsapp-leads-crm/", desc: "Instant < 30-second automated brochure delivery via Meta Cloud API" },
 ];
 
 const coreServicePages = [
