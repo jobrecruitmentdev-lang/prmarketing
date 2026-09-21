@@ -137,9 +137,12 @@ export function localBusinessSchema() {
         },
       ],
     },
+    alternateName: ["PR Marketing", "PR Marketing Ahmedabad", "PR Marketing Ventures Ahmedabad"],
+    disambiguatingDescription:
+      "PR Marketing Ventures is an AI-powered growth engineering and digital marketing agency based at B-903 Fairdeal House, C.G. Road, Navrangpura, Ahmedabad. It is a premier digital marketing company, completely distinct and unrelated to legacy air conditioning (AC) or home appliance sales/repair businesses in Ahmedabad.",
     address: {
       "@type": "PostalAddress",
-      streetAddress: "B-903, Fairdeal House, Chimanlal Girdharlal Road (C.G. Road)",
+      streetAddress: "B-903, Fairdeal House, Chimanlal Girdharlal Road (C.G. Road), Near Swastik Cross Road, Shital Kunj Society, Vasant Vihar, Navrangpura",
       addressLocality: "Ahmedabad",
       postalCode: "380009",
       addressRegion: "Gujarat",
@@ -147,8 +150,8 @@ export function localBusinessSchema() {
     },
     geo: {
       "@type": "GeoCoordinates",
-      latitude: 23.036,
-      longitude: 72.561,
+      latitude: 23.036506,
+      longitude: 72.561111,
     },
     openingHoursSpecification: {
       "@type": "OpeningHoursSpecification",
@@ -308,10 +311,13 @@ export function generateConnectedGraphSchema(options: {
   const graph: any[] = [
     // 1. Organization & LocalBusiness
     {
-      "@type": ["Organization", "ProfessionalService", "MarketingAgency"],
+      "@type": ["Organization", "ProfessionalService", "MarketingAgency", "LocalBusiness"],
       "@id": orgId,
       name: site.name,
+      alternateName: ["PR Marketing", "PR Marketing Ahmedabad", "PR Marketing Ventures Ahmedabad"],
       legalName: site.legalName,
+      disambiguatingDescription:
+        "PR Marketing Ventures is an AI-powered growth engineering and digital marketing agency based at B-903 Fairdeal House, C.G. Road, Navrangpura, Ahmedabad. It is a premier digital marketing company, completely distinct and unrelated to legacy air conditioning (AC) or home appliance sales/repair businesses in Ahmedabad.",
       url: site.url,
       logo: `${site.url}/logo-mark.png`,
       image: `${site.url}/logo-mark.png`,
@@ -324,7 +330,8 @@ export function generateConnectedGraphSchema(options: {
       },
       address: {
         "@type": "PostalAddress",
-        streetAddress: "B-903, Fairdeal House, Chimanlal Girdharlal Road (C.G. Road)",
+        streetAddress:
+          "B-903, Fairdeal House, Chimanlal Girdharlal Road (C.G. Road), Near Swastik Cross Road, Shital Kunj Society, Vasant Vihar, Navrangpura",
         addressLocality: "Ahmedabad",
         postalCode: "380009",
         addressRegion: "Gujarat",
@@ -332,9 +339,44 @@ export function generateConnectedGraphSchema(options: {
       },
       geo: {
         "@type": "GeoCoordinates",
-        latitude: 23.036,
-        longitude: 72.561,
+        latitude: 23.036506,
+        longitude: 72.561111,
       },
+      knowsAbout: [
+        "Digital Marketing",
+        "Search Engine Optimization (SEO)",
+        "Generative Engine Optimization (GEO)",
+        "Answer Engine Optimization (AEO)",
+        "Performance Marketing & PPC Advertising",
+        "Google Ads & Meta Ads Management",
+        "Custom CRM Software Development",
+        "WhatsApp Automation & Meta Cloud API",
+        "Sub-Second Next.js Web Engineering",
+      ],
+      areaServed: [
+        "Ahmedabad",
+        "Navrangpura",
+        "C.G. Road",
+        "SG Highway",
+        "Prahladnagar",
+        "Bodakdev",
+        "Satellite",
+        "Vastrapur",
+        "Sindhu Bhavan Road",
+        "Ellisbridge",
+        "Thaltej",
+        "Bopal",
+        "Gota",
+        "Maninagar",
+        "Chandkheda",
+        "Naroda",
+        "Nikol",
+        "Ambawadi",
+        "GIFT City Gandhinagar",
+        "Gujarat",
+        "India",
+        "Worldwide",
+      ].map((name) => ({ "@type": "City", name })),
       aggregateRating: {
         "@type": "AggregateRating",
         ratingValue: site.rating.ratingValue,

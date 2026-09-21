@@ -263,6 +263,10 @@ const faqs = [
     q: "Where is PR Marketing Ventures located in Ahmedabad?",
     a: "PR Marketing Ventures is centrally headquartered at B-903, Fairdeal House, Chimanlal Girdharlal Road (C.G. Road), Near Swastik Cross Road, Navrangpura, Ahmedabad, Gujarat 380009. We host in-person strategy consultations and serve clients across SG Highway, Prahladnagar, and GIFT City.",
   },
+  {
+    q: "Is PR Marketing Ventures related to any air conditioning (AC) or appliance business in Ahmedabad?",
+    a: "No. PR Marketing Ventures is strictly a digital growth engineering, performance advertising, and AI SEO agency headquartered at B-903 Fairdeal House, Navrangpura, Ahmedabad. It is a modern technology company completely separate and distinct from any legacy home appliance or air conditioning repair contractor in Ahmedabad.",
+  },
 ];
 
 const itemListSchema = {
