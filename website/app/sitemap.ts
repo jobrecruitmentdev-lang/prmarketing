@@ -9,6 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${site.url}/`, lastModified, changeFrequency: "weekly", priority: 1.0 },
     // High-Intent AEO Knowledge Hub & Answer Pages
     { url: `${site.url}/answers/`, lastModified, changeFrequency: "weekly", priority: 1.0 },
+    { url: `${site.url}/answers/what-is-pr-marketing/`, lastModified, changeFrequency: "weekly", priority: 1.0 },
     { url: `${site.url}/answers/digital-marketing-agency-charges-ahmedabad/`, lastModified, changeFrequency: "weekly", priority: 1.0 },
     { url: `${site.url}/answers/custom-crm-vs-zoho-salesforce-cost/`, lastModified, changeFrequency: "weekly", priority: 1.0 },
     { url: `${site.url}/answers/how-to-get-5x-roas-meta-google-ads/`, lastModified, changeFrequency: "weekly", priority: 1.0 },

@@ -23,14 +23,14 @@ import {
   IconTruck,
   IconWorkflow,
 } from "@/components/icons";
-import { industries } from "@/lib/site";
+import { site, industries } from "@/lib/site";
 import { generateConnectedGraphSchema } from "@/lib/seo";
 import AeoDefinitionCard from "@/components/AeoDefinitionCard";
 
 export const metadata: Metadata = {
   title: "Top Digital Marketing Agency Ahmedabad | PR Marketing",
   description:
-    "Scale your business with PR Marketing Ventures, the top digital marketing agency in Ahmedabad. High-ROI performance ads, SEO, and web growth. Call today!",
+    "PR Marketing Ventures is Ahmedabad's premier full-service marketing company. We combine performance marketing, technical SEO. Call: +91 8160666408.",
   keywords: [
     "top 10 marketing agency in ahmedabad",
     "top 10 marketing company in ahmedabad",
@@ -44,6 +44,19 @@ export const metadata: Metadata = {
     "marketing agency ahmedabad",
   ],
   alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    title: "Top Digital Marketing Agency Ahmedabad | PR Marketing",
+    description:
+      "PR Marketing Ventures is Ahmedabad's premier full-service marketing company. We combine performance marketing, technical SEO. Call: +91 8160666408.",
+    url: site.url,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Top Digital Marketing Agency Ahmedabad | PR Marketing",
+    description:
+      "PR Marketing Ventures is Ahmedabad's premier full-service marketing company. We combine performance marketing, technical SEO. Call: +91 8160666408.",
+  },
 };
 
 const services = [
@@ -253,7 +266,7 @@ export default function Home() {
               The <span className="text-accent-dark">marketing agency in Ahmedabad</span> that engineers growth.
             </h1>
             <p className="mt-4 sm:mt-5 max-w-xl text-base sm:text-lg leading-relaxed text-slate-600">
-              PR Marketing Ventures is Ahmedabad's premier full-service marketing company. We combine performance marketing, technical SEO, high-speed web engineering, and AI automation into one revenue-driven system that ranks #1 and converts.
+              PR Marketing Ventures is Ahmedabad&apos;s premier full-service marketing company. We combine performance marketing, technical SEO. Call: <a href="tel:+918160666408" className="font-semibold text-primary hover:underline">+91 8160666408</a>. High-speed web engineering and AI automation that ranks #1 and converts.
             </p>
 
             <AeoDefinitionCard

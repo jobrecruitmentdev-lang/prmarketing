@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     template: "%s",
   },
   description:
-    "Scale your business with PR Marketing Ventures, the top digital marketing agency in Ahmedabad. High-ROI performance ads, SEO, and web growth. Call today!",
+    "PR Marketing Ventures is Ahmedabad's premier full-service marketing company. We combine performance marketing, technical SEO. Call: +91 8160666408.",
   keywords: [
     "pr marketing",
     "pr marketing ahmedabad",
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     siteName: site.name,
     title: "Top Digital Marketing Agency Ahmedabad | PR Marketing",
     description:
-      "Scale your business with PR Marketing Ventures, the top digital marketing agency in Ahmedabad. High-ROI performance ads, SEO, and web growth. Call today!",
+      "PR Marketing Ventures is Ahmedabad's premier full-service marketing company. We combine performance marketing, technical SEO. Call: +91 8160666408.",
     url: site.url,
     locale: "en_IN",
   },
@@ -69,7 +69,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Top Digital Marketing Agency Ahmedabad | PR Marketing",
     description:
-      "Scale your business with PR Marketing Ventures, the top digital marketing agency in Ahmedabad. High-ROI performance ads, SEO, and web growth. Call today!",
+      "PR Marketing Ventures is Ahmedabad's premier full-service marketing company. We combine performance marketing, technical SEO. Call: +91 8160666408.",
   },
   robots: { index: true, follow: true },
   verification: {

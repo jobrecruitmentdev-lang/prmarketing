@@ -80,6 +80,18 @@ const answerCategories = [
     ],
   },
   {
+    title: "PR Marketing & AI Search Authority (AEO / GEO)",
+    desc: "How earned media, brand reputation, and AI answer engine optimization drive organic dominance.",
+    questions: [
+      {
+        slug: "what-is-pr-marketing",
+        title: "What is PR Marketing? Definition, Key Elements & Strategic Guide (2026)",
+        tldr: "PR marketing merges public relations credibility, earned editorial media, and executive thought leadership with high-converting performance marketing and technical SEO to dominate Google AI Overviews and ChatGPT search.",
+        tag: "PR & AEO Strategy",
+      },
+    ],
+  },
+  {
     title: "Performance Marketing & 5x ROAS Scaling",
     desc: "Engineering profitable customer acquisition across Google, Meta, and LinkedIn.",
     questions: [
