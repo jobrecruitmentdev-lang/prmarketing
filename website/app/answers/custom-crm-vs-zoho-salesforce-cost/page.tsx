@@ -105,10 +105,19 @@ const qaSchema = {
     "@type": "Question",
     name: "Custom CRM vs Zoho vs Salesforce: Which is better and cheaper for Indian businesses?",
     text: "How does building a custom CRM software compare financially and operationally against subscription CRMs like Zoho, Salesforce, and HubSpot for an Indian company?",
+    datePublished: "2026-01-15T08:00:00+05:30",
+    author: {
+      "@type": "Person",
+      name: site.founder.name,
+      url: site.founder.linkedin,
+    },
     answerCount: 1,
     acceptedAnswer: {
       "@type": "Answer",
       text: "A custom CRM is significantly cheaper and more operationally flexible for Indian businesses with 10+ sales representatives. While Zoho costs ₹10.8 Lakhs+ and Salesforce costs ₹21.6 Lakhs+ over 3 years for 20 reps, a bespoke custom CRM from PR Marketing Ventures costs a one-time build fee of ₹1.5L–₹3L with ₹0 monthly user fees, 100% data ownership, and native Meta WhatsApp Cloud API integration.",
+      url: `${site.url}/answers/custom-crm-vs-zoho-salesforce-cost/`,
+      datePublished: "2026-01-15T08:00:00+05:30",
+      upvoteCount: 64,
       author: {
         "@type": "Organization",
         name: site.name,

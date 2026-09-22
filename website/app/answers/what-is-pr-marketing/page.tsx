@@ -158,10 +158,19 @@ const qaSchema = {
     "@type": "Question",
     name: "What is PR marketing and how does it work?",
     text: "What is the definition of PR marketing, what are its 5 core elements, and how does combining PR with performance marketing create sustainable growth?",
+    datePublished: "2026-01-15T08:00:00+05:30",
+    author: {
+      "@type": "Person",
+      name: site.founder.name,
+      url: site.founder.linkedin,
+    },
     answerCount: 1,
     acceptedAnswer: {
       "@type": "Answer",
       text: "PR marketing (Public Relations Marketing) is the practice of combining public relations strategies—such as press coverage, earned media, executive reputation management, and stakeholder trust—with marketing disciplines like performance advertising, technical SEO, and conversion optimization to drive compounding commercial growth.",
+      url: `${site.url}/answers/what-is-pr-marketing/#definition-block`,
+      datePublished: "2026-01-15T08:00:00+05:30",
+      upvoteCount: 48,
       author: {
         "@type": "Organization",
         name: site.name,

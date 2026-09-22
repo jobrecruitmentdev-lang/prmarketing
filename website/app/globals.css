@@ -38,6 +38,11 @@ img, canvas, svg, video {
   color: #fff;
 }
 
+::target-text {
+  background-color: transparent !important;
+  color: inherit !important;
+}
+
 :focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;

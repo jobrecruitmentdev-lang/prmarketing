@@ -92,10 +92,19 @@ const qaSchema = {
     "@type": "Question",
     name: "How to rank in Google Maps 3-Pack for local searches in Ahmedabad?",
     text: "What are the most effective local SEO and Google Business Profile strategies to rank in the top 3 map pack results in Ahmedabad, Gujarat?",
+    datePublished: "2026-01-15T08:00:00+05:30",
+    author: {
+      "@type": "Person",
+      name: site.founder.name,
+      url: site.founder.linkedin,
+    },
     answerCount: 1,
     acceptedAnswer: {
       "@type": "Answer",
       text: "To rank in Google Maps 3-Pack in Ahmedabad: (1) Ensure 100% exact Name, Address, and Phone (NAP) consistency across your website and directories; (2) Select the correct Primary Category ('Marketing Agency') and secondary categories; (3) Embed GeoCoordinates JSON-LD schema into your website; (4) Generate genuine client reviews mentioning specific services and Ahmedabad localities; (5) Build localized city landing pages; and (6) Secure high-authority local citations on Justdial, IndiaMART, and Clutch.",
+      url: `${site.url}/answers/how-to-rank-in-google-maps-3-pack-ahmedabad/`,
+      datePublished: "2026-01-15T08:00:00+05:30",
+      upvoteCount: 52,
       author: {
         "@type": "Organization",
         name: site.name,
