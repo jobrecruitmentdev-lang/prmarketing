@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import CtaBand from "@/components/CtaBand";
-import { multiBreadcrumbSchema, singleServiceSchema, faqSchema } from "@/lib/seo";
+import { multiBreadcrumbSchema, singleServiceSchema, faqSchema, localBusinessSchema } from "@/lib/seo";
 import { IconArrowRight, IconCheck } from "@/components/icons";
 
 export interface AhmedabadPageConfig {
@@ -58,6 +58,7 @@ export default function AhmedabadLandingPage({ config }: { config: AhmedabadPage
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify([
+            localBusinessSchema(),
             multiBreadcrumbSchema([
               { name: "Services", path: "/services/" },
               { name: config.badge, path: urlPath },
