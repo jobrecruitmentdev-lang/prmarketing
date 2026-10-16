@@ -19,7 +19,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 5rem; /* sticky header offset for #anchors */
+  scroll-padding-top: 6.75rem; /* sticky header + TopBar offset for #anchors */
   overflow-x: clip;
 }
 

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Logo from "./Logo";
+import TopBar from "./TopBar";
 import { IconMenu, IconX } from "./icons";
 import { nav } from "@/lib/site";
 
@@ -31,9 +32,11 @@ export default function Header() {
   }, [pathname]);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/85 backdrop-blur-md">
-      <div className="mx-auto flex h-18 max-w-6xl items-center justify-between px-4 sm:px-6">
-        <Logo />
+    <header className="sticky top-0 z-50">
+      <TopBar />
+      <div className="border-b border-slate-200 bg-white/90 backdrop-blur-md">
+        <div className="mx-auto flex h-18 max-w-6xl items-center justify-between px-4 sm:px-6">
+          <Logo />
 
         {/* Desktop / Laptop Navigation (Visible on lg: 1024px+) */}
         <nav aria-label="Main" className="hidden items-center gap-0.5 xl:gap-1 lg:flex">
@@ -103,6 +106,7 @@ export default function Header() {
           </Link>
         </nav>
       )}
+      </div>
     </header>
   );
 }

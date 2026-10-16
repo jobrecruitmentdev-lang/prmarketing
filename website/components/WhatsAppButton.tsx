@@ -7,12 +7,6 @@ export default function WhatsAppButton() {
   const [open, setOpen] = useState(false);
   const popupRef = useRef<HTMLDivElement>(null);
 
-  /* Auto-open after 5s — only once per session */
-  useEffect(() => {
-    if (sessionStorage.getItem("wa_popup_closed")) return;
-    const t = setTimeout(() => setOpen(true), 5000);
-    return () => clearTimeout(t);
-  }, []);
 
   /* Close on outside click */
   useEffect(() => {

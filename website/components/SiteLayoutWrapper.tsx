@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import InquiryPopupModal from "@/components/InquiryPopupModal";
 
 export default function SiteLayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -21,6 +22,7 @@ export default function SiteLayoutWrapper({ children }: { children: React.ReactN
       <main className="flex-1">{children}</main>
       <Footer />
       <WhatsAppButton />
+      <InquiryPopupModal />
     </>
   );
 }
