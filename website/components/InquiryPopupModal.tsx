@@ -7,29 +7,22 @@ import { IconX, IconCheck, IconZap, IconMapPin } from "./icons";
 export default function InquiryPopupModal() {
   const [isOpen, setIsOpen] = useState(false);
 
-  // Close handler with session persistence
+  // Close handler for the current view
   const handleClose = useCallback(() => {
     setIsOpen(false);
-    try {
-      sessionStorage.setItem("prm_inquiry_popup_closed", "true");
-    } catch {
-      // Ignore in case of private browsing restrictions
-    }
   }, []);
 
-  // 3-second delay trigger on page load
+  // 3-second delay trigger on every page load/reload
   useEffect(() => {
     try {
-      if (sessionStorage.getItem("prm_inquiry_popup_closed") === "true") {
-        return;
-      }
+      sessionStorage.removeItem("prm_inquiry_popup_closed");
     } catch {
-      // Continue if storage is restricted
+      // Ignore if storage is restricted
     }
 
     const timer = setTimeout(() => {
       setIsOpen(true);
-    }, 3000); // 3 seconds trigger
+    }, 3000); // 3 seconds trigger on every reload
 
     return () => clearTimeout(timer);
   }, []);
