@@ -62,7 +62,7 @@ export default function InquiryPopupModal() {
       onClick={handleClose}
     >
       <div
-        className="relative w-full max-w-lg rounded-3xl border border-[#d4af37]/40 bg-[#141416] p-5 sm:p-6 shadow-[0_25px_60px_rgba(0,0,0,0.85)] text-[#fbf7ec]"
+        className="relative w-full max-w-lg rounded-3xl border-2 border-[#d4af37] bg-white p-5 sm:p-6 shadow-[0_25px_60px_rgba(0,0,0,0.25)] text-slate-900"
         onClick={(e) => e.stopPropagation()} // Prevent click propagation
       >
         {/* Close Button */}
@@ -70,46 +70,46 @@ export default function InquiryPopupModal() {
           type="button"
           onClick={handleClose}
           aria-label="Close inquiry popup"
-          className="absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full bg-[#232326] text-slate-300 hover:text-white hover:bg-[#323238] border border-white/10 transition-colors cursor-pointer"
+          className="absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:text-black hover:bg-slate-200 border border-slate-200 transition-colors cursor-pointer"
         >
           <IconX className="h-4 w-4" />
         </button>
 
         {/* Top Tag & Title */}
         <div className="pr-8">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-[#d4af37]/40 bg-[#241c14] px-2.5 py-0.5 text-[10px] font-semibold tracking-wider text-[#e7c568] uppercase">
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-[#d4af37]/60 bg-amber-50 px-2.5 py-0.5 text-[10px] font-semibold tracking-wider text-amber-900 uppercase">
             <IconZap className="h-3 w-3 text-[#d4af37]" /> Ahmedabad&apos;s #1 Growth Agency
           </span>
           <h2
             id="inquiry-popup-title"
-            className="mt-2 font-heading text-lg sm:text-xl font-bold text-[#fbf7ec] leading-snug"
+            className="mt-2 font-heading text-lg sm:text-xl font-bold text-slate-950 leading-snug"
           >
             Scale Your Business &amp; Get 3X Inquiries
           </h2>
-          <p className="mt-1 text-xs text-[#cfc9be] leading-relaxed">
+          <p className="mt-1 text-xs text-slate-600 leading-relaxed">
             Full-funnel Google &amp; Meta Ads, #1 SEO rankings, and automated WhatsApp CRM pipelines engineered for verified ROI.
           </p>
         </div>
 
         {/* 3 Compact Bullets (Clean & No Scroll) */}
-        <div className="mt-3.5 space-y-1.5 text-xs text-[#e5dec9]">
+        <div className="mt-3.5 space-y-1.5 text-xs text-slate-700">
           <div className="flex items-center gap-2">
-            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#2a2418] text-[#d4af37]">
+            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-amber-100/90 text-[#b48a1e] border border-amber-300/60">
               <IconCheck className="h-3 w-3" />
             </span>
-            <span><strong className="text-white">Free 360° Growth &amp; Competitor Audit</strong> (Worth ₹15,000)</span>
+            <span><strong className="text-black font-semibold">Free 360° Growth &amp; Competitor Audit</strong> (Worth ₹15,000)</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#2a2418] text-[#d4af37]">
+            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-amber-100/90 text-[#b48a1e] border border-amber-300/60">
               <IconCheck className="h-3 w-3" />
             </span>
-            <span><strong className="text-white">Verified ROI Guarantee</strong> — High-intent buyer leads, zero vanity metrics</span>
+            <span><strong className="text-black font-semibold">Verified ROI Guarantee</strong> — High-intent buyer leads, zero vanity metrics</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#2a2418] text-[#d4af37]">
+            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-amber-100/90 text-[#b48a1e] border border-amber-300/60">
               <IconCheck className="h-3 w-3" />
             </span>
-            <span><strong className="text-white">15-Min Strategy Response</strong> directly via WhatsApp</span>
+            <span><strong className="text-black font-semibold">15-Min Strategy Response</strong> directly via WhatsApp</span>
           </div>
         </div>
 
@@ -130,15 +130,15 @@ export default function InquiryPopupModal() {
         </div>
 
         {/* Office & Dismiss Footer (Single Compact Line) */}
-        <div className="mt-3.5 pt-2.5 border-t border-white/10 flex items-center justify-between text-[11px] text-[#9a9488]">
+        <div className="mt-3.5 pt-2.5 border-t border-slate-200 flex items-center justify-between text-[11px] text-slate-600">
           <span className="flex items-center gap-1.5 truncate mr-2">
             <IconMapPin className="h-3 w-3 text-[#d4af37] shrink-0" />
-            <span className="truncate">B-903, Fairdeal House, C.G. Road, Ahmedabad</span>
+            <span className="truncate font-medium">B-903, Fairdeal House, C.G. Road, Ahmedabad</span>
           </span>
           <button
             type="button"
             onClick={handleClose}
-            className="text-slate-400 hover:text-slate-200 underline cursor-pointer shrink-0"
+            className="text-slate-500 hover:text-black underline cursor-pointer shrink-0"
           >
             Maybe later
           </button>
