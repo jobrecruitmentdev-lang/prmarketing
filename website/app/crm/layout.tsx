@@ -302,7 +302,7 @@ export default function CrmLayout({ children }: { children: React.ReactNode }) {
           </div>
         )}
 
-        <main className="flex-1 p-4 sm:p-8 max-w-7xl w-full mx-auto">
+        <main className="flex-1 p-4 sm:p-6 lg:p-6 max-w-7xl w-full mx-auto">
           {isAccessDenied ? (
             <div className="max-w-md mx-auto my-12 bg-white rounded-3xl border border-red-200 p-8 text-center shadow-sm">
               <div className="w-14 h-14 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center mx-auto mb-4 text-2xl font-bold">

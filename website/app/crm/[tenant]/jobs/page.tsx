@@ -352,22 +352,22 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
           <span className="text-xs text-slate-400">Total {jobs.length} listed positions</span>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs text-slate-700 min-w-[960px]">
+          <table className="w-full text-left text-xs text-slate-700">
             <thead className="bg-[#FAF9F5] border-b border-slate-200 text-slate-500 uppercase text-[10px] font-bold tracking-wider">
               <tr>
-                <th className="px-5 py-3.5 min-w-[200px]">Position Title</th>
-                <th className="px-4 py-3.5 whitespace-nowrap">Department</th>
-                <th className="px-4 py-3.5 whitespace-nowrap">Mode / Type</th>
-                <th className="px-4 py-3.5 whitespace-nowrap">Salary Range</th>
-                <th className="px-4 py-3.5 text-center whitespace-nowrap">Applicants</th>
-                <th className="px-4 py-3.5 text-center whitespace-nowrap">Status</th>
-                <th className="px-5 py-3.5 text-right whitespace-nowrap">Actions</th>
+                <th className="px-4 py-3">Position Title</th>
+                <th className="px-3 py-3 whitespace-nowrap">Department</th>
+                <th className="px-3 py-3 whitespace-nowrap">Mode / Type</th>
+                <th className="px-3 py-3 whitespace-nowrap">Salary Range</th>
+                <th className="px-3 py-3 text-center whitespace-nowrap">Applicants</th>
+                <th className="px-3 py-3 text-center whitespace-nowrap">Status</th>
+                <th className="px-4 py-3 text-right whitespace-nowrap">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {jobs.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-5 py-12 text-center text-slate-400">
+                  <td colSpan={7} className="px-4 py-12 text-center text-slate-400">
                     <BriefcaseIcon size={32} className="mx-auto text-slate-300 mb-2" />
                     No job openings posted yet. Click &quot;Create Job Opening&quot; above to create your first opening.
                   </td>
@@ -379,37 +379,37 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
 
                   return (
                     <tr key={job.id} className="hover:bg-slate-50 transition-colors">
-                      <td className="px-5 py-4 font-bold text-slate-900">
-                        <div className="text-sm">{job.title}</div>
+                      <td className="px-4 py-3.5 font-bold text-slate-900">
+                        <div className="text-sm font-bold text-slate-900">{job.title}</div>
                         <span className="text-[10px] text-slate-400 font-normal">📍 {job.location || 'Remote'}</span>
                       </td>
-                      <td className="px-4 py-4 font-semibold text-slate-700 whitespace-nowrap">{job.department}</td>
-                      <td className="px-4 py-4 whitespace-nowrap">
+                      <td className="px-3 py-3.5 font-semibold text-slate-700 whitespace-nowrap">{job.department}</td>
+                      <td className="px-3 py-3.5 whitespace-nowrap">
                         <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[10px] font-bold">
                           {job.work_mode || job.type}
                         </span>
                       </td>
-                      <td className="px-4 py-4 font-semibold text-slate-800 whitespace-nowrap">{sal}</td>
-                      <td className="px-4 py-4 text-center whitespace-nowrap">
+                      <td className="px-3 py-3.5 font-semibold text-slate-800 whitespace-nowrap">{sal}</td>
+                      <td className="px-3 py-3.5 text-center whitespace-nowrap">
                         <span className="inline-flex items-center justify-center font-bold text-slate-900">
                           {job.candidate_count || 0}
                         </span>
                       </td>
-                      <td className="px-4 py-4 text-center whitespace-nowrap">
-                        <span className={`inline-flex px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                      <td className="px-3 py-3.5 text-center whitespace-nowrap">
+                        <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
                           isPub ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-100 text-slate-600 border border-slate-200'
                         }`}>
                           {isPub ? 'Published' : 'Closed'}
                         </span>
                       </td>
-                      <td className="px-5 py-4 text-right whitespace-nowrap">
-                        <div className="inline-flex items-center justify-end gap-1.5 flex-nowrap">
+                      <td className="px-4 py-3.5 text-right whitespace-nowrap">
+                        <div className="inline-flex items-center justify-end gap-1 flex-nowrap">
                           {/* 1. Share Button (Before Preview) */}
                           <button
                             type="button"
                             onClick={() => handleShareJob(job)}
                             title="Share Job Public URL"
-                            className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border text-[11px] font-bold transition-all shadow-sm ${
+                            className={`inline-flex items-center gap-1 px-2 py-1 rounded-lg border text-[11px] font-bold transition-all shadow-sm ${
                               copiedJobId === job.id
                                 ? 'bg-emerald-50 border-emerald-300 text-emerald-700'
                                 : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-100 hover:text-slate-900'
@@ -417,12 +417,12 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
                           >
                             {copiedJobId === job.id ? (
                               <>
-                                <CheckIcon size={12} className="text-emerald-600" />
+                                <CheckIcon size={11} className="text-emerald-600" />
                                 <span>Copied!</span>
                               </>
                             ) : (
                               <>
-                                <ShareIcon size={12} className="text-slate-500" />
+                                <ShareIcon size={11} className="text-slate-500" />
                                 <span>Share</span>
                               </>
                             )}
@@ -433,7 +433,7 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
                             href={`/c/${tenantSlug}/careers/${job.slug || job.id}`}
                             target="_blank"
                             rel="noreferrer"
-                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 text-[11px] font-bold transition-all shadow-sm"
+                            className="inline-flex items-center gap-0.5 px-2 py-1 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 text-[11px] font-bold transition-all shadow-sm"
                           >
                             <span>Preview</span>
                             <ExternalLinkIcon size={11} className="text-slate-400" />
@@ -443,16 +443,16 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
                           <button
                             type="button"
                             onClick={() => handleToggleStatus(job.id, job.status)}
-                            className="px-2.5 py-1 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 text-[11px] font-bold transition-all shadow-sm"
+                            className="px-2 py-1 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 text-[11px] font-bold transition-all shadow-sm"
                           >
-                            {isPub ? 'Close Job' : 'Publish'}
+                            {isPub ? 'Close' : 'Publish'}
                           </button>
 
                           {/* 4. Edit Button */}
                           <button
                             type="button"
                             onClick={() => handleOpenEditModal(job)}
-                            className="px-2.5 py-1 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 text-[11px] font-bold transition-all shadow-sm"
+                            className="px-2 py-1 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 text-[11px] font-bold transition-all shadow-sm"
                           >
                             Edit
                           </button>
@@ -461,7 +461,7 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
                           <button
                             type="button"
                             onClick={() => handleDeleteJob(job.id, job.title)}
-                            className="px-2.5 py-1 rounded-lg border border-red-200 bg-white text-red-600 hover:bg-red-50 text-[11px] font-bold transition-all shadow-sm"
+                            className="px-2 py-1 rounded-lg border border-red-200 bg-white text-red-600 hover:bg-red-50 text-[11px] font-bold transition-all shadow-sm"
                           >
                             Delete
                           </button>
