@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, use } from 'react';
-import { crmFetch, CRM_API_BASE } from '@/lib/crmApi';
+import { crmFetch, CRM_API_BASE, getCurrentUser } from '@/lib/crmApi';
 import {
   BriefcaseIcon,
   PlusIcon,
@@ -76,7 +76,35 @@ export function formatSalary(job: {
 
 export default function JobsManagementPage({ params }: { params: Promise<{ tenant: string }> }) {
   const resolvedParams = use(params);
-  const tenantSlug = resolvedParams.tenant;
+
+  // Dynamic tenant resolution: extracts real tenant from active URL pathname or login session
+  const [tenantSlug, setTenantSlug] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      const match = window.location.pathname.match(/\/crm\/([^/]+)/);
+      if (match && match[1] && match[1] !== 'default') {
+        return decodeURIComponent(match[1]);
+      }
+      const u = getCurrentUser();
+      if (u?.tenant_slug && u.tenant_slug !== 'default') {
+        return u.tenant_slug;
+      }
+    }
+    return resolvedParams.tenant && resolvedParams.tenant !== 'default' ? resolvedParams.tenant : 'abcd';
+  });
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const match = window.location.pathname.match(/\/crm\/([^/]+)/);
+      if (match && match[1] && match[1] !== 'default') {
+        setTenantSlug(decodeURIComponent(match[1]));
+      } else {
+        const u = getCurrentUser();
+        if (u?.tenant_slug && u.tenant_slug !== 'default') {
+          setTenantSlug(u.tenant_slug);
+        }
+      }
+    }
+  }, [resolvedParams.tenant]);
 
   const [jobs, setJobs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -171,13 +199,26 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
   };
 
   const handleShareJob = async (job: any) => {
+    let currentTenant = tenantSlug;
+    if (typeof window !== 'undefined') {
+      const match = window.location.pathname.match(/\/crm\/([^/]+)/);
+      if (match && match[1] && match[1] !== 'default') {
+        currentTenant = decodeURIComponent(match[1]);
+      } else {
+        const u = getCurrentUser();
+        if (u?.tenant_slug && u.tenant_slug !== 'default') {
+          currentTenant = u.tenant_slug;
+        }
+      }
+    }
+
     const slugOrId = job.slug || job.id;
     const origin = typeof window !== 'undefined' ? window.location.origin : 'https://prmarketingventures.com';
-    const shareUrl = `${origin}/c/${tenantSlug}/careers/${slugOrId}`;
+    const shareUrl = `${origin}/c/${currentTenant}/careers/${slugOrId}`;
 
     const shareData = {
       title: `${job.title} | Careers`,
-      text: `Explore job opening for ${job.title} at ${tenantSlug}`,
+      text: `Explore job opening for ${job.title} at ${currentTenant}`,
       url: shareUrl,
     };
 

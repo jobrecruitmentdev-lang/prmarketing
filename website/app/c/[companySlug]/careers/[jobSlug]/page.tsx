@@ -98,6 +98,9 @@ export default function JobDetailPage({
         }
         setJob(data.job);
         setCompany(data.company);
+        if (data.company?.slug && data.company.slug !== companySlug) {
+          setCompanySlug(data.company.slug);
+        }
       } catch {
         setError('Could not load job details.');
       } finally {

@@ -236,7 +236,36 @@ function handlePublicRoutes(string $subpath, string $method, PDO $pdo): void {
         $job = $jStmt->fetch();
 
         if (!$job) {
-            jsonResponse(['success' => false, 'error' => 'Job opening not found or no longer accepting applications'], 404);
+            // Intelligent fallback: If job wasn't found under $company (e.g. accessed with 'default' or cross-tenant slug),
+            // search across all active companies by slug or id:
+            $globalStmt = $pdo->prepare("
+                SELECT 
+                    j.id, j.title, j.slug, j.department, j.location, 
+                    COALESCE(NULLIF(j.job_type, ''), 'Full-time') as type, 
+                    COALESCE(NULLIF(j.job_type, ''), 'Full-time') as job_type, 
+                    j.work_mode,
+                    j.salary_range, j.salary_min, j.salary_max, j.is_salary_disclosed, j.experience, j.requirements as skills, j.description, j.created_at as published_at, j.created_at,
+                    a.id as company_id, a.slug as company_slug, a.company_display_name, a.logo_url, a.website_url
+                FROM crm_jobs j
+                JOIN crm_admins a ON j.admin_id = a.id
+                WHERE a.status = 'active' AND (j.slug = ? OR j.id = ?) AND (j.status = 'published' OR j.status = 'Open')
+                LIMIT 1
+            ");
+            $globalStmt->execute([$jobSlug, (int)$jobSlug]);
+            $foundJob = $globalStmt->fetch();
+
+            if ($foundJob) {
+                $company = [
+                    'id' => (int)$foundJob['company_id'],
+                    'name' => $foundJob['company_display_name'],
+                    'slug' => $foundJob['company_slug'],
+                    'logo' => $foundJob['logo_url'],
+                    'website' => $foundJob['website_url']
+                ];
+                $job = $foundJob;
+            } else {
+                jsonResponse(['success' => false, 'error' => 'Job opening not found or no longer accepting applications'], 404);
+            }
         }
 
         jsonResponse([
