@@ -257,10 +257,13 @@ function handlePublicRoutes(string $subpath, string $method, PDO $pdo): void {
             if ($foundJob) {
                 $company = [
                     'id' => (int)$foundJob['company_id'],
+                    'company_display_name' => $foundJob['company_display_name'],
                     'name' => $foundJob['company_display_name'],
                     'slug' => $foundJob['company_slug'],
                     'logo' => $foundJob['logo_url'],
-                    'website' => $foundJob['website_url']
+                    'logo_url' => $foundJob['logo_url'],
+                    'website' => $foundJob['website_url'],
+                    'website_url' => $foundJob['website_url']
                 ];
                 $job = $foundJob;
             } else {
@@ -271,10 +274,10 @@ function handlePublicRoutes(string $subpath, string $method, PDO $pdo): void {
         jsonResponse([
             'success' => true,
             'company' => [
-                'name' => $company['company_display_name'],
+                'name' => $company['company_display_name'] ?? $company['name'],
                 'slug' => $company['slug'],
-                'logo' => $company['logo_url'],
-                'website' => $company['website_url']
+                'logo' => $company['logo_url'] ?? $company['logo'] ?? null,
+                'website' => $company['website_url'] ?? $company['website'] ?? null
             ],
             'job' => $job
         ]);
