@@ -6,6 +6,8 @@ import {
   BriefcaseIcon,
   PlusIcon,
   ExternalLinkIcon,
+  ShareIcon,
+  CheckIcon,
 } from '@/components/crm/CrmIcons';
 
 export function formatSalary(job: {
@@ -78,6 +80,7 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
 
   const [jobs, setJobs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [copiedJobId, setCopiedJobId] = useState<number | null>(null);
 
   // Job Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -164,6 +167,44 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
       alert('Error: ' + err.message);
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const handleShareJob = async (job: any) => {
+    const slugOrId = job.slug || job.id;
+    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://prmarketingventures.com';
+    const shareUrl = `${origin}/c/${tenantSlug}/careers/${slugOrId}`;
+
+    const shareData = {
+      title: `${job.title} | Careers`,
+      text: `Explore job opening for ${job.title} at ${tenantSlug}`,
+      url: shareUrl,
+    };
+
+    if (typeof navigator !== 'undefined' && navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+      try {
+        await navigator.share(shareData);
+        return;
+      } catch (err: any) {
+        if (err.name === 'AbortError') return;
+      }
+    }
+
+    try {
+      if (typeof navigator !== 'undefined' && navigator.clipboard) {
+        await navigator.clipboard.writeText(shareUrl);
+      } else {
+        const input = document.createElement('input');
+        input.value = shareUrl;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        document.body.removeChild(input);
+      }
+      setCopiedJobId(job.id);
+      setTimeout(() => setCopiedJobId(null), 2500);
+    } catch (err) {
+      alert(`Job link: ${shareUrl}`);
     }
   };
 
@@ -311,16 +352,16 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
           <span className="text-xs text-slate-400">Total {jobs.length} listed positions</span>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs text-slate-700">
+          <table className="w-full text-left text-xs text-slate-700 min-w-[960px]">
             <thead className="bg-[#FAF9F5] border-b border-slate-200 text-slate-500 uppercase text-[10px] font-bold tracking-wider">
               <tr>
-                <th className="px-5 py-3.5">Position Title</th>
-                <th className="px-5 py-3.5">Department</th>
-                <th className="px-5 py-3.5">Mode / Type</th>
-                <th className="px-5 py-3.5">Salary Range</th>
-                <th className="px-5 py-3.5">Applicants</th>
-                <th className="px-5 py-3.5">Status</th>
-                <th className="px-5 py-3.5 text-right">Actions</th>
+                <th className="px-5 py-3.5 min-w-[200px]">Position Title</th>
+                <th className="px-4 py-3.5 whitespace-nowrap">Department</th>
+                <th className="px-4 py-3.5 whitespace-nowrap">Mode / Type</th>
+                <th className="px-4 py-3.5 whitespace-nowrap">Salary Range</th>
+                <th className="px-4 py-3.5 text-center whitespace-nowrap">Applicants</th>
+                <th className="px-4 py-3.5 text-center whitespace-nowrap">Status</th>
+                <th className="px-5 py-3.5 text-right whitespace-nowrap">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
@@ -339,55 +380,92 @@ export default function JobsManagementPage({ params }: { params: Promise<{ tenan
                   return (
                     <tr key={job.id} className="hover:bg-slate-50 transition-colors">
                       <td className="px-5 py-4 font-bold text-slate-900">
-                        <div>{job.title}</div>
+                        <div className="text-sm">{job.title}</div>
                         <span className="text-[10px] text-slate-400 font-normal">📍 {job.location || 'Remote'}</span>
                       </td>
-                      <td className="px-5 py-4 font-semibold">{job.department}</td>
-                      <td className="px-5 py-4">
+                      <td className="px-4 py-4 font-semibold text-slate-700 whitespace-nowrap">{job.department}</td>
+                      <td className="px-4 py-4 whitespace-nowrap">
                         <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[10px] font-bold">
                           {job.work_mode || job.type}
                         </span>
                       </td>
-                      <td className="px-5 py-4 font-semibold text-slate-800">{sal}</td>
-                      <td className="px-5 py-4">
-                        <span className="inline-flex items-center gap-1 font-bold text-slate-900">
+                      <td className="px-4 py-4 font-semibold text-slate-800 whitespace-nowrap">{sal}</td>
+                      <td className="px-4 py-4 text-center whitespace-nowrap">
+                        <span className="inline-flex items-center justify-center font-bold text-slate-900">
                           {job.candidate_count || 0}
                         </span>
                       </td>
-                      <td className="px-5 py-4">
+                      <td className="px-4 py-4 text-center whitespace-nowrap">
                         <span className={`inline-flex px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                          isPub ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-600'
+                          isPub ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-100 text-slate-600 border border-slate-200'
                         }`}>
                           {isPub ? 'Published' : 'Closed'}
                         </span>
                       </td>
-                      <td className="px-5 py-4 text-right space-x-2">
-                        <a
-                          href={`/c/${tenantSlug}/careers/${job.slug || job.id}`}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="px-2.5 py-1 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-100 text-[11px] font-bold inline-block"
-                        >
-                          Preview ↗
-                        </a>
-                        <button
-                          onClick={() => handleToggleStatus(job.id, job.status)}
-                          className="px-2.5 py-1 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-100 text-[11px] font-bold"
-                        >
-                          {isPub ? 'Close Job' : 'Publish'}
-                        </button>
-                        <button
-                          onClick={() => handleOpenEditModal(job)}
-                          className="px-2.5 py-1 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-100 text-[11px] font-bold"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => handleDeleteJob(job.id, job.title)}
-                          className="px-2.5 py-1 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 text-[11px] font-bold"
-                        >
-                          Delete
-                        </button>
+                      <td className="px-5 py-4 text-right whitespace-nowrap">
+                        <div className="inline-flex items-center justify-end gap-1.5 flex-nowrap">
+                          {/* 1. Share Button (Before Preview) */}
+                          <button
+                            type="button"
+                            onClick={() => handleShareJob(job)}
+                            title="Share Job Public URL"
+                            className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border text-[11px] font-bold transition-all shadow-sm ${
+                              copiedJobId === job.id
+                                ? 'bg-emerald-50 border-emerald-300 text-emerald-700'
+                                : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-100 hover:text-slate-900'
+                            }`}
+                          >
+                            {copiedJobId === job.id ? (
+                              <>
+                                <CheckIcon size={12} className="text-emerald-600" />
+                                <span>Copied!</span>
+                              </>
+                            ) : (
+                              <>
+                                <ShareIcon size={12} className="text-slate-500" />
+                                <span>Share</span>
+                              </>
+                            )}
+                          </button>
+
+                          {/* 2. Preview Button */}
+                          <a
+                            href={`/c/${tenantSlug}/careers/${job.slug || job.id}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 text-[11px] font-bold transition-all shadow-sm"
+                          >
+                            <span>Preview</span>
+                            <ExternalLinkIcon size={11} className="text-slate-400" />
+                          </a>
+
+                          {/* 3. Close / Publish Button */}
+                          <button
+                            type="button"
+                            onClick={() => handleToggleStatus(job.id, job.status)}
+                            className="px-2.5 py-1 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 text-[11px] font-bold transition-all shadow-sm"
+                          >
+                            {isPub ? 'Close Job' : 'Publish'}
+                          </button>
+
+                          {/* 4. Edit Button */}
+                          <button
+                            type="button"
+                            onClick={() => handleOpenEditModal(job)}
+                            className="px-2.5 py-1 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 text-[11px] font-bold transition-all shadow-sm"
+                          >
+                            Edit
+                          </button>
+
+                          {/* 5. Delete Button */}
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteJob(job.id, job.title)}
+                            className="px-2.5 py-1 rounded-lg border border-red-200 bg-white text-red-600 hover:bg-red-50 text-[11px] font-bold transition-all shadow-sm"
+                          >
+                            Delete
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   );
