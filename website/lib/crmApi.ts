@@ -27,29 +27,63 @@ export function getCrmResumeUrl(filename: string, token?: string): string {
 
 export function getAuthToken(): string | null {
   if (typeof window === 'undefined') return null;
-  return localStorage.getItem('crm_token');
+  const sessionToken = sessionStorage.getItem('crm_token');
+  if (sessionToken) return sessionToken;
+
+  // Migration fallback: if present in localStorage from prior session, migrate into this tab's sessionStorage
+  try {
+    const legacyToken = localStorage.getItem('crm_token');
+    if (legacyToken) {
+      sessionStorage.setItem('crm_token', legacyToken);
+      localStorage.removeItem('crm_token');
+      return legacyToken;
+    }
+  } catch {}
+  return null;
 }
 
 export function getCurrentUser() {
   if (typeof window === 'undefined') return null;
-  const raw = localStorage.getItem('crm_user');
-  try {
-    return raw ? JSON.parse(raw) : null;
-  } catch {
-    return null;
+  const raw = sessionStorage.getItem('crm_user');
+  if (raw) {
+    try {
+      return JSON.parse(raw);
+    } catch {
+      return null;
+    }
   }
+
+  // Migration fallback
+  try {
+    const rawLegacy = localStorage.getItem('crm_user');
+    if (rawLegacy) {
+      const parsed = JSON.parse(rawLegacy);
+      sessionStorage.setItem('crm_user', rawLegacy);
+      localStorage.removeItem('crm_user');
+      return parsed;
+    }
+  } catch {}
+  return null;
 }
 
 export function setAuthSession(token: string, user: any) {
   if (typeof window === 'undefined') return;
-  localStorage.setItem('crm_token', token);
-  localStorage.setItem('crm_user', JSON.stringify(user));
+  sessionStorage.setItem('crm_token', token);
+  sessionStorage.setItem('crm_user', JSON.stringify(user));
+  try {
+    localStorage.removeItem('crm_token');
+    localStorage.removeItem('crm_user');
+  } catch {}
 }
 
 export function clearAuthSession() {
   if (typeof window === 'undefined') return;
-  localStorage.removeItem('crm_token');
-  localStorage.removeItem('crm_user');
+  sessionStorage.removeItem('crm_token');
+  sessionStorage.removeItem('crm_user');
+  try {
+    localStorage.removeItem('crm_token');
+    localStorage.removeItem('crm_user');
+  } catch {}
 }
 
 export async function crmFetch(endpoint: string, options: RequestInit = {}) {

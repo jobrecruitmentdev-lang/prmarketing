@@ -85,14 +85,6 @@ export default function EmployeesManagementPage({ params }: { params: Promise<{ 
   useEffect(() => {
     setCurrentUser(getCurrentUser());
     loadEmployees();
-
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'crm_token' || e.key === 'crm_user') {
-        setCurrentUser(getCurrentUser());
-      }
-    };
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
   }, [tenantSlug]);
 
   const handleCreateEmployee = async (e: React.FormEvent) => {

@@ -105,22 +105,6 @@ export default function CrmLayout({ children }: { children: React.ReactNode }) {
       return;
     }
     setUser(currentUser);
-
-    // Multi-tab session synchronization: update active session if changed in another tab
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'crm_token' || e.key === 'crm_user') {
-        const updatedUser = getCurrentUser();
-        const updatedToken = getAuthToken();
-        if ((!updatedUser || !updatedToken) && !pathname.includes('/crm/login')) {
-          router.push('/crm/login');
-        } else {
-          setUser(updatedUser);
-        }
-      }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
   }, [pathname, router]);
 
   if (!mounted) return null;
