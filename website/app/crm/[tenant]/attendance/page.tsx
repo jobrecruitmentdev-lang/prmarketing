@@ -13,6 +13,7 @@ export default function AttendanceRegisterPage({ params }: { params: Promise<{ t
   const [summary, setSummary] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [actionFeedback, setActionFeedback] = useState<string | null>(null);
+  const [isSendingEmail, setIsSendingEmail] = useState(false);
 
   // Export Report Modal State
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
@@ -105,6 +106,25 @@ export default function AttendanceRegisterPage({ params }: { params: Promise<{ t
       loadAttendance(date);
     } catch (err: any) {
       alert('Error marking attendance: ' + err.message);
+    }
+  };
+
+  const handleSendDailyEmail = async () => {
+    if (!confirm("Are you sure you want to dispatch today's attendance completion report to jobrecruitment.in@gmail.com?")) {
+      return;
+    }
+    try {
+      setIsSendingEmail(true);
+      const res = await crmFetch('/api/attendance/trigger-daily-email', {
+        method: 'POST',
+        body: JSON.stringify({ date, recipient: 'jobrecruitment.in@gmail.com' }),
+      });
+      setActionFeedback(`✅ ${res.message || 'Attendance report sent to jobrecruitment.in@gmail.com!'}`);
+      setTimeout(() => setActionFeedback(null), 5000);
+    } catch (err: any) {
+      alert('Error sending email report: ' + err.message);
+    } finally {
+      setIsSendingEmail(false);
     }
   };
 
@@ -378,6 +398,14 @@ export default function AttendanceRegisterPage({ params }: { params: Promise<{ t
             />
           </div>
           <button
+            onClick={handleSendDailyEmail}
+            disabled={isSendingEmail}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-200 bg-white text-slate-800 text-xs font-bold shadow-sm hover:bg-slate-50 transition-colors cursor-pointer disabled:opacity-50"
+            title="Dispatch Daily Attendance Report to jobrecruitment.in@gmail.com"
+          >
+            <span>📧 {isSendingEmail ? 'Dispatching...' : 'Email Daily Report'}</span>
+          </button>
+          <button
             onClick={handleOpenExportModal}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-200 bg-white text-slate-800 text-xs font-bold shadow-sm hover:bg-slate-50 transition-colors cursor-pointer"
           >
@@ -400,6 +428,42 @@ export default function AttendanceRegisterPage({ params }: { params: Promise<{ t
           <span>{actionFeedback}</span>
         </div>
       )}
+
+      {/* Live Today Shift Overview (Login Auto Check-in & Checkout Counters) */}
+      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#E2E8F0] shadow-sm">
+        <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-100 flex-wrap gap-2">
+          <div className="flex items-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span className="text-xs font-extrabold uppercase tracking-wider text-slate-800">
+              Live Workday Shift Status ({date}) — Asia/Kolkata (IST)
+            </span>
+          </div>
+          <span className="text-[11px] text-slate-400 font-medium">
+            Automated check-ins logged via CRM authentication
+          </span>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+          <div className="bg-slate-50 p-3 rounded-xl border border-slate-100">
+            <div className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">Total Staff</div>
+            <div className="text-xl font-black text-slate-900 mt-0.5">{records.length}</div>
+          </div>
+          <div className="bg-emerald-50/70 p-3 rounded-xl border border-emerald-100">
+            <div className="text-[10px] font-extrabold text-emerald-700 uppercase tracking-wider">Checked In (Via Login)</div>
+            <div className="text-xl font-black text-emerald-700 mt-0.5">{records.filter(r => !!r.check_in_time).length}</div>
+          </div>
+          <div className="bg-blue-50/70 p-3 rounded-xl border border-blue-100">
+            <div className="text-[10px] font-extrabold text-blue-700 uppercase tracking-wider">Checked Out (Shift Over)</div>
+            <div className="text-xl font-black text-blue-700 mt-0.5">{records.filter(r => !!r.check_out_time).length}</div>
+          </div>
+          <div className="bg-amber-50/70 p-3 rounded-xl border border-amber-100">
+            <div className="text-[10px] font-extrabold text-amber-700 uppercase tracking-wider">Still Working</div>
+            <div className="text-xl font-black text-amber-700 mt-0.5">
+              {Math.max(0, records.filter(r => !!r.check_in_time).length - records.filter(r => !!r.check_out_time).length)}
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Monthly Summary Statistics */}
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
@@ -444,8 +508,21 @@ export default function AttendanceRegisterPage({ params }: { params: Promise<{ t
                     <div className="font-semibold">{r.designation || 'Staff'}</div>
                     <span className="text-[10px] text-slate-500">{r.department || 'Operations'}</span>
                   </td>
-                  <td className="px-5 py-4 font-mono text-[11px] text-slate-500">
-                    {r.check_in_time ? `${r.check_in_time} - ${r.check_out_time || 'Present'}` : 'Not checked in'}
+                  <td className="px-5 py-4">
+                    {r.check_in_time ? (
+                      <div className="space-y-1">
+                        <div className="text-emerald-700 font-mono text-[11px] font-bold flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span>
+                          <span>In: {r.check_in_time}</span>
+                        </div>
+                        <div className="text-slate-600 font-mono text-[11px] flex items-center gap-1.5">
+                          <span className={`w-1.5 h-1.5 rounded-full inline-block ${r.check_out_time ? 'bg-blue-500' : 'bg-amber-400 animate-pulse'}`}></span>
+                          <span>Out: {r.check_out_time || 'In Progress'}</span>
+                        </div>
+                      </div>
+                    ) : (
+                      <span className="text-[11px] text-slate-400 italic">No login recorded</span>
+                    )}
                   </td>
                   <td className="px-5 py-4">
                     <span className={`inline-flex px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${

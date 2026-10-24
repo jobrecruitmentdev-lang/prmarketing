@@ -45,8 +45,11 @@ function handleAuthRoutes(string $subpath, string $method, PDO $pdo): void {
             }
         }
 
-        // Fetch assigned modules if employee
+        // Fetch assigned modules and employee record if employee
         $modules = [];
+        $employeeId = null;
+        $attendanceData = null;
+
         if ($user['role'] === 'employee') {
             $mStmt = $pdo->prepare("
                 SELECT em.module 
@@ -56,6 +59,51 @@ function handleAuthRoutes(string $subpath, string $method, PDO $pdo): void {
             ");
             $mStmt->execute([$user['id']]);
             $modules = $mStmt->fetchAll(PDO::FETCH_COLUMN);
+
+            // Fetch employee record
+            $empStmt = $pdo->prepare("SELECT id FROM crm_employees WHERE user_id = ? AND admin_id = ? AND status = 'active' LIMIT 1");
+            $empStmt->execute([$user['id'], $user['admin_id']]);
+            $empRecord = $empStmt->fetch();
+
+            if ($empRecord) {
+                $employeeId = (int)$empRecord['id'];
+                $adminId = (int)$user['admin_id'];
+
+                // Auto Check-In Hook (Server-Side IST Asia/Kolkata)
+                date_default_timezone_set('Asia/Kolkata');
+                $todayDate = date('Y-m-d');
+                $nowTime = date('H:i:s');
+
+                // Check if attendance already recorded today
+                $attCheckStmt = $pdo->prepare("SELECT id, check_in_time, check_out_time, status FROM crm_attendance_records WHERE employee_id = ? AND date = ? LIMIT 1");
+                $attCheckStmt->execute([$employeeId, $todayDate]);
+                $existingAtt = $attCheckStmt->fetch();
+
+                if (!$existingAtt) {
+                    $insAtt = $pdo->prepare("
+                        INSERT INTO crm_attendance_records (admin_id, employee_id, date, status, check_in_time)
+                        VALUES (?, ?, ?, 'present', ?)
+                        ON DUPLICATE KEY UPDATE updated_at = CURRENT_TIMESTAMP
+                    ");
+                    $insAtt->execute([$adminId, $employeeId, $todayDate, $nowTime]);
+
+                    $attendanceData = [
+                        'date' => $todayDate,
+                        'check_in_time' => $nowTime,
+                        'check_out_time' => null,
+                        'status' => 'present',
+                        'is_new_checkin' => true
+                    ];
+                } else {
+                    $attendanceData = [
+                        'date' => $todayDate,
+                        'check_in_time' => $existingAtt['check_in_time'],
+                        'check_out_time' => $existingAtt['check_out_time'],
+                        'status' => $existingAtt['status'],
+                        'is_new_checkin' => false
+                    ];
+                }
+            }
         } elseif ($user['role'] === 'admin') {
             $modules = ['recruitment', 'sales', 'attendance', 'employees'];
         } elseif ($user['role'] === 'master') {
@@ -68,6 +116,7 @@ function handleAuthRoutes(string $subpath, string $method, PDO $pdo): void {
 
         $payload = [
             'id' => (int)$user['id'],
+            'employee_id' => $employeeId,
             'name' => $user['name'],
             'email' => $user['email'],
             'role' => $user['role'],
@@ -83,7 +132,8 @@ function handleAuthRoutes(string $subpath, string $method, PDO $pdo): void {
             'success' => true,
             'message' => 'Login successful',
             'token' => $token,
-            'user' => $payload
+            'user' => $payload,
+            'attendance' => $attendanceData
         ]);
     }
 

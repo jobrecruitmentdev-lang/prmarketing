@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { getCurrentUser, getAuthToken, clearAuthSession } from '@/lib/crmApi';
+import { getCurrentUser, getAuthToken, clearAuthSession, crmFetch } from '@/lib/crmApi';
 import {
   BriefcaseIcon,
   UsersIcon,
@@ -20,6 +20,75 @@ export default function CrmLayout({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<any>(null);
   const [mounted, setMounted] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Shift Checkout Confirmation Modal State for Employees
+  const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
+  const [isShiftOverChecked, setIsShiftOverChecked] = useState(false);
+  const [isSubmittingCheckout, setIsSubmittingCheckout] = useState(false);
+  const [checkoutStatusData, setCheckoutStatusData] = useState<{
+    checkInTime?: string;
+    checkOutTime?: string;
+    currentTime?: string;
+    duration?: string;
+    isCheckedOut?: boolean;
+  } | null>(null);
+
+  const formatTimeAMPM = (timeStr?: string) => {
+    if (!timeStr) return '-';
+    const parts = timeStr.split(':');
+    if (parts.length < 2) return timeStr;
+    let hours = parseInt(parts[0], 10);
+    const minutes = parts[1];
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12;
+    return `${hours.toString().padStart(2, '0')}:${minutes} ${ampm}`;
+  };
+
+  const handleLogout = async () => {
+    if (user?.role !== 'employee') {
+      clearAuthSession();
+      router.push('/crm/login');
+      return;
+    }
+
+    try {
+      const res = await crmFetch('/api/attendance/my-status').catch(() => null);
+      if (res?.attendance) {
+        if (res.attendance.is_checked_out) {
+          clearAuthSession();
+          router.push('/crm/login');
+          return;
+        }
+        setCheckoutStatusData({
+          checkInTime: res.attendance.check_in_time,
+          checkOutTime: res.attendance.check_out_time,
+          currentTime: res.current_server_time,
+          duration: res.attendance.working_duration,
+          isCheckedOut: res.attendance.is_checked_out,
+        });
+      }
+    } catch {
+      // Fallback: still show modal
+    } finally {
+      setIsShiftOverChecked(false);
+      setIsCheckoutModalOpen(true);
+    }
+  };
+
+  const handleConfirmCheckout = async () => {
+    try {
+      setIsSubmittingCheckout(true);
+      await crmFetch('/api/attendance/checkout', {
+        method: 'POST',
+        body: JSON.stringify({ confirmed: true }),
+      }).catch((err) => console.warn('Checkout note:', err));
+    } finally {
+      setIsSubmittingCheckout(false);
+      setIsCheckoutModalOpen(false);
+      clearAuthSession();
+      router.push('/crm/login');
+    }
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -63,11 +132,6 @@ export default function CrmLayout({ children }: { children: React.ReactNode }) {
       </div>
     );
   }
-
-  const handleLogout = () => {
-    clearAuthSession();
-    router.push('/crm/login');
-  };
 
   const isMaster = user?.role === 'master';
   const isTenantAdmin = user?.role === 'admin';
@@ -325,6 +389,120 @@ export default function CrmLayout({ children }: { children: React.ReactNode }) {
           )}
         </main>
       </div>
+
+      {/* Shift Checkout Confirmation Modal for Employees */}
+      {isCheckoutModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white rounded-3xl max-w-lg w-full border border-slate-200 shadow-2xl overflow-hidden">
+            {/* Modal Header */}
+            <div className="bg-[#0F172A] px-6 py-5 flex items-center justify-between text-white">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#d6c180] text-[#0F172A] flex items-center justify-center font-black text-lg shadow-sm">
+                  🕒
+                </div>
+                <div>
+                  <h3 className="font-extrabold text-base tracking-tight text-white">Shift Checkout Confirmation</h3>
+                  <p className="text-xs text-slate-400">Daily Attendance & Workday Wrap-Up</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsCheckoutModalOpen(false)}
+                className="text-slate-400 hover:text-white p-1.5 rounded-lg transition-colors cursor-pointer"
+                title="Close"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="p-6 space-y-5">
+              <div>
+                <h4 className="font-bold text-sm text-slate-900">Are you wrapping up for the day?</h4>
+                <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                  Your daily shift attendance will be recorded upon checkout. Please verify your working hours and confirm your shift completion.
+                </p>
+              </div>
+
+              {/* Real-time Summary Card */}
+              <div className="bg-[#FAF9F5] border border-[#E8E2D5] rounded-2xl p-4 space-y-3">
+                <div className="text-[11px] font-extrabold uppercase tracking-wider text-[#856E2E]">
+                  Today&apos;s Attendance Summary (Asia/Kolkata - IST)
+                </div>
+
+                <div className="grid grid-cols-2 gap-3 text-xs">
+                  <div className="bg-white p-3 rounded-xl border border-slate-200">
+                    <span className="text-[10px] uppercase font-bold text-slate-400 block mb-0.5">Check-in Time</span>
+                    <span className="font-extrabold text-emerald-700 text-sm">
+                      {checkoutStatusData?.checkInTime ? formatTimeAMPM(checkoutStatusData.checkInTime) : '09:30 AM'}
+                    </span>
+                    <span className="text-[10px] text-slate-400 block mt-0.5">Captured at login</span>
+                  </div>
+
+                  <div className="bg-white p-3 rounded-xl border border-slate-200">
+                    <span className="text-[10px] uppercase font-bold text-slate-400 block mb-0.5">Current Time</span>
+                    <span className="font-extrabold text-[#0F172A] text-sm">
+                      {checkoutStatusData?.currentTime ? formatTimeAMPM(checkoutStatusData.currentTime) : new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+                    </span>
+                    <span className="text-[10px] text-slate-400 block mt-0.5">Current server time</span>
+                  </div>
+                </div>
+
+                {checkoutStatusData?.duration && (
+                  <div className="flex items-center justify-between text-xs pt-2 border-t border-[#E8E2D5]/70 text-slate-600">
+                    <span>Working Duration:</span>
+                    <span className="font-extrabold text-slate-900">{checkoutStatusData.duration}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Mandatory Shift Over Checkbox */}
+              <label className="flex items-start gap-3 p-3.5 rounded-2xl border border-amber-200 bg-amber-50/70 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={isShiftOverChecked}
+                  onChange={(e) => setIsShiftOverChecked(e.target.checked)}
+                  className="mt-0.5 w-4 h-4 text-[#d6c180] border-slate-300 rounded focus:ring-[#d6c180] cursor-pointer"
+                />
+                <span className="text-xs font-semibold text-slate-800 leading-snug">
+                  <strong>Shift Over</strong> — I confirm that my work for today is complete and I am checking out.
+                </span>
+              </label>
+
+              <p className="text-[11px] text-slate-400 leading-relaxed italic">
+                ⚠️ Note: Once confirmed, your checkout timestamp will be locked and you will be signed out.
+              </p>
+
+              {/* Action Buttons */}
+              <div className="flex items-center gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setIsCheckoutModalOpen(false)}
+                  disabled={isSubmittingCheckout}
+                  className="flex-1 py-3 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer"
+                >
+                  Cancel / Keep Working
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleConfirmCheckout}
+                  disabled={!isShiftOverChecked || isSubmittingCheckout}
+                  className="flex-1 py-3 rounded-xl bg-[#d6c180] text-[#0F172A] text-xs font-extrabold shadow-sm hover:opacity-90 transition-all disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer flex items-center justify-center gap-2"
+                >
+                  {isSubmittingCheckout ? (
+                    <>
+                      <div className="w-3.5 h-3.5 border-2 border-slate-900 border-t-transparent rounded-full animate-spin" />
+                      <span>Recording Checkout...</span>
+                    </>
+                  ) : (
+                    <span>Confirm Checkout & Sign Out</span>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

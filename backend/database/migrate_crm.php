@@ -24,6 +24,27 @@ try {
     $pdo->exec($sql);
     echo "CRM schema tables created/verified successfully.\n";
 
+    // 2.05 Ensure crm_attendance_notifications exists
+    $pdo->exec("
+        CREATE TABLE IF NOT EXISTS crm_attendance_notifications (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            admin_id INT NOT NULL,
+            attendance_date DATE NOT NULL,
+            notification_type VARCHAR(50) NOT NULL DEFAULT 'daily_completion',
+            recipient_email VARCHAR(150) NOT NULL DEFAULT 'jobrecruitment.in@gmail.com',
+            status ENUM('queued', 'sending', 'sent', 'failed') DEFAULT 'queued',
+            attempt_count INT DEFAULT 0,
+            last_error TEXT NULL,
+            queued_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            sent_at DATETIME NULL,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            FOREIGN KEY (admin_id) REFERENCES crm_admins(id) ON DELETE CASCADE,
+            UNIQUE KEY unique_daily_notification (admin_id, attendance_date, notification_type)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    ");
+    echo "CRM attendance notifications table verified.\n";
+
     // 2.1 Upgrade existing tables with any missing columns
     $columnPatches = [
         'crm_attendance_records' => [
