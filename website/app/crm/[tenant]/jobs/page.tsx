@@ -10,7 +10,7 @@ import {
   CheckIcon,
 } from '@/components/crm/CrmIcons';
 
-export function formatSalary(job: {
+function formatSalary(job: {
   salary_min?: number | string | null;
   salary_max?: number | string | null;
   salary_range?: string | null;

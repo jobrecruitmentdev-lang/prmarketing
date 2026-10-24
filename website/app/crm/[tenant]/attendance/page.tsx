@@ -381,40 +381,31 @@ export default function AttendanceRegisterPage({ params }: { params: Promise<{ t
 
   return (
     <div className="space-y-6">
-      {/* Title & Date Picker Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      {/* Title & Action Buttons Top Bar */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-extrabold text-[#0F172A] tracking-tight">Staff Attendance Register</h1>
           <p className="text-xs text-slate-500 mt-1">Daily roster check-in, check-out times, and work status marking</p>
         </div>
-        <div className="flex items-center gap-3 flex-wrap">
-          <div className="flex items-center gap-2">
-            <label className="text-xs font-bold text-slate-500">Select Date:</label>
-            <input
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              className="px-3.5 py-2 rounded-xl border border-slate-200 bg-white text-xs font-bold text-slate-800 shadow-sm focus:outline-none focus:border-[#d6c180]"
-            />
-          </div>
+        <div className="flex items-center gap-2.5 flex-wrap sm:flex-nowrap">
           <button
             onClick={handleSendDailyEmail}
             disabled={isSendingEmail}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-200 bg-white text-slate-800 text-xs font-bold shadow-sm hover:bg-slate-50 transition-colors cursor-pointer disabled:opacity-50"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-200 bg-white text-slate-700 text-xs font-bold shadow-sm hover:bg-slate-50 transition-colors cursor-pointer disabled:opacity-50 whitespace-nowrap"
             title="Dispatch Daily Attendance Report to jobrecruitment.in@gmail.com"
           >
-            <span>📧 {isSendingEmail ? 'Dispatching...' : 'Email Daily Report'}</span>
+            <span>📧 {isSendingEmail ? 'Dispatching...' : 'Email Report'}</span>
           </button>
           <button
             onClick={handleOpenExportModal}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-200 bg-white text-slate-800 text-xs font-bold shadow-sm hover:bg-slate-50 transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-200 bg-white text-slate-700 text-xs font-bold shadow-sm hover:bg-slate-50 transition-colors cursor-pointer whitespace-nowrap"
           >
-            <DownloadIcon size={16} />
-            <span>Download Attendance</span>
+            <DownloadIcon size={15} />
+            <span>Export</span>
           </button>
           <button
             onClick={handleOpenAddEmployee}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#d6c180] text-[#0F172A] text-xs font-extrabold shadow-sm hover:opacity-90 transition-opacity cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#d6c180] text-[#0F172A] text-xs font-extrabold shadow-sm hover:opacity-90 transition-opacity cursor-pointer whitespace-nowrap"
           >
             <PlusIcon size={16} />
             <span>+ Add Employee</span>
@@ -429,36 +420,41 @@ export default function AttendanceRegisterPage({ params }: { params: Promise<{ t
         </div>
       )}
 
-      {/* Live Today Shift Overview (Login Auto Check-in & Checkout Counters) */}
-      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#E2E8F0] shadow-sm">
-        <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-100 flex-wrap gap-2">
-          <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span className="text-xs font-extrabold uppercase tracking-wider text-slate-800">
-              Live Workday Shift Status ({date}) — Asia/Kolkata (IST)
-            </span>
-          </div>
-          <span className="text-[11px] text-slate-400 font-medium">
-            Automated check-ins logged via CRM authentication
-          </span>
+      {/* Date Filter & Live Workday Shift Status */}
+      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#E2E8F0] shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div className="flex items-center gap-2.5 flex-wrap">
+          <label className="text-xs font-extrabold text-slate-600 uppercase tracking-wider whitespace-nowrap">Date:</label>
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            className="px-3.5 py-2 rounded-xl border border-slate-200 bg-[#FAF9F5] text-xs font-bold text-slate-800 shadow-sm focus:outline-none focus:border-[#d6c180]"
+          />
+          <button
+            onClick={() => setDate(new Date().toISOString().split('T')[0])}
+            className="px-3 py-2 rounded-xl border border-slate-200 bg-white text-xs font-bold text-slate-600 hover:bg-slate-50 cursor-pointer shadow-sm"
+          >
+            Today
+          </button>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-          <div className="bg-slate-50 p-3 rounded-xl border border-slate-100">
+        {/* Live Counters */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 flex-1 lg:max-w-2xl text-center">
+          <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-100">
             <div className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">Total Staff</div>
-            <div className="text-xl font-black text-slate-900 mt-0.5">{records.length}</div>
+            <div className="text-lg font-black text-slate-900 mt-0.5">{records.length}</div>
           </div>
-          <div className="bg-emerald-50/70 p-3 rounded-xl border border-emerald-100">
-            <div className="text-[10px] font-extrabold text-emerald-700 uppercase tracking-wider">Checked In (Via Login)</div>
-            <div className="text-xl font-black text-emerald-700 mt-0.5">{records.filter(r => !!r.check_in_time).length}</div>
+          <div className="bg-emerald-50/70 p-2.5 rounded-xl border border-emerald-100">
+            <div className="text-[10px] font-extrabold text-emerald-700 uppercase tracking-wider">Checked In</div>
+            <div className="text-lg font-black text-emerald-700 mt-0.5">{records.filter(r => !!r.check_in_time).length}</div>
           </div>
-          <div className="bg-blue-50/70 p-3 rounded-xl border border-blue-100">
-            <div className="text-[10px] font-extrabold text-blue-700 uppercase tracking-wider">Checked Out (Shift Over)</div>
-            <div className="text-xl font-black text-blue-700 mt-0.5">{records.filter(r => !!r.check_out_time).length}</div>
+          <div className="bg-blue-50/70 p-2.5 rounded-xl border border-blue-100">
+            <div className="text-[10px] font-extrabold text-blue-700 uppercase tracking-wider">Checked Out</div>
+            <div className="text-lg font-black text-blue-700 mt-0.5">{records.filter(r => !!r.check_out_time).length}</div>
           </div>
-          <div className="bg-amber-50/70 p-3 rounded-xl border border-amber-100">
+          <div className="bg-amber-50/70 p-2.5 rounded-xl border border-amber-100">
             <div className="text-[10px] font-extrabold text-amber-700 uppercase tracking-wider">Still Working</div>
-            <div className="text-xl font-black text-amber-700 mt-0.5">
+            <div className="text-lg font-black text-amber-700 mt-0.5">
               {Math.max(0, records.filter(r => !!r.check_in_time).length - records.filter(r => !!r.check_out_time).length)}
             </div>
           </div>
