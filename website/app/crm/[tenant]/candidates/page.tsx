@@ -29,6 +29,10 @@ interface Candidate {
   job_slug?: string;
   note_count?: number;
   applied_date?: string;
+  interview_date?: string | null;
+  interview_time?: string | null;
+  interview_type?: string | null;
+  interview_notes?: string | null;
   created_at?: string;
 }
 
@@ -101,6 +105,10 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
   const [editStage, setEditStage] = useState('');
   const [editJobId, setEditJobId] = useState<string>('');
   const [editResumeFile, setEditResumeFile] = useState<File | null>(null);
+  const [editInterviewDate, setEditInterviewDate] = useState('');
+  const [editInterviewTime, setEditInterviewTime] = useState('');
+  const [editInterviewType, setEditInterviewType] = useState('in_office');
+  const [editInterviewNotes, setEditInterviewNotes] = useState('');
   const [isSavingEdit, setIsSavingEdit] = useState(false);
 
   // Notes Modal State
@@ -109,6 +117,15 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
   const [newNoteText, setNewNoteText] = useState('');
   const [isLoadingNotes, setIsLoadingNotes] = useState(false);
   const [isAddingNote, setIsAddingNote] = useState(false);
+
+  // Schedule Interview Modal State
+  const [interviewCandidate, setInterviewCandidate] = useState<Candidate | null>(null);
+  const [interviewDate, setInterviewDate] = useState('');
+  const [interviewTime, setInterviewTime] = useState('');
+  const [interviewType, setInterviewType] = useState<'in_office' | 'online' | 'telephonic'>('in_office');
+  const [interviewNotes, setInterviewNotes] = useState('');
+  const [isSubmittingInterview, setIsSubmittingInterview] = useState(false);
+  const [interviewError, setInterviewError] = useState<string | null>(null);
 
   const stages = ['applied', 'screening', 'interview', 'offer', 'hired', 'rejected'];
 
@@ -145,14 +162,84 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
 
   const handleStageChange = async (candidateId: number, nextStage: string) => {
     try {
-      await crmFetch(`/api/recruitment/candidates/${candidateId}/stage`, {
+      const res = await crmFetch(`/api/recruitment/candidates/${candidateId}/stage`, {
         method: 'PATCH',
         body: JSON.stringify({ stage: nextStage }),
       });
-      setCandidates(prev => prev.map(c => c.id === candidateId ? { ...c, stage: nextStage } : c));
+      setCandidates(prev => prev.map(c => c.id === candidateId ? (res.data ? res.data : { ...c, stage: nextStage }) : c));
     } catch (err: any) {
       alert('Failed to update stage: ' + err.message);
     }
+  };
+
+  const openScheduleInterviewModal = (c: Candidate) => {
+    setInterviewCandidate(c);
+    setInterviewDate(c.interview_date || '');
+    setInterviewTime(c.interview_time ? c.interview_time.slice(0, 5) : '11:00');
+    setInterviewType((c.interview_type as any) || 'in_office');
+    setInterviewNotes(c.interview_notes || '');
+    setInterviewError(null);
+  };
+
+  const handleStageSelectChange = (c: Candidate, nextStage: string) => {
+    if (nextStage === 'interview') {
+      openScheduleInterviewModal(c);
+    } else {
+      handleStageChange(c.id, nextStage);
+    }
+  };
+
+  const handleConfirmInterview = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!interviewCandidate) return;
+    if (!interviewDate) {
+      setInterviewError('Please choose a valid interview date.');
+      return;
+    }
+
+    try {
+      setIsSubmittingInterview(true);
+      setInterviewError(null);
+
+      const res = await crmFetch(`/api/recruitment/candidates/${interviewCandidate.id}/stage`, {
+        method: 'PATCH',
+        body: JSON.stringify({
+          stage: 'interview',
+          interview_date: interviewDate,
+          interview_time: interviewTime || null,
+          interview_type: interviewType,
+          interview_notes: interviewNotes.trim() || null,
+        }),
+      });
+
+      const updated = res.data;
+      setCandidates(prev => prev.map(c => {
+        if (c.id === interviewCandidate.id) {
+          return updated ? updated : {
+            ...c,
+            stage: 'interview',
+            interview_date: interviewDate,
+            interview_time: interviewTime,
+            interview_type: interviewType,
+            interview_notes: interviewNotes.trim() || null,
+          };
+        }
+        return c;
+      }));
+
+      setAddSuccessMsg(`Interview scheduled for ${interviewCandidate.name} on ${interviewDate}!`);
+      setTimeout(() => setAddSuccessMsg(null), 4000);
+      setInterviewCandidate(null);
+    } catch (err: any) {
+      setInterviewError(err.message || 'Failed to schedule interview');
+    } finally {
+      setIsSubmittingInterview(false);
+    }
+  };
+
+  const handleCloseInterviewModal = () => {
+    setInterviewCandidate(null);
+    setInterviewError(null);
   };
 
   const handleDeleteCandidate = async (candidateId: number, name: string) => {
@@ -181,6 +268,10 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
     setEditRole(c.last_company || '');
     setEditStage(c.stage || 'applied');
     setEditJobId(c.job_id ? String(c.job_id) : '');
+    setEditInterviewDate(c.interview_date || '');
+    setEditInterviewTime(c.interview_time ? c.interview_time.slice(0, 5) : '11:00');
+    setEditInterviewType(c.interview_type || 'in_office');
+    setEditInterviewNotes(c.interview_notes || '');
     setEditResumeFile(null);
     if (editFileInputRef.current) {
       editFileInputRef.current.value = '';
@@ -200,6 +291,12 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
       formData.append('phone', editPhone.trim());
       formData.append('last_company', editRole.trim());
       formData.append('stage', editStage);
+      if (editStage === 'interview') {
+        if (editInterviewDate) formData.append('interview_date', editInterviewDate);
+        if (editInterviewTime) formData.append('interview_time', editInterviewTime);
+        if (editInterviewType) formData.append('interview_type', editInterviewType);
+        if (editInterviewNotes) formData.append('interview_notes', editInterviewNotes);
+      }
       if (editJobId) formData.append('job_id', editJobId);
       if (editResumeFile) formData.append('resume', editResumeFile);
 
@@ -566,16 +663,61 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
 
                       {/* Stage Pill */}
                       <td className="px-5 py-4">
-                        <span className={`inline-flex px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider ${
-                          c.stage === 'hired' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
-                          c.stage === 'rejected' ? 'bg-red-50 text-red-700 border border-red-200' :
-                          c.stage === 'interview' ? 'bg-blue-50 text-blue-700 border border-blue-200' :
-                          c.stage === 'offer' ? 'bg-purple-50 text-purple-700 border border-purple-200' :
-                          c.stage === 'screening' ? 'bg-amber-50 text-amber-800 border border-amber-200' :
-                          'bg-slate-100 text-slate-700 border border-slate-200'
-                        }`}>
-                          {c.stage}
-                        </span>
+                        <div className="space-y-1">
+                          <span className={`inline-flex px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider ${
+                            c.stage === 'hired' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
+                            c.stage === 'rejected' ? 'bg-red-50 text-red-700 border border-red-200' :
+                            c.stage === 'interview' ? 'bg-blue-50 text-blue-700 border border-blue-200' :
+                            c.stage === 'offer' ? 'bg-purple-50 text-purple-700 border border-purple-200' :
+                            c.stage === 'screening' ? 'bg-amber-50 text-amber-800 border border-amber-200' :
+                            'bg-slate-100 text-slate-700 border border-slate-200'
+                          }`}>
+                            {c.stage}
+                          </span>
+
+                          {c.stage === 'interview' && (
+                            c.interview_date ? (
+                              <button
+                                type="button"
+                                onClick={() => openScheduleInterviewModal(c)}
+                                className="block text-left group cursor-pointer"
+                                title="Click to reschedule interview"
+                              >
+                                <div className="text-[11px] font-bold text-slate-700 group-hover:text-blue-600 transition-colors flex items-center gap-1">
+                                  <span>📅</span>
+                                  <span>
+                                    {new Date(c.interview_date + 'T00:00:00').toLocaleDateString('en-IN', {
+                                      day: 'numeric',
+                                      month: 'short',
+                                    })}
+                                  </span>
+                                  {c.interview_time && (
+                                    <span className="text-slate-500 font-semibold">
+                                      • {c.interview_time.slice(0, 5)}
+                                    </span>
+                                  )}
+                                </div>
+                                <div className="text-[10px] text-slate-400 capitalize font-medium flex items-center gap-1">
+                                  <span>
+                                    {c.interview_type === 'online' ? '💻 Online' : c.interview_type === 'telephonic' ? '📞 Telephonic' : '🏢 In-Office'}
+                                  </span>
+                                  <span className="text-blue-600 underline text-[9px] opacity-0 group-hover:opacity-100 transition-opacity">
+                                    Reschedule
+                                  </span>
+                                </div>
+                              </button>
+                            ) : (
+                              <button
+                                type="button"
+                                onClick={() => openScheduleInterviewModal(c)}
+                                className="block mt-1 text-[10px] text-blue-700 font-bold bg-blue-50/80 hover:bg-blue-100 px-2 py-0.5 rounded border border-blue-200 transition-colors cursor-pointer"
+                                title="Set interview date and time"
+                              >
+                                <span>📅 Set Date & Time</span>
+                              </button>
+                            )
+                          )}
+                        </div>
                       </td>
 
                       {/* Resume */}
@@ -612,8 +754,8 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
                       <td className="px-5 py-4 text-right space-x-1.5 whitespace-nowrap">
                         <select
                           value={c.stage}
-                          onChange={(e) => handleStageChange(c.id, e.target.value)}
-                          className="px-2.5 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold bg-white text-slate-700 focus:outline-none focus:border-[#d6c180]"
+                          onChange={(e) => handleStageSelectChange(c, e.target.value)}
+                          className="px-2.5 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold bg-white text-slate-700 focus:outline-none focus:border-[#d6c180] cursor-pointer"
                         >
                           {stages.map(s => (
                             <option key={s} value={s}>{s.toUpperCase()}</option>
@@ -738,6 +880,64 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
                   </select>
                 </div>
               </div>
+
+              {editStage === 'interview' && (
+                <div className="bg-blue-50/70 border border-blue-200 rounded-2xl p-4 space-y-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-base">📅</span>
+                    <span className="text-xs font-bold text-blue-900">Interview Schedule Details</span>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                        Interview Date <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="date"
+                        required
+                        value={editInterviewDate}
+                        onChange={(e) => setEditInterviewDate(e.target.value)}
+                        className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold bg-white text-slate-800 focus:outline-none focus:border-[#d6c180]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                        Interview Time
+                      </label>
+                      <input
+                        type="time"
+                        value={editInterviewTime}
+                        onChange={(e) => setEditInterviewTime(e.target.value)}
+                        className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold bg-white text-slate-800 focus:outline-none focus:border-[#d6c180]"
+                      />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[11px] font-bold text-slate-700 mb-1">Interview Mode</label>
+                      <select
+                        value={editInterviewType}
+                        onChange={(e) => setEditInterviewType(e.target.value)}
+                        className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs bg-white text-slate-800 focus:outline-none focus:border-[#d6c180]"
+                      >
+                        <option value="in_office">🏢 In-Office (Navrangpura)</option>
+                        <option value="online">💻 Online / Meet</option>
+                        <option value="telephonic">📞 Telephonic</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-bold text-slate-700 mb-1">Interview Notes</label>
+                      <input
+                        type="text"
+                        value={editInterviewNotes}
+                        onChange={(e) => setEditInterviewNotes(e.target.value)}
+                        placeholder="e.g. Round 1 Technical"
+                        className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs bg-white text-slate-800 focus:outline-none focus:border-[#d6c180]"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
 
               <div className="pt-3 border-t border-slate-100 space-y-2.5">
                 <div className="flex items-center justify-between">
@@ -1165,6 +1365,156 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
                 >
                   <PlusIcon size={15} />
                   <span>{isSubmittingAdd ? 'Adding Candidate...' : 'Add Candidate'}</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Schedule Interview Modal */}
+      {interviewCandidate && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-200">
+          <div className="bg-white rounded-3xl border border-slate-200 max-w-md w-full max-h-[92vh] overflow-y-auto p-6 sm:p-7 shadow-2xl relative my-auto">
+            <button
+              onClick={handleCloseInterviewModal}
+              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center font-bold text-sm hover:bg-slate-200 transition-colors cursor-pointer"
+            >
+              ✕
+            </button>
+
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-10 h-10 rounded-2xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 text-lg shadow-2xs">
+                📅
+              </div>
+              <div>
+                <h3 className="text-lg font-extrabold text-slate-900 leading-tight">
+                  Schedule Interview
+                </h3>
+                <p className="text-xs text-slate-500 font-medium">
+                  {interviewCandidate.name} • <span className="text-slate-700 font-semibold">{interviewCandidate.job_title || interviewCandidate.last_company || 'Candidate'}</span>
+                </p>
+              </div>
+            </div>
+
+            {interviewError && (
+              <div className="my-3 p-3 rounded-xl bg-red-50 border border-red-200 text-xs font-semibold text-red-700">
+                ⚠️ {interviewError}
+              </div>
+            )}
+
+            <form onSubmit={handleConfirmInterview} className="space-y-4 mt-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {/* Interview Date */}
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Interview Date <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    required
+                    min={new Date().toISOString().split('T')[0]}
+                    value={interviewDate}
+                    onChange={(e) => setInterviewDate(e.target.value)}
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-800 bg-white focus:outline-none focus:border-[#d6c180] shadow-2xs"
+                  />
+                </div>
+
+                {/* Interview Time */}
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Interview Time <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="time"
+                    required
+                    value={interviewTime}
+                    onChange={(e) => setInterviewTime(e.target.value)}
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-800 bg-white focus:outline-none focus:border-[#d6c180] shadow-2xs"
+                  />
+                </div>
+              </div>
+
+              {/* Interview Mode / Location */}
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                  Interview Mode / Type
+                </label>
+                <div className="grid grid-cols-3 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setInterviewType('in_office')}
+                    className={`py-2 px-2.5 rounded-xl border text-xs font-bold flex flex-col items-center gap-1 transition-all cursor-pointer ${
+                      interviewType === 'in_office'
+                        ? 'border-blue-500 bg-blue-50 text-blue-700 shadow-2xs'
+                        : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
+                    }`}
+                  >
+                    <span className="text-base">🏢</span>
+                    <span className="text-[11px]">In-Office</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setInterviewType('online')}
+                    className={`py-2 px-2.5 rounded-xl border text-xs font-bold flex flex-col items-center gap-1 transition-all cursor-pointer ${
+                      interviewType === 'online'
+                        ? 'border-blue-500 bg-blue-50 text-blue-700 shadow-2xs'
+                        : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
+                    }`}
+                  >
+                    <span className="text-base">💻</span>
+                    <span className="text-[11px]">Online / Meet</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setInterviewType('telephonic')}
+                    className={`py-2 px-2.5 rounded-xl border text-xs font-bold flex flex-col items-center gap-1 transition-all cursor-pointer ${
+                      interviewType === 'telephonic'
+                        ? 'border-blue-500 bg-blue-50 text-blue-700 shadow-2xs'
+                        : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
+                    }`}
+                  >
+                    <span className="text-base">📞</span>
+                    <span className="text-[11px]">Telephonic</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Notes or Instructions */}
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Notes / Instructions <span className="text-slate-400 font-normal">(Optional)</span>
+                </label>
+                <textarea
+                  rows={2}
+                  value={interviewNotes}
+                  onChange={(e) => setInterviewNotes(e.target.value)}
+                  placeholder="e.g. Bring hardcopy resume, report at 9th floor, or meeting link..."
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-[#d6c180] resize-none"
+                />
+              </div>
+
+              {/* Modal Actions */}
+              <div className="flex items-center gap-2.5 pt-2">
+                <button
+                  type="button"
+                  onClick={handleCloseInterviewModal}
+                  className="flex-1 py-2.5 px-4 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSubmittingInterview}
+                  className="flex-1 py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-xs font-extrabold shadow-sm transition-all disabled:opacity-50 cursor-pointer flex items-center justify-center gap-1.5"
+                >
+                  {isSubmittingInterview ? (
+                    <span>Scheduling...</span>
+                  ) : (
+                    <span>Confirm Interview</span>
+                  )}
                 </button>
               </div>
             </form>

@@ -75,6 +75,12 @@ try {
             'salary_max' => 'DECIMAL(12,2) NULL',
             'is_salary_disclosed' => 'TINYINT(1) DEFAULT 1'
         ],
+        'crm_candidates' => [
+            'interview_date' => 'DATE NULL',
+            'interview_time' => 'VARCHAR(20) NULL',
+            'interview_type' => "VARCHAR(50) DEFAULT 'in_office'",
+            'interview_notes' => 'TEXT NULL'
+        ],
         'crm_career_pages' => [
             'widget_enabled' => 'TINYINT(1) DEFAULT 1'
         ]

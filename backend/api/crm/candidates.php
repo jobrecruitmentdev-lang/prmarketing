@@ -339,10 +339,73 @@ function handleCandidatesRoutes(string $subpath, string $method, PDO $pdo): void
             jsonResponse(['success' => false, 'error' => 'Invalid candidate stage'], 400);
         }
 
-        $pdo->prepare("UPDATE crm_candidates SET stage = ? WHERE id = ? AND admin_id = ?")->execute([$stage, $candidateId, $adminId]);
+        $interviewDate = !empty($body['interview_date']) ? trim($body['interview_date']) : null;
+        $interviewTime = !empty($body['interview_time']) ? trim($body['interview_time']) : null;
+        $interviewType = !empty($body['interview_type']) ? trim($body['interview_type']) : 'in_office';
+        $interviewNotes = !empty($body['interview_notes']) ? trim($body['interview_notes']) : null;
+
+        if ($stage === 'interview') {
+            $uStmt = $pdo->prepare("
+                UPDATE crm_candidates 
+                SET stage = ?, 
+                    interview_date = ?, 
+                    interview_time = ?, 
+                    interview_type = ?, 
+                    interview_notes = ? 
+                WHERE id = ? AND admin_id = ?
+            ");
+            $uStmt->execute([
+                $stage, 
+                $interviewDate, 
+                $interviewTime, 
+                $interviewType, 
+                $interviewNotes, 
+                $candidateId, 
+                $adminId
+            ]);
+
+            // Add note about scheduled interview if date provided
+            if ($interviewDate) {
+                $employeeId = null;
+                if ($user['role'] === 'employee') {
+                    $eStmt = $pdo->prepare("SELECT id FROM crm_employees WHERE user_id = ?");
+                    $eStmt->execute([$user['id']]);
+                    $emp = $eStmt->fetch();
+                    if ($emp) $employeeId = (int)$emp['id'];
+                }
+                $typeLabel = $interviewType === 'online' ? 'Online / Video Call' : ($interviewType === 'telephonic' ? 'Telephonic' : 'In-Office');
+                $noteMsg = "📅 Interview Scheduled: {$interviewDate}";
+                if ($interviewTime) $noteMsg .= " at {$interviewTime}";
+                $noteMsg .= " ({$typeLabel})";
+                if ($interviewNotes) $noteMsg .= " — Notes: {$interviewNotes}";
+
+                $pdo->prepare("INSERT INTO crm_candidate_notes (candidate_id, employee_id, note_text) VALUES (?, ?, ?)")
+                    ->execute([$candidateId, $employeeId, $noteMsg]);
+            }
+        } else {
+            $pdo->prepare("UPDATE crm_candidates SET stage = ? WHERE id = ? AND admin_id = ?")->execute([$stage, $candidateId, $adminId]);
+        }
+
         $pdo->prepare("UPDATE crm_applications SET status = ? WHERE candidate_id = ? AND admin_id = ?")->execute([$stage, $candidateId, $adminId]);
 
-        jsonResponse(['success' => true, 'message' => "Candidate moved to {$stage}"]);
+        $sStmt = $pdo->prepare("
+            SELECT 
+                c.*,
+                COALESCE(j.title, c.last_company, 'General Opportunity') as job_title,
+                j.slug as job_slug,
+                (SELECT COUNT(*) FROM crm_candidate_notes cn WHERE cn.candidate_id = c.id) as note_count
+            FROM crm_candidates c
+            LEFT JOIN crm_jobs j ON c.job_id = j.id
+            WHERE c.id = ? AND c.admin_id = ?
+        ");
+        $sStmt->execute([$candidateId, $adminId]);
+        $updatedCand = $sStmt->fetch();
+
+        jsonResponse([
+            'success' => true, 
+            'message' => "Candidate moved to {$stage}",
+            'data' => $updatedCand
+        ]);
     }
 
     // 6. PUT /:id (Update Candidate Details & Replace Resume)
@@ -372,6 +435,22 @@ function handleCandidatesRoutes(string $subpath, string $method, PDO $pdo): void
         if (isset($body['stage'])) {
             $fields[] = 'stage = ?';
             $params[] = trim(strtolower($body['stage']));
+        }
+        if (isset($body['interview_date'])) {
+            $fields[] = 'interview_date = ?';
+            $params[] = !empty($body['interview_date']) ? trim($body['interview_date']) : null;
+        }
+        if (isset($body['interview_time'])) {
+            $fields[] = 'interview_time = ?';
+            $params[] = !empty($body['interview_time']) ? trim($body['interview_time']) : null;
+        }
+        if (isset($body['interview_type'])) {
+            $fields[] = 'interview_type = ?';
+            $params[] = !empty($body['interview_type']) ? trim($body['interview_type']) : 'in_office';
+        }
+        if (isset($body['interview_notes'])) {
+            $fields[] = 'interview_notes = ?';
+            $params[] = !empty($body['interview_notes']) ? trim($body['interview_notes']) : null;
         }
         if (isset($body['job_id'])) {
             $fields[] = 'job_id = ?';
