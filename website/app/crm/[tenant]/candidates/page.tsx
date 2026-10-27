@@ -470,17 +470,17 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-3.5">
       {/* Top Title Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-extrabold text-[#0F172A] tracking-tight">Candidates & Applications</h1>
-          <p className="text-xs text-slate-500 mt-1">
+          <h1 className="text-xl sm:text-2xl font-extrabold text-[#0F172A] tracking-tight">Candidates & Applications</h1>
+          <p className="text-[11px] sm:text-xs text-slate-500 mt-0.5">
             Manage incoming job applications and direct CV submissions in one unified workspace
           </p>
         </div>
-        <div className="flex items-center gap-2.5">
-          <span className="text-xs font-bold text-slate-500 bg-white px-3.5 py-2 rounded-xl border border-slate-200 shadow-sm">
+        <div className="flex items-center gap-2">
+          <span className="text-[11px] font-bold text-slate-600 bg-white px-3 py-1.5 rounded-xl border border-slate-200 shadow-xs">
             Total Candidates: <strong className="text-slate-900">{totalCount}</strong>
           </span>
           <button
@@ -489,18 +489,18 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
               resetAddForm();
               setIsAddModalOpen(true);
             }}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-[#0F172A] bg-[#d6c180] hover:bg-[#c4af6e] shadow-sm transition-all cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-[#0F172A] bg-[#d6c180] hover:bg-[#c4af6e] shadow-xs transition-all cursor-pointer"
           >
-            <PlusIcon size={16} />
+            <PlusIcon size={14} />
             <span>Add Candidate</span>
           </button>
         </div>
       </div>
 
       {addSuccessMsg && (
-        <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center justify-between animate-in fade-in duration-200">
+        <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center justify-between animate-in fade-in duration-200">
           <div className="flex items-center gap-2">
-            <CheckIcon size={16} className="text-emerald-600" />
+            <CheckIcon size={15} className="text-emerald-600" />
             <span>{addSuccessMsg}</span>
           </div>
           <button onClick={() => setAddSuccessMsg(null)} className="text-emerald-600 hover:text-emerald-800 text-xs cursor-pointer">
@@ -510,16 +510,16 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
       )}
 
       {/* Main Channel Filter Tabs */}
-      <div className="flex flex-wrap items-center gap-2 border-b border-slate-200 pb-3">
+      <div className="flex flex-wrap items-center gap-2 border-b border-slate-200 pb-2.5">
         <button
           onClick={() => setSourceTab('all')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
+          className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
             sourceTab === 'all'
-              ? 'bg-[#0F172A] text-white shadow-sm'
+              ? 'bg-[#0F172A] text-white shadow-xs'
               : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
           }`}
         >
-          <UsersIcon size={15} />
+          <UsersIcon size={14} />
           <span>All Candidates</span>
           <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${sourceTab === 'all' ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-700'}`}>
             {totalCount}
@@ -528,9 +528,9 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
 
         <button
           onClick={() => setSourceTab('direct_cv')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
+          className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
             sourceTab === 'direct_cv'
-              ? 'bg-[#856E2E] text-white shadow-sm'
+              ? 'bg-[#856E2E] text-white shadow-xs'
               : 'bg-white text-slate-600 hover:bg-[#FAF8F2] border border-[#E8E2D5]'
           }`}
         >
@@ -543,13 +543,13 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
 
         <button
           onClick={() => setSourceTab('job_applications')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
+          className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
             sourceTab === 'job_applications'
-              ? 'bg-slate-800 text-white shadow-sm'
+              ? 'bg-slate-800 text-white shadow-xs'
               : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
           }`}
         >
-          <FileTextIcon size={15} />
+          <FileTextIcon size={14} />
           <span>Job Applications</span>
           <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${sourceTab === 'job_applications' ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-700'}`}>
             {jobAppsCount}
@@ -558,22 +558,22 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
       </div>
 
       {/* Filter & Search Bar */}
-      <div className="bg-white border border-[#E2E8F0] rounded-2xl p-4 shadow-sm flex flex-col md:flex-row gap-3 items-center justify-between">
-        <div className="w-full md:w-80 relative">
+      <div className="bg-white border border-[#E2E8F0] rounded-xl p-2.5 sm:px-3 sm:py-2 shadow-xs flex flex-col md:flex-row gap-2.5 items-center justify-between">
+        <div className="w-full md:w-56 lg:w-60 relative flex-shrink-0">
           <input
             type="text"
-            placeholder="Search by name, email, phone, role..."
+            placeholder="Search by name, role, email..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-3.5 pr-4 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-[#d6c180]"
+            className="w-full pl-3 pr-3 py-1.5 rounded-lg border border-slate-200 text-xs focus:outline-none focus:border-[#d6c180]"
           />
         </div>
 
         {/* Stage Filter Pills */}
-        <div className="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto pb-1 md:pb-0">
+        <div className="flex items-center gap-1 overflow-x-auto w-full md:w-auto pb-0.5 md:pb-0 no-scrollbar">
           <button
             onClick={() => setSelectedStage('all')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors ${
+            className={`px-2.5 py-1 rounded-lg text-[11px] font-bold whitespace-nowrap transition-colors flex-shrink-0 ${
               selectedStage === 'all' ? 'bg-[#0F172A] text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
             }`}
           >
@@ -590,7 +590,7 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
               <button
                 key={s}
                 onClick={() => setSelectedStage(s)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold capitalize whitespace-nowrap transition-colors ${
+                className={`px-2.5 py-1 rounded-lg text-[11px] font-bold capitalize whitespace-nowrap transition-colors flex-shrink-0 ${
                   selectedStage === s ? 'bg-[#856E2E] text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                 }`}
               >
@@ -602,23 +602,23 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
       </div>
 
       {/* Candidates Table */}
-      <div className="bg-white border border-[#E2E8F0] rounded-2xl overflow-hidden shadow-sm">
+      <div className="bg-white border border-[#E2E8F0] rounded-xl overflow-hidden shadow-xs">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs text-slate-700">
             <thead className="bg-[#FAF9F5] border-b border-slate-200 text-slate-500 uppercase text-[10px] font-bold tracking-wider">
               <tr>
-                <th className="px-3.5 py-2.5">Candidate Details</th>
-                <th className="px-3.5 py-2.5">Submission Type & Role</th>
-                <th className="px-3 py-2.5 min-w-[160px] whitespace-nowrap">Stage & Schedule</th>
-                <th className="px-2.5 py-2.5 min-w-[95px] whitespace-nowrap text-center">Resume</th>
-                <th className="px-2.5 py-2.5 min-w-[92px] whitespace-nowrap text-center">Notes & Remarks</th>
-                <th className="px-3 py-2.5 text-right whitespace-nowrap">Quick Actions</th>
+                <th className="px-3 py-2">Candidate Details</th>
+                <th className="px-3 py-2">Submission Type & Role</th>
+                <th className="px-3 py-2 min-w-[155px] whitespace-nowrap">Stage & Schedule</th>
+                <th className="px-2 py-2 min-w-[85px] whitespace-nowrap text-center">Resume</th>
+                <th className="px-2 py-2 min-w-[85px] whitespace-nowrap text-center">Notes & Remarks</th>
+                <th className="px-3 py-2 text-right whitespace-nowrap">Quick Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-5 py-14 text-center text-slate-400">
+                  <td colSpan={6} className="px-5 py-12 text-center text-slate-400">
                     <div className="max-w-sm mx-auto">
                       <p className="text-slate-600 font-bold text-sm mb-1">No candidate records found</p>
                       <p className="text-slate-400 text-xs">
@@ -636,8 +636,8 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
                   return (
                     <tr key={c.id} className="hover:bg-slate-50/80 transition-colors">
                       {/* Candidate Details */}
-                      <td className="px-3.5 py-2.5 align-top">
-                        <div className="font-bold text-slate-900 text-xs flex items-center gap-1.5">
+                      <td className="px-3 py-2 align-top">
+                        <div className="font-bold text-slate-900 text-xs flex items-center gap-1.5 leading-tight">
                           <span>{c.name}</span>
                           {isDirect && (
                             <span className="inline-flex items-center px-1.5 py-0.2 rounded text-[9px] font-bold bg-[#F5EFE0] text-[#856E2E] border border-[#E8E2D5]">
@@ -645,43 +645,43 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
                             </span>
                           )}
                         </div>
-                        <div className="text-[11px] text-slate-500 mt-0.5 truncate max-w-[170px]">{c.email}</div>
-                        <div className="text-[10px] text-slate-400 mt-0.5">
+                        <div className="text-[11px] text-slate-500 mt-0.5 truncate max-w-[160px] leading-tight">{c.email}</div>
+                        <div className="text-[10px] text-slate-400 mt-0.5 leading-tight">
                           {c.phone || 'No phone'} {c.created_at && `• ${new Date(c.created_at.replace(' ', 'T')).toLocaleDateString('en-IN')}`}
                         </div>
                       </td>
 
                       {/* Submission Type & Role */}
-                      <td className="px-3.5 py-2.5 align-top">
+                      <td className="px-3 py-2 align-top">
                         {isDirect ? (
                           <div>
-                            <div className="font-semibold text-[#856E2E] text-xs">
+                            <div className="font-semibold text-[#856E2E] text-xs leading-tight">
                               {c.last_company ? `Desired Role: ${c.last_company}` : 'General Opportunity'}
                             </div>
                             {c.job_id && (
-                              <div className="text-[11px] text-slate-500 mt-0.5">
+                              <div className="text-[11px] text-slate-500 mt-0.5 leading-tight">
                                 Assigned to: <strong className="text-slate-700">{c.job_title}</strong>
                               </div>
                             )}
-                            <div className="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5">Direct Submission</div>
+                            <div className="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5 leading-tight">Direct Submission</div>
                           </div>
                         ) : (
                           <div>
-                            <div className="font-semibold text-slate-900 text-xs">
+                            <div className="font-semibold text-slate-900 text-xs leading-tight">
                               {c.job_title || 'Position Application'}
                             </div>
                             {c.last_company && (
-                              <div className="text-[11px] text-slate-500 mt-0.5">
+                              <div className="text-[11px] text-slate-500 mt-0.5 leading-tight">
                                 Prev Org: {c.last_company}
                               </div>
                             )}
-                            <div className="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5">{c.source || 'Hosted Portal'}</div>
+                            <div className="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5 leading-tight">{c.source || 'Hosted Portal'}</div>
                           </div>
                         )}
                       </td>
 
                       {/* Stage Pill & Schedule Card */}
-                      <td className="px-3 py-2.5 min-w-[160px] align-top whitespace-nowrap">
+                      <td className="px-3 py-2 min-w-[155px] align-top whitespace-nowrap">
                         <div className="space-y-1">
                           <span className={`inline-flex px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider ${
                             c.stage === 'hired' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
@@ -696,9 +696,9 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
 
                           {c.stage === 'interview' && (
                             c.interview_date ? (
-                              <div className="bg-[#FAF9F5] border border-[#E8E2D5] rounded-lg p-1.5 space-y-0.5 shadow-2xs">
-                                <div className="text-[11px] font-bold text-slate-800 flex items-center gap-1 whitespace-nowrap">
-                                  <span className="text-xs">📅</span>
+                              <div className="bg-[#FAF9F5] border border-[#E8E2D5] rounded-md p-1 px-1.5 space-y-0.5 shadow-2xs">
+                                <div className="text-[10px] font-bold text-slate-800 flex items-center gap-1 whitespace-nowrap">
+                                  <span>📅</span>
                                   <span className="whitespace-nowrap">
                                     {new Date(c.interview_date + 'T00:00:00').toLocaleDateString('en-IN', {
                                       day: 'numeric',
@@ -711,14 +711,14 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
                                     </span>
                                   )}
                                 </div>
-                                <div className="flex items-center justify-between gap-1 pt-1 border-t border-slate-200/60 text-[10px] whitespace-nowrap">
-                                  <span className="text-slate-600 font-medium whitespace-nowrap text-[10px]">
+                                <div className="flex items-center justify-between gap-1 pt-0.5 border-t border-slate-200/60 text-[9px] whitespace-nowrap">
+                                  <span className="text-slate-600 font-medium whitespace-nowrap text-[9px]">
                                     {c.interview_type === 'online' ? '💻 Online' : c.interview_type === 'telephonic' ? '📞 Telephonic' : '🏢 In-Office'}
                                   </span>
                                   <button
                                     type="button"
                                     onClick={() => openScheduleInterviewModal(c)}
-                                    className="text-blue-600 hover:text-blue-800 font-bold hover:underline cursor-pointer text-[10px] whitespace-nowrap px-1 py-0.5 rounded hover:bg-blue-50 transition-colors"
+                                    className="text-blue-600 hover:text-blue-800 font-bold hover:underline cursor-pointer text-[9px] whitespace-nowrap px-1 rounded hover:bg-blue-50 transition-colors"
                                     title="Click to reschedule interview slot"
                                   >
                                     Reschedule
@@ -729,7 +729,7 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
                               <button
                                 type="button"
                                 onClick={() => openScheduleInterviewModal(c)}
-                                className="block mt-0.5 text-[10px] text-blue-700 font-bold bg-blue-50/80 hover:bg-blue-100 px-2 py-0.5 rounded-lg border border-blue-200 transition-colors cursor-pointer whitespace-nowrap shadow-2xs"
+                                className="block mt-0.5 text-[9px] text-blue-700 font-bold bg-blue-50/80 hover:bg-blue-100 px-1.5 py-0.5 rounded-md border border-blue-200 transition-colors cursor-pointer whitespace-nowrap shadow-2xs"
                                 title="Set interview date and time"
                               >
                                 <span>📅 Set Slot</span>
@@ -740,29 +740,29 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
                       </td>
 
                       {/* Resume */}
-                      <td className="px-2.5 py-2.5 align-top whitespace-nowrap text-center">
+                      <td className="px-2 py-2 align-top whitespace-nowrap text-center">
                         {c.resume_filename ? (
                           <button
                             onClick={() => handleDownloadResume(c.resume_filename!)}
-                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border border-[#E8E2D5] bg-[#FAF8F2] text-[#856E2E] hover:bg-[#F5EFE0] text-xs font-bold transition-all shadow-2xs whitespace-nowrap cursor-pointer"
+                            className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md border border-[#E8E2D5] bg-[#FAF8F2] text-[#856E2E] hover:bg-[#F5EFE0] text-[11px] font-bold transition-all shadow-2xs whitespace-nowrap cursor-pointer"
                           >
-                            <FileTextIcon size={13} />
+                            <FileTextIcon size={12} />
                             <span className="whitespace-nowrap">View CV</span>
                           </button>
                         ) : (
-                          <span className="text-[11px] text-slate-400 italic">No File</span>
+                          <span className="text-[10px] text-slate-400 italic">No File</span>
                         )}
                       </td>
 
                       {/* Notes & Remarks */}
-                      <td className="px-2.5 py-2.5 align-top whitespace-nowrap text-center">
+                      <td className="px-2 py-2 align-top whitespace-nowrap text-center">
                         <button
                           onClick={() => openNotesModal(c)}
-                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 text-xs font-semibold whitespace-nowrap cursor-pointer transition-all shadow-2xs"
+                          className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 text-[11px] font-semibold whitespace-nowrap cursor-pointer transition-all shadow-2xs"
                         >
                           <span className="whitespace-nowrap">💬 Notes</span>
                           {(c.note_count || 0) > 0 && (
-                            <span className="px-1.5 py-0.2 rounded-full bg-slate-100 text-[10px] font-bold text-slate-800">
+                            <span className="px-1.5 py-0.2 rounded-full bg-slate-100 text-[9px] font-bold text-slate-800">
                               {c.note_count}
                             </span>
                           )}
@@ -770,11 +770,11 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
                       </td>
 
                       {/* Quick Actions (Stage selector, Edit, Delete) */}
-                      <td className="px-3 py-2.5 align-top text-right space-x-1 whitespace-nowrap">
+                      <td className="px-3 py-2 align-top text-right space-x-1 whitespace-nowrap">
                         <select
                           value={c.stage}
                           onChange={(e) => handleStageSelectChange(c, e.target.value)}
-                          className="px-2 py-1 rounded-lg border border-slate-200 text-[11px] font-semibold bg-white text-slate-700 focus:outline-none focus:border-[#d6c180] cursor-pointer"
+                          className="px-1.5 py-0.5 rounded-md border border-slate-200 text-[11px] font-semibold bg-white text-slate-700 focus:outline-none focus:border-[#d6c180] cursor-pointer"
                         >
                           {stages.map(s => (
                             <option key={s} value={s}>{s.toUpperCase()}</option>
@@ -783,7 +783,7 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
 
                         <button
                           onClick={() => openEditModal(c)}
-                          className="px-2 py-1 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-100 text-[11px] font-bold cursor-pointer"
+                          className="px-1.5 py-0.5 rounded-md border border-slate-200 text-slate-700 hover:bg-slate-100 text-[10px] font-bold cursor-pointer"
                           title="Edit candidate profile & job matching"
                         >
                           Edit
@@ -791,7 +791,7 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
 
                         <button
                           onClick={() => handleDeleteCandidate(c.id, c.name)}
-                          className="px-2 py-1 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 text-[11px] font-bold cursor-pointer"
+                          className="px-1.5 py-0.5 rounded-md border border-red-200 text-red-600 hover:bg-red-50 text-[10px] font-bold cursor-pointer"
                           title="Delete candidate"
                         >
                           Delete

@@ -192,7 +192,7 @@ export default function CrmLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-[#F8FAFC] flex text-[#0F172A]">
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flex flex-col w-64 bg-white border-r border-[#E2E8F0] sticky top-0 h-screen z-30">
+      <aside className="hidden md:flex flex-col w-60 bg-white border-r border-[#E2E8F0] sticky top-0 h-screen z-30">
         {/* Company Name at Sidebar Top */}
         <div className="h-16 px-5 border-b border-[#E2E8F0] flex items-center justify-between">
           <div className="flex items-center gap-2.5 overflow-hidden">
@@ -356,7 +356,7 @@ export default function CrmLayout({ children }: { children: React.ReactNode }) {
           </div>
         )}
 
-        <main className="flex-1 p-3 sm:p-5 lg:p-5 max-w-[1440px] w-full mx-auto">
+        <main className="flex-1 p-3 sm:p-4 lg:p-5 max-w-[1440px] w-full mx-auto">
           {isAccessDenied ? (
             <div className="max-w-md mx-auto my-12 bg-white rounded-3xl border border-red-200 p-8 text-center shadow-sm">
               <div className="w-14 h-14 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center mx-auto mb-4 text-2xl font-bold">

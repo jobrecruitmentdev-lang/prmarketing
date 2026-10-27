@@ -70,3 +70,13 @@ img, canvas, svg, video {
     transition: none;
   }
 }
+
+/* Hide scrollbar utility for sleek UI rows */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
