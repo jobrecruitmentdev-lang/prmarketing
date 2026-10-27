@@ -151,6 +151,21 @@ try {
         echo "Notice: Salary backfill: " . $e->getMessage() . "\n";
     }
 
+    // 2.3 Deduplicate and clean up automated interview notes in crm_candidate_notes (Approach A)
+    try {
+        $affected = $pdo->exec("
+            DELETE n1 FROM crm_candidate_notes n1
+            JOIN crm_candidate_notes n2 
+              ON n1.candidate_id = n2.candidate_id 
+              AND n1.id < n2.id
+            WHERE n1.note_text LIKE '📅 Interview Scheduled:%' 
+              AND n2.note_text LIKE '📅 Interview Scheduled:%'
+        ");
+        echo "Cleaned up duplicate automated interview notes (removed {$affected} duplicate rows).\n";
+    } catch (Exception $e) {
+        echo "Interview notes cleanup notice: " . $e->getMessage() . "\n";
+    }
+
     // 3. Seed Master Super Admin if not exists
     $stmt = $pdo->prepare("SELECT id FROM crm_users WHERE email = ?");
     $stmt->execute(['master@crm.com']);

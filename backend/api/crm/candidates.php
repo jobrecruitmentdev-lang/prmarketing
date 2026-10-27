@@ -364,7 +364,7 @@ function handleCandidatesRoutes(string $subpath, string $method, PDO $pdo): void
                 $adminId
             ]);
 
-            // Add note about scheduled interview if date provided
+            // Add or cleanly update note about scheduled interview if date provided (Approach A: Clean Replacement)
             if ($interviewDate) {
                 $employeeId = null;
                 if ($user['role'] === 'employee') {
@@ -379,8 +379,34 @@ function handleCandidatesRoutes(string $subpath, string $method, PDO $pdo): void
                 $noteMsg .= " ({$typeLabel})";
                 if ($interviewNotes) $noteMsg .= " — Notes: {$interviewNotes}";
 
-                $pdo->prepare("INSERT INTO crm_candidate_notes (candidate_id, employee_id, note_text) VALUES (?, ?, ?)")
-                    ->execute([$candidateId, $employeeId, $noteMsg]);
+                // Clean Replacement: Check if an automated interview note already exists for this candidate
+                $nCheck = $pdo->prepare("
+                    SELECT id FROM crm_candidate_notes 
+                    WHERE candidate_id = ? AND note_text LIKE '📅 Interview Scheduled:%' 
+                    ORDER BY id DESC
+                ");
+                $nCheck->execute([$candidateId]);
+                $existingNotes = $nCheck->fetchAll();
+
+                if (!empty($existingNotes)) {
+                    // Update latest note with new details & timestamp
+                    $primaryId = (int)$existingNotes[0]['id'];
+                    $pdo->prepare("
+                        UPDATE crm_candidate_notes 
+                        SET note_text = ?, employee_id = COALESCE(?, employee_id), created_at = CURRENT_TIMESTAMP 
+                        WHERE id = ?
+                    ")->execute([$noteMsg, $employeeId, $primaryId]);
+
+                    // Clean any older duplicates so strictly 1 interview note exists
+                    if (count($existingNotes) > 1) {
+                        for ($i = 1; $i < count($existingNotes); $i++) {
+                            $pdo->prepare("DELETE FROM crm_candidate_notes WHERE id = ?")->execute([$existingNotes[$i]['id']]);
+                        }
+                    }
+                } else {
+                    $pdo->prepare("INSERT INTO crm_candidate_notes (candidate_id, employee_id, note_text) VALUES (?, ?, ?)")
+                        ->execute([$candidateId, $employeeId, $noteMsg]);
+                }
             }
         } else {
             $pdo->prepare("UPDATE crm_candidates SET stage = ? WHERE id = ? AND admin_id = ?")->execute([$stage, $candidateId, $adminId]);
@@ -474,6 +500,54 @@ function handleCandidatesRoutes(string $subpath, string $method, PDO $pdo): void
         if ($newResumeFilename) {
             $pdo->prepare("UPDATE crm_applications SET resume_path = ? WHERE candidate_id = ? AND admin_id = ?")
                 ->execute([$newResumeFilename, $candidateId, $adminId]);
+        }
+
+        // Keep interview note updated if interview date was changed/set in edit modal
+        if (isset($body['interview_date']) && !empty($body['interview_date'])) {
+            $intDate = trim($body['interview_date']);
+            $intTime = !empty($body['interview_time']) ? trim($body['interview_time']) : null;
+            $intType = !empty($body['interview_type']) ? trim($body['interview_type']) : 'in_office';
+            $intNotes = !empty($body['interview_notes']) ? trim($body['interview_notes']) : null;
+
+            $employeeId = null;
+            if ($user['role'] === 'employee') {
+                $eStmt = $pdo->prepare("SELECT id FROM crm_employees WHERE user_id = ?");
+                $eStmt->execute([$user['id']]);
+                $emp = $eStmt->fetch();
+                if ($emp) $employeeId = (int)$emp['id'];
+            }
+            $typeLabel = $intType === 'online' ? 'Online / Video Call' : ($intType === 'telephonic' ? 'Telephonic' : 'In-Office');
+            $noteMsg = "📅 Interview Scheduled: {$intDate}";
+            if ($intTime) $noteMsg .= " at {$intTime}";
+            $noteMsg .= " ({$typeLabel})";
+            if ($intNotes) $noteMsg .= " — Notes: {$intNotes}";
+
+            $nCheck = $pdo->prepare("
+                SELECT id 
+                FROM crm_candidate_notes 
+                WHERE candidate_id = ? AND note_text LIKE '📅 Interview Scheduled:%' 
+                ORDER BY id DESC
+            ");
+            $nCheck->execute([$candidateId]);
+            $existingNotes = $nCheck->fetchAll();
+
+            if (!empty($existingNotes)) {
+                $primaryId = (int)$existingNotes[0]['id'];
+                $pdo->prepare("
+                    UPDATE crm_candidate_notes 
+                    SET note_text = ?, employee_id = COALESCE(?, employee_id), created_at = CURRENT_TIMESTAMP 
+                    WHERE id = ?
+                ")->execute([$noteMsg, $employeeId, $primaryId]);
+
+                if (count($existingNotes) > 1) {
+                    for ($i = 1; $i < count($existingNotes); $i++) {
+                        $pdo->prepare("DELETE FROM crm_candidate_notes WHERE id = ?")->execute([$existingNotes[$i]['id']]);
+                    }
+                }
+            } else {
+                $pdo->prepare("INSERT INTO crm_candidate_notes (candidate_id, employee_id, note_text) VALUES (?, ?, ?)")
+                    ->execute([$candidateId, $employeeId, $noteMsg]);
+            }
         }
 
         $sStmt = $pdo->prepare("

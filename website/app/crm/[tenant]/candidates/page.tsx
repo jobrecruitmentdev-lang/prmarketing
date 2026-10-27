@@ -1088,15 +1088,50 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
               ) : notesList.length === 0 ? (
                 <div className="text-center py-8 text-xs text-slate-400">No notes or remarks yet for this candidate.</div>
               ) : (
-                notesList.map((n) => (
-                  <div key={n.id} className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs space-y-1">
-                    <div className="flex items-center justify-between text-[11px] text-slate-500 font-semibold">
-                      <span>{n.author_name || 'System / Candidate'}</span>
-                      <span>{new Date(n.created_at).toLocaleString()}</span>
-                    </div>
-                    <p className="text-slate-800 whitespace-pre-wrap leading-relaxed">{n.note_text}</p>
-                  </div>
-                ))
+                (() => {
+                  // Approach A: Filter out any older duplicate interview schedule notes so strictly only the latest is displayed
+                  let seenInterviewSchedule = false;
+                  const displayNotes = notesList.filter((n) => {
+                    if (n.note_text.startsWith('📅 Interview Scheduled:')) {
+                      if (seenInterviewSchedule) return false;
+                      seenInterviewSchedule = true;
+                    }
+                    return true;
+                  });
+
+                  return displayNotes.map((n) => {
+                    const isInterview = n.note_text.startsWith('📅 Interview Scheduled:');
+                    return (
+                      <div
+                        key={n.id}
+                        className={`p-3.5 rounded-2xl border text-xs space-y-1.5 transition-all ${
+                          isInterview
+                            ? 'bg-[#FAF9F5] border-[#d6c180]/60 shadow-xs ring-1 ring-[#d6c180]/20'
+                            : 'bg-slate-50 border-slate-200'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between text-[11px] font-semibold">
+                          <div className="flex items-center gap-2">
+                            <span className={isInterview ? 'text-slate-900 font-extrabold' : 'text-slate-700'}>
+                              {n.author_name || (isInterview ? 'Recruiter' : 'System')}
+                            </span>
+                            {isInterview && (
+                              <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#0F172A] text-[#d6c180] font-bold">
+                                Active Schedule
+                              </span>
+                            )}
+                          </div>
+                          <span className="text-slate-400 font-medium">
+                            {new Date(n.created_at).toLocaleString()}
+                          </span>
+                        </div>
+                        <p className={`whitespace-pre-wrap leading-relaxed ${isInterview ? 'text-slate-900 font-semibold' : 'text-slate-700'}`}>
+                          {n.note_text}
+                        </p>
+                      </div>
+                    );
+                  });
+                })()
               )}
             </div>
 
