@@ -10,6 +10,7 @@ import {
   CheckIcon,
   XIcon,
   PlusIcon,
+  CalendarCheckIcon,
 } from '@/components/crm/CrmIcons';
 
 interface Candidate {
@@ -590,7 +591,7 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
               <tr>
                 <th className="px-5 py-3.5">Candidate Details</th>
                 <th className="px-5 py-3.5">Submission Type & Role</th>
-                <th className="px-5 py-3.5">Stage</th>
+                <th className="px-5 py-3.5 min-w-[180px]">Stage & Schedule</th>
                 <th className="px-5 py-3.5">Resume</th>
                 <th className="px-5 py-3.5">Notes & Remarks</th>
                 <th className="px-5 py-3.5 text-right">Quick Actions</th>
@@ -661,10 +662,10 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
                         )}
                       </td>
 
-                      {/* Stage Pill */}
-                      <td className="px-5 py-4">
-                        <div className="space-y-1">
-                          <span className={`inline-flex px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider ${
+                      {/* Stage Pill & Schedule Card */}
+                      <td className="px-5 py-4 min-w-[180px] align-top">
+                        <div className="space-y-1.5">
+                          <span className={`inline-flex px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider ${
                             c.stage === 'hired' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
                             c.stage === 'rejected' ? 'bg-red-50 text-red-700 border border-red-200' :
                             c.stage === 'interview' ? 'bg-blue-50 text-blue-700 border border-blue-200' :
@@ -677,43 +678,45 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
 
                           {c.stage === 'interview' && (
                             c.interview_date ? (
-                              <button
-                                type="button"
-                                onClick={() => openScheduleInterviewModal(c)}
-                                className="block text-left group cursor-pointer"
-                                title="Click to reschedule interview"
-                              >
-                                <div className="text-[11px] font-bold text-slate-700 group-hover:text-blue-600 transition-colors flex items-center gap-1">
-                                  <span>📅</span>
-                                  <span>
+                              <div className="bg-[#FAF9F5] border border-[#E8E2D5] rounded-xl p-2 space-y-1 max-w-[210px] shadow-2xs">
+                                <div className="text-[11px] font-bold text-slate-800 flex items-center gap-1.5 whitespace-nowrap">
+                                  <span className="text-xs">📅</span>
+                                  <span className="whitespace-nowrap">
                                     {new Date(c.interview_date + 'T00:00:00').toLocaleDateString('en-IN', {
                                       day: 'numeric',
                                       month: 'short',
                                     })}
                                   </span>
                                   {c.interview_time && (
-                                    <span className="text-slate-500 font-semibold">
+                                    <span className="text-slate-500 font-semibold whitespace-nowrap">
                                       • {c.interview_time.slice(0, 5)}
                                     </span>
                                   )}
                                 </div>
-                                <div className="text-[10px] text-slate-400 capitalize font-medium flex items-center gap-1">
-                                  <span>
-                                    {c.interview_type === 'online' ? '💻 Online' : c.interview_type === 'telephonic' ? '📞 Telephonic' : '🏢 In-Office'}
+                                <div className="flex items-center justify-between gap-1.5 pt-1 border-t border-slate-200/60 text-[10px] whitespace-nowrap">
+                                  <span className="text-slate-600 font-medium whitespace-nowrap flex items-center gap-1">
+                                    <span>
+                                      {c.interview_type === 'online' ? '💻 Online' : c.interview_type === 'telephonic' ? '📞 Telephonic' : '🏢 In-Office'}
+                                    </span>
                                   </span>
-                                  <span className="text-blue-600 underline text-[9px] opacity-0 group-hover:opacity-100 transition-opacity">
+                                  <button
+                                    type="button"
+                                    onClick={() => openScheduleInterviewModal(c)}
+                                    className="text-blue-600 hover:text-blue-800 font-bold hover:underline cursor-pointer text-[10px] whitespace-nowrap px-1 py-0.5 rounded hover:bg-blue-50 transition-colors"
+                                    title="Click to reschedule interview slot"
+                                  >
                                     Reschedule
-                                  </span>
+                                  </button>
                                 </div>
-                              </button>
+                              </div>
                             ) : (
                               <button
                                 type="button"
                                 onClick={() => openScheduleInterviewModal(c)}
-                                className="block mt-1 text-[10px] text-blue-700 font-bold bg-blue-50/80 hover:bg-blue-100 px-2 py-0.5 rounded border border-blue-200 transition-colors cursor-pointer"
+                                className="block mt-1 text-[10px] text-blue-700 font-bold bg-blue-50/80 hover:bg-blue-100 px-2.5 py-1 rounded-lg border border-blue-200 transition-colors cursor-pointer whitespace-nowrap shadow-2xs"
                                 title="Set interview date and time"
                               >
-                                <span>📅 Set Date & Time</span>
+                                <span>📅 Set Date &amp; Time</span>
                               </button>
                             )
                           )}
@@ -1375,7 +1378,7 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
       {/* Schedule Interview Modal */}
       {interviewCandidate && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-200">
-          <div className="bg-white rounded-3xl border border-slate-200 max-w-md w-full max-h-[92vh] overflow-y-auto p-6 sm:p-7 shadow-2xl relative my-auto">
+          <div className="bg-white rounded-3xl border border-slate-200 max-w-lg w-full max-h-[92vh] overflow-y-auto p-6 sm:p-8 shadow-2xl relative my-auto">
             <button
               onClick={handleCloseInterviewModal}
               className="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center font-bold text-sm hover:bg-slate-200 transition-colors cursor-pointer"
@@ -1383,17 +1386,22 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
               ✕
             </button>
 
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 rounded-2xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 text-lg shadow-2xs">
-                📅
+            <div className="flex items-center gap-3.5 mb-1 pb-4 border-b border-slate-100">
+              <div className="w-11 h-11 rounded-2xl bg-[#0F172A] text-[#d6c180] flex items-center justify-center font-black shadow-sm flex-shrink-0">
+                <CalendarCheckIcon size={22} className="text-[#d6c180]" />
               </div>
-              <div>
-                <h3 className="text-lg font-extrabold text-slate-900 leading-tight">
+              <div className="min-w-0 flex-1">
+                <h3 className="text-xl font-extrabold text-[#0F172A] tracking-tight">
                   Schedule Interview
                 </h3>
-                <p className="text-xs text-slate-500 font-medium">
-                  {interviewCandidate.name} • <span className="text-slate-700 font-semibold">{interviewCandidate.job_title || interviewCandidate.last_company || 'Candidate'}</span>
-                </p>
+                <div className="flex items-center gap-2 mt-1 flex-wrap">
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#FAF8F2] text-[#856E2E] border border-[#E8E2D5]">
+                    👤 {interviewCandidate.name}
+                  </span>
+                  <span className="text-[11px] text-slate-500 font-semibold truncate max-w-[240px]">
+                    • {interviewCandidate.job_title || interviewCandidate.last_company || 'Candidate Application'}
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -1404,11 +1412,12 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
             )}
 
             <form onSubmit={handleConfirmInterview} className="space-y-4 mt-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 {/* Interview Date */}
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
-                    Interview Date <span className="text-red-500">*</span>
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                    <span>Interview Date</span>
+                    <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="date"
@@ -1416,104 +1425,112 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
                     min={new Date().toISOString().split('T')[0]}
                     value={interviewDate}
                     onChange={(e) => setInterviewDate(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-800 bg-white focus:outline-none focus:border-[#d6c180] shadow-2xs"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-800 bg-white focus:outline-none focus:border-[#d6c180] focus:ring-2 focus:ring-[#d6c180]/20 shadow-2xs transition-all"
                   />
                 </div>
 
                 {/* Interview Time */}
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
-                    Interview Time <span className="text-red-500">*</span>
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                    <span>Interview Time</span>
+                    <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="time"
                     required
                     value={interviewTime}
                     onChange={(e) => setInterviewTime(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-800 bg-white focus:outline-none focus:border-[#d6c180] shadow-2xs"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-800 bg-white focus:outline-none focus:border-[#d6c180] focus:ring-2 focus:ring-[#d6c180]/20 shadow-2xs transition-all"
                   />
                 </div>
               </div>
 
               {/* Interview Mode / Location */}
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                  Interview Mode / Type
+                <label className="block text-xs font-bold text-slate-700 mb-2">
+                  Interview Mode / Meeting Format
                 </label>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-3 gap-2.5">
                   <button
                     type="button"
                     onClick={() => setInterviewType('in_office')}
-                    className={`py-2 px-2.5 rounded-xl border text-xs font-bold flex flex-col items-center gap-1 transition-all cursor-pointer ${
+                    className={`py-3 px-2 rounded-2xl border text-xs font-bold flex flex-col items-center gap-1.5 transition-all cursor-pointer ${
                       interviewType === 'in_office'
-                        ? 'border-blue-500 bg-blue-50 text-blue-700 shadow-2xs'
-                        : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
+                        ? 'border-[#d6c180] bg-[#FAF8F2] text-[#0F172A] shadow-xs ring-1 ring-[#d6c180]'
+                        : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:border-slate-300'
                     }`}
                   >
-                    <span className="text-base">🏢</span>
-                    <span className="text-[11px]">In-Office</span>
+                    <span className="text-xl">🏢</span>
+                    <span className="text-xs font-extrabold">In-Office</span>
+                    <span className="text-[10px] text-slate-400 font-medium">Navrangpura</span>
                   </button>
 
                   <button
                     type="button"
                     onClick={() => setInterviewType('online')}
-                    className={`py-2 px-2.5 rounded-xl border text-xs font-bold flex flex-col items-center gap-1 transition-all cursor-pointer ${
+                    className={`py-3 px-2 rounded-2xl border text-xs font-bold flex flex-col items-center gap-1.5 transition-all cursor-pointer ${
                       interviewType === 'online'
-                        ? 'border-blue-500 bg-blue-50 text-blue-700 shadow-2xs'
-                        : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
+                        ? 'border-[#d6c180] bg-[#FAF8F2] text-[#0F172A] shadow-xs ring-1 ring-[#d6c180]'
+                        : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:border-slate-300'
                     }`}
                   >
-                    <span className="text-base">💻</span>
-                    <span className="text-[11px]">Online / Meet</span>
+                    <span className="text-xl">💻</span>
+                    <span className="text-xs font-extrabold">Online Meet</span>
+                    <span className="text-[10px] text-slate-400 font-medium">Google Meet</span>
                   </button>
 
                   <button
                     type="button"
                     onClick={() => setInterviewType('telephonic')}
-                    className={`py-2 px-2.5 rounded-xl border text-xs font-bold flex flex-col items-center gap-1 transition-all cursor-pointer ${
+                    className={`py-3 px-2 rounded-2xl border text-xs font-bold flex flex-col items-center gap-1.5 transition-all cursor-pointer ${
                       interviewType === 'telephonic'
-                        ? 'border-blue-500 bg-blue-50 text-blue-700 shadow-2xs'
-                        : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
+                        ? 'border-[#d6c180] bg-[#FAF8F2] text-[#0F172A] shadow-xs ring-1 ring-[#d6c180]'
+                        : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:border-slate-300'
                     }`}
                   >
-                    <span className="text-base">📞</span>
-                    <span className="text-[11px]">Telephonic</span>
+                    <span className="text-xl">📞</span>
+                    <span className="text-xs font-extrabold">Telephonic</span>
+                    <span className="text-[10px] text-slate-400 font-medium">Direct Call</span>
                   </button>
                 </div>
               </div>
 
               {/* Notes or Instructions */}
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Notes / Instructions <span className="text-slate-400 font-normal">(Optional)</span>
+                <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center justify-between">
+                  <span>Notes / Interview Instructions</span>
+                  <span className="text-[11px] text-slate-400 font-normal">Optional</span>
                 </label>
                 <textarea
                   rows={2}
                   value={interviewNotes}
                   onChange={(e) => setInterviewNotes(e.target.value)}
-                  placeholder="e.g. Bring hardcopy resume, report at 9th floor, or meeting link..."
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-[#d6c180] resize-none"
+                  placeholder="e.g. Bring updated CV hardcopy, reporting at 9th Floor, or paste meeting link..."
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-[#d6c180] focus:ring-2 focus:ring-[#d6c180]/20 resize-none transition-all"
                 />
               </div>
 
               {/* Modal Actions */}
-              <div className="flex items-center gap-2.5 pt-2">
+              <div className="flex items-center gap-3 pt-3 border-t border-slate-100">
                 <button
                   type="button"
                   onClick={handleCloseInterviewModal}
-                  className="flex-1 py-2.5 px-4 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer"
+                  className="flex-1 py-3 px-4 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold transition-all shadow-2xs cursor-pointer text-center"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmittingInterview}
-                  className="flex-1 py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-xs font-extrabold shadow-sm transition-all disabled:opacity-50 cursor-pointer flex items-center justify-center gap-1.5"
+                  className="flex-[1.5] py-3 px-5 rounded-xl bg-[#d6c180] hover:bg-[#c4af6e] active:scale-[0.99] text-[#0F172A] text-xs font-extrabold shadow-sm transition-all disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2"
                 >
                   {isSubmittingInterview ? (
-                    <span>Scheduling...</span>
+                    <span>Scheduling Slot...</span>
                   ) : (
-                    <span>Confirm Interview</span>
+                    <>
+                      <span>Confirm &amp; Schedule Slot</span>
+                      <span>→</span>
+                    </>
                   )}
                 </button>
               </div>
