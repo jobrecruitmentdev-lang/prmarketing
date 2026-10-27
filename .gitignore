@@ -55,10 +55,15 @@ backend/uploads/resumes/*
 !backend/uploads/resumes/.gitkeep
 
 # Secrets & Credentials
+credentials/
+*/credentials/
 credentials.json
 */credentials.json
 blog_automation/credentials.json
 token.json
 */token.json
 client_secret*.json
+*service-account*.json
+cosmic-mariner*.json
+google-service-account*.json
 

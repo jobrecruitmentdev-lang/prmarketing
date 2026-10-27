@@ -292,6 +292,14 @@ def main():
     except Exception as e:
         print(f"  Note: IndexNow auto-submit notice: {e}")
 
+    # 7. Automated Google Search Console Indexing API Submission
+    print('\n[Step 7] Pushing URLs to Google Search Console Indexing API...')
+    try:
+        from submit_gsc import submit_sitemap_to_gsc
+        submit_sitemap_to_gsc('https://prmarketingventures.com/sitemap.xml')
+    except Exception as e:
+        print(f'  Note: GSC Indexing API notice: {e}')
+
 
 if __name__ == "__main__":
     main()
