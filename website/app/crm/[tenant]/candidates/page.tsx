@@ -609,10 +609,10 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
               <tr>
                 <th className="px-5 py-3.5">Candidate Details</th>
                 <th className="px-5 py-3.5">Submission Type & Role</th>
-                <th className="px-5 py-3.5 min-w-[180px]">Stage & Schedule</th>
-                <th className="px-5 py-3.5">Resume</th>
-                <th className="px-5 py-3.5">Notes & Remarks</th>
-                <th className="px-5 py-3.5 text-right">Quick Actions</th>
+                <th className="px-5 py-3.5 min-w-[200px] whitespace-nowrap">Stage & Schedule</th>
+                <th className="px-5 py-3.5 min-w-[130px] whitespace-nowrap">Resume</th>
+                <th className="px-5 py-3.5 min-w-[125px] whitespace-nowrap">Notes & Remarks</th>
+                <th className="px-5 py-3.5 text-right whitespace-nowrap">Quick Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
@@ -742,14 +742,14 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
                       </td>
 
                       {/* Resume */}
-                      <td className="px-5 py-4">
+                      <td className="px-5 py-4 whitespace-nowrap">
                         {c.resume_filename ? (
                           <button
                             onClick={() => handleDownloadResume(c.resume_filename!)}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[#E8E2D5] bg-[#FAF8F2] text-[#856E2E] hover:bg-[#F5EFE0] text-xs font-bold transition-all shadow-sm"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[#E8E2D5] bg-[#FAF8F2] text-[#856E2E] hover:bg-[#F5EFE0] text-xs font-bold transition-all shadow-sm whitespace-nowrap cursor-pointer"
                           >
                             <FileTextIcon size={14} />
-                            <span>View CV</span>
+                            <span className="whitespace-nowrap">View CV</span>
                           </button>
                         ) : (
                           <span className="text-[11px] text-slate-400 italic">No File</span>
@@ -757,14 +757,14 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
                       </td>
 
                       {/* Notes & Remarks */}
-                      <td className="px-5 py-4">
+                      <td className="px-5 py-4 whitespace-nowrap">
                         <button
                           onClick={() => openNotesModal(c)}
-                          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-100 text-xs font-medium"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 text-xs font-semibold whitespace-nowrap cursor-pointer transition-all shadow-2xs"
                         >
-                          <span>💬 Notes</span>
+                          <span className="whitespace-nowrap">💬 Notes</span>
                           {(c.note_count || 0) > 0 && (
-                            <span className="px-1.5 py-0.2 rounded-full bg-slate-200 text-[10px] font-bold text-slate-800">
+                            <span className="px-1.5 py-0.2 rounded-full bg-slate-100 text-[10px] font-bold text-slate-800">
                               {c.note_count}
                             </span>
                           )}
