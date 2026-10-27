@@ -130,6 +130,24 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
 
   const stages = ['applied', 'screening', 'interview', 'offer', 'hired', 'rejected'];
 
+  const formatNoteTimestamp = (raw: string) => {
+    if (!raw) return '';
+    try {
+      const d = new Date(raw.replace(' ', 'T'));
+      if (isNaN(d.getTime())) return raw;
+      return d.toLocaleString('en-IN', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+      });
+    } catch {
+      return raw;
+    }
+  };
+
   const sources = [
     { key: 'manual', label: 'Manual Entry' },
     { key: 'walk_in', label: 'Walk-In Interview' },
@@ -629,7 +647,7 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
                         </div>
                         <div className="text-xs text-slate-500 mt-0.5">{c.email}</div>
                         <div className="text-[11px] text-slate-400 mt-0.5">
-                          {c.phone || 'No phone'} {c.created_at && `• ${new Date(c.created_at).toLocaleDateString()}`}
+                          {c.phone || 'No phone'} {c.created_at && `• ${new Date(c.created_at.replace(' ', 'T')).toLocaleDateString('en-IN')}`}
                         </div>
                       </td>
 
@@ -1122,7 +1140,7 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
                             )}
                           </div>
                           <span className="text-slate-400 font-medium">
-                            {new Date(n.created_at).toLocaleString()}
+                            {formatNoteTimestamp(n.created_at)}
                           </span>
                         </div>
                         <p className={`whitespace-pre-wrap leading-relaxed ${isInterview ? 'text-slate-900 font-semibold' : 'text-slate-700'}`}>

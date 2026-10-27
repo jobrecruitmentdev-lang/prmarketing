@@ -4,6 +4,11 @@
  * PR Marketing Ventures Enterprise Backend
  */
 
+// Set global PHP timezone to Indian Standard Time (IST)
+if (function_exists('date_default_timezone_set')) {
+    date_default_timezone_set('Asia/Kolkata');
+}
+
 class Database {
     private static ?PDO $instance = null;
 
@@ -33,9 +38,13 @@ class Database {
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_EMULATE_PREPARES   => false,
             ];
+            if (defined('PDO::MYSQL_ATTR_INIT_COMMAND')) {
+                $options[PDO::MYSQL_ATTR_INIT_COMMAND] = "SET NAMES utf8mb4, time_zone = '+05:30'";
+            }
 
             try {
                 self::$instance = new PDO($dsn, $user, $pass, $options);
+                self::$instance->exec("SET time_zone = '+05:30'");
             } catch (PDOException $e) {
                 // If Hostinger credentials fail on local dev machine, fallback to local XAMPP MySQL
                 if (($e->getCode() == 1045 || $e->getCode() == 2002) && ($host === 'localhost' || $host === '127.0.0.1')) {
@@ -62,6 +71,12 @@ class Database {
                     throw new Exception("Database Connection Failed: " . $e->getMessage());
                 }
             }
+        }
+
+        if (self::$instance) {
+            try {
+                self::$instance->exec("SET time_zone = '+05:30'");
+            } catch (Exception $tzEx) {}
         }
 
         return self::$instance;

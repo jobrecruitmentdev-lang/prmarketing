@@ -3,6 +3,8 @@
  * CRM API Helpers & Middleware
  */
 
+date_default_timezone_set('Asia/Kolkata');
+
 require_once __DIR__ . '/../../config/database.php';
 require_once __DIR__ . '/jwt.php';
 

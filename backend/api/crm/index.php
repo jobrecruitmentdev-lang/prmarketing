@@ -4,6 +4,8 @@
  * Multi-Tenant CRM Native PHP REST Engine
  */
 
+date_default_timezone_set('Asia/Kolkata');
+
 require_once __DIR__ . '/helpers.php';
 applyCrmCors();
 

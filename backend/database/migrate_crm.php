@@ -166,6 +166,30 @@ try {
         echo "Interview notes cleanup notice: " . $e->getMessage() . "\n";
     }
 
+    // 2.4 One-time timezone correction for legacy UTC notes (Shift by +05:30 to IST)
+    try {
+        $pdo->exec("
+            CREATE TABLE IF NOT EXISTS crm_migrations_applied (
+                migration_key VARCHAR(100) PRIMARY KEY,
+                applied_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+        ");
+
+        $chk = $pdo->query("SELECT 1 FROM crm_migrations_applied WHERE migration_key = 'ist_timezone_shift_20261027'")->fetch();
+        if (!$chk) {
+            $shifted = $pdo->exec("
+                UPDATE crm_candidate_notes 
+                SET created_at = DATE_ADD(created_at, INTERVAL 330 MINUTE) 
+                WHERE created_at <= '2026-10-27 06:15:00' 
+                  AND DATE(created_at) = '2026-10-27'
+            ");
+            $pdo->exec("INSERT INTO crm_migrations_applied (migration_key) VALUES ('ist_timezone_shift_20261027')");
+            echo "Successfully converted legacy UTC notes to IST (shifted {$shifted} rows by +5h 30m).\n";
+        }
+    } catch (Exception $e) {
+        echo "Timezone shift notice: " . $e->getMessage() . "\n";
+    }
+
     // 3. Seed Master Super Admin if not exists
     $stmt = $pdo->prepare("SELECT id FROM crm_users WHERE email = ?");
     $stmt->execute(['master@crm.com']);
