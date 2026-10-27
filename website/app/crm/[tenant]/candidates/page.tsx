@@ -607,12 +607,12 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
           <table className="w-full text-left text-xs text-slate-700">
             <thead className="bg-[#FAF9F5] border-b border-slate-200 text-slate-500 uppercase text-[10px] font-bold tracking-wider">
               <tr>
-                <th className="px-5 py-3.5">Candidate Details</th>
-                <th className="px-5 py-3.5">Submission Type & Role</th>
-                <th className="px-5 py-3.5 min-w-[200px] whitespace-nowrap">Stage & Schedule</th>
-                <th className="px-5 py-3.5 min-w-[130px] whitespace-nowrap">Resume</th>
-                <th className="px-5 py-3.5 min-w-[125px] whitespace-nowrap">Notes & Remarks</th>
-                <th className="px-5 py-3.5 text-right whitespace-nowrap">Quick Actions</th>
+                <th className="px-3.5 py-2.5">Candidate Details</th>
+                <th className="px-3.5 py-2.5">Submission Type & Role</th>
+                <th className="px-3 py-2.5 min-w-[160px] whitespace-nowrap">Stage & Schedule</th>
+                <th className="px-2.5 py-2.5 min-w-[95px] whitespace-nowrap text-center">Resume</th>
+                <th className="px-2.5 py-2.5 min-w-[92px] whitespace-nowrap text-center">Notes & Remarks</th>
+                <th className="px-3 py-2.5 text-right whitespace-nowrap">Quick Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
@@ -634,25 +634,25 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
                   const isDirect = c.source === 'direct_cv';
 
                   return (
-                    <tr key={c.id} className="hover:bg-slate-50 transition-colors">
+                    <tr key={c.id} className="hover:bg-slate-50/80 transition-colors">
                       {/* Candidate Details */}
-                      <td className="px-5 py-4">
-                        <div className="font-bold text-slate-900 text-sm flex items-center gap-2">
+                      <td className="px-3.5 py-2.5 align-top">
+                        <div className="font-bold text-slate-900 text-xs flex items-center gap-1.5">
                           <span>{c.name}</span>
                           {isDirect && (
-                            <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-[#F5EFE0] text-[#856E2E] border border-[#E8E2D5]">
+                            <span className="inline-flex items-center px-1.5 py-0.2 rounded text-[9px] font-bold bg-[#F5EFE0] text-[#856E2E] border border-[#E8E2D5]">
                               Direct CV
                             </span>
                           )}
                         </div>
-                        <div className="text-xs text-slate-500 mt-0.5">{c.email}</div>
-                        <div className="text-[11px] text-slate-400 mt-0.5">
+                        <div className="text-[11px] text-slate-500 mt-0.5 truncate max-w-[170px]">{c.email}</div>
+                        <div className="text-[10px] text-slate-400 mt-0.5">
                           {c.phone || 'No phone'} {c.created_at && `• ${new Date(c.created_at.replace(' ', 'T')).toLocaleDateString('en-IN')}`}
                         </div>
                       </td>
 
                       {/* Submission Type & Role */}
-                      <td className="px-5 py-4">
+                      <td className="px-3.5 py-2.5 align-top">
                         {isDirect ? (
                           <div>
                             <div className="font-semibold text-[#856E2E] text-xs">
@@ -681,9 +681,9 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
                       </td>
 
                       {/* Stage Pill & Schedule Card */}
-                      <td className="px-5 py-4 min-w-[180px] align-top">
-                        <div className="space-y-1.5">
-                          <span className={`inline-flex px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider ${
+                      <td className="px-3 py-2.5 min-w-[160px] align-top whitespace-nowrap">
+                        <div className="space-y-1">
+                          <span className={`inline-flex px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider ${
                             c.stage === 'hired' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
                             c.stage === 'rejected' ? 'bg-red-50 text-red-700 border border-red-200' :
                             c.stage === 'interview' ? 'bg-blue-50 text-blue-700 border border-blue-200' :
@@ -696,8 +696,8 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
 
                           {c.stage === 'interview' && (
                             c.interview_date ? (
-                              <div className="bg-[#FAF9F5] border border-[#E8E2D5] rounded-xl p-2 space-y-1 max-w-[210px] shadow-2xs">
-                                <div className="text-[11px] font-bold text-slate-800 flex items-center gap-1.5 whitespace-nowrap">
+                              <div className="bg-[#FAF9F5] border border-[#E8E2D5] rounded-lg p-1.5 space-y-0.5 shadow-2xs">
+                                <div className="text-[11px] font-bold text-slate-800 flex items-center gap-1 whitespace-nowrap">
                                   <span className="text-xs">📅</span>
                                   <span className="whitespace-nowrap">
                                     {new Date(c.interview_date + 'T00:00:00').toLocaleDateString('en-IN', {
@@ -711,11 +711,9 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
                                     </span>
                                   )}
                                 </div>
-                                <div className="flex items-center justify-between gap-1.5 pt-1 border-t border-slate-200/60 text-[10px] whitespace-nowrap">
-                                  <span className="text-slate-600 font-medium whitespace-nowrap flex items-center gap-1">
-                                    <span>
-                                      {c.interview_type === 'online' ? '💻 Online' : c.interview_type === 'telephonic' ? '📞 Telephonic' : '🏢 In-Office'}
-                                    </span>
+                                <div className="flex items-center justify-between gap-1 pt-1 border-t border-slate-200/60 text-[10px] whitespace-nowrap">
+                                  <span className="text-slate-600 font-medium whitespace-nowrap text-[10px]">
+                                    {c.interview_type === 'online' ? '💻 Online' : c.interview_type === 'telephonic' ? '📞 Telephonic' : '🏢 In-Office'}
                                   </span>
                                   <button
                                     type="button"
@@ -731,10 +729,10 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
                               <button
                                 type="button"
                                 onClick={() => openScheduleInterviewModal(c)}
-                                className="block mt-1 text-[10px] text-blue-700 font-bold bg-blue-50/80 hover:bg-blue-100 px-2.5 py-1 rounded-lg border border-blue-200 transition-colors cursor-pointer whitespace-nowrap shadow-2xs"
+                                className="block mt-0.5 text-[10px] text-blue-700 font-bold bg-blue-50/80 hover:bg-blue-100 px-2 py-0.5 rounded-lg border border-blue-200 transition-colors cursor-pointer whitespace-nowrap shadow-2xs"
                                 title="Set interview date and time"
                               >
-                                <span>📅 Set Date &amp; Time</span>
+                                <span>📅 Set Slot</span>
                               </button>
                             )
                           )}
@@ -742,13 +740,13 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
                       </td>
 
                       {/* Resume */}
-                      <td className="px-5 py-4 whitespace-nowrap">
+                      <td className="px-2.5 py-2.5 align-top whitespace-nowrap text-center">
                         {c.resume_filename ? (
                           <button
                             onClick={() => handleDownloadResume(c.resume_filename!)}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[#E8E2D5] bg-[#FAF8F2] text-[#856E2E] hover:bg-[#F5EFE0] text-xs font-bold transition-all shadow-sm whitespace-nowrap cursor-pointer"
+                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border border-[#E8E2D5] bg-[#FAF8F2] text-[#856E2E] hover:bg-[#F5EFE0] text-xs font-bold transition-all shadow-2xs whitespace-nowrap cursor-pointer"
                           >
-                            <FileTextIcon size={14} />
+                            <FileTextIcon size={13} />
                             <span className="whitespace-nowrap">View CV</span>
                           </button>
                         ) : (
@@ -757,10 +755,10 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
                       </td>
 
                       {/* Notes & Remarks */}
-                      <td className="px-5 py-4 whitespace-nowrap">
+                      <td className="px-2.5 py-2.5 align-top whitespace-nowrap text-center">
                         <button
                           onClick={() => openNotesModal(c)}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 text-xs font-semibold whitespace-nowrap cursor-pointer transition-all shadow-2xs"
+                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 text-xs font-semibold whitespace-nowrap cursor-pointer transition-all shadow-2xs"
                         >
                           <span className="whitespace-nowrap">💬 Notes</span>
                           {(c.note_count || 0) > 0 && (
@@ -772,11 +770,11 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
                       </td>
 
                       {/* Quick Actions (Stage selector, Edit, Delete) */}
-                      <td className="px-5 py-4 text-right space-x-1.5 whitespace-nowrap">
+                      <td className="px-3 py-2.5 align-top text-right space-x-1 whitespace-nowrap">
                         <select
                           value={c.stage}
                           onChange={(e) => handleStageSelectChange(c, e.target.value)}
-                          className="px-2.5 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold bg-white text-slate-700 focus:outline-none focus:border-[#d6c180] cursor-pointer"
+                          className="px-2 py-1 rounded-lg border border-slate-200 text-[11px] font-semibold bg-white text-slate-700 focus:outline-none focus:border-[#d6c180] cursor-pointer"
                         >
                           {stages.map(s => (
                             <option key={s} value={s}>{s.toUpperCase()}</option>
@@ -785,7 +783,7 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
 
                         <button
                           onClick={() => openEditModal(c)}
-                          className="px-2.5 py-1.5 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-100 text-xs font-bold"
+                          className="px-2 py-1 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-100 text-[11px] font-bold cursor-pointer"
                           title="Edit candidate profile & job matching"
                         >
                           Edit
@@ -793,7 +791,7 @@ export default function CandidatesPipelinePage({ params }: { params: Promise<{ t
 
                         <button
                           onClick={() => handleDeleteCandidate(c.id, c.name)}
-                          className="px-2.5 py-1.5 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 text-xs font-bold"
+                          className="px-2 py-1 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 text-[11px] font-bold cursor-pointer"
                           title="Delete candidate"
                         >
                           Delete
