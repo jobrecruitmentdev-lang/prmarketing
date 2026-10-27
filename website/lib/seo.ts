@@ -33,7 +33,7 @@ export function multiBreadcrumbSchema(items: { name: string; path: string }[]) {
 export function localBusinessSchema() {
   return {
     "@context": "https://schema.org",
-    "@type": ["ProfessionalService", "MarketingAgency", "Organization"],
+    "@type": ["ProfessionalService", "PublicRelationsAgency", "MarketingAgency", "Organization"],
     name: site.name,
     image: `${site.url}/logo-mark.png`,
     "@id": site.url,
@@ -42,6 +42,11 @@ export function localBusinessSchema() {
     priceRange: "$$",
     description: site.description,
     knowsAbout: [
+      "Public Relations (PR)",
+      "Media Relations & Press Conferences",
+      "Corporate Press Release Distribution",
+      "Crisis Communications & Reputation Management",
+      "Executive Thought Leadership",
       "Search Engine Optimization (SEO)",
       "Generative Engine Optimization (GEO)",
       "Answer Engine Optimization (AEO)",
@@ -63,6 +68,14 @@ export function localBusinessSchema() {
       "@type": "OfferCatalog",
       name: "Marketing, Software & AI Growth Services",
       itemListElement: [
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "Public Relations (PR) & Media Relations",
+            description: "Corporate PR, regional press distribution across Gujarat, national business media placements, crisis communications, and executive profiling in Ahmedabad.",
+          },
+        },
         {
           "@type": "Offer",
           itemOffered: {

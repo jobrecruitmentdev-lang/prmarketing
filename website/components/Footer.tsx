@@ -21,6 +21,7 @@ const coreServices = [
 ];
 
 const ahmedabadMarketingLinks = [
+  { label: "PR Agency in Ahmedabad", href: "/pr-agency-in-ahmedabad/" },
   { label: "Top 10 Marketing Agencies Ahmedabad", href: "/top-10-marketing-agencies-in-ahmedabad/" },
   { label: "Marketing Agency Ahmedabad", href: "/marketing-agency-ahmedabad/" },
   { label: "Digital Marketing Agency Ahmedabad", href: "/digital-marketing-agency-ahmedabad/" },

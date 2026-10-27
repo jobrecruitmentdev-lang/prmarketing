@@ -382,7 +382,7 @@ export default function WhatIsPrMarketingPage() {
                 Founded by <strong>{site.founder.name}</strong>, <strong>PR Marketing Ventures</strong> was established on a simple realization: businesses wasting lakhs on generic ads without brand trust bleed cash, while businesses with pure PR but no conversion funnels get famous without making revenue.
               </p>
               <p className="mt-3 text-sm leading-relaxed text-slate-300 sm:text-base">
-                Operating from our headquarters at <strong>{site.location}</strong>, we build full-funnel systems: securing earned media in top-tier national outlets, engineering sub-second Next.js web applications, optimizing for Generative AI engines (GEO/AEO), and deploying automated WhatsApp CRM pipelines.
+                Operating from our headquarters at <strong>{site.location}</strong>, we build full-funnel systems: securing earned media in top-tier national outlets via our dedicated <Link href="/pr-agency-in-ahmedabad/" className="text-amber-300 font-bold underline hover:text-white">PR Agency in Ahmedabad</Link> desk, engineering sub-second Next.js web applications, optimizing for Generative AI engines (GEO/AEO), and deploying automated WhatsApp CRM pipelines.
               </p>
               <div className="mt-6 flex flex-wrap gap-4 text-xs font-semibold text-amber-200">
                 <div className="flex items-center gap-1.5">

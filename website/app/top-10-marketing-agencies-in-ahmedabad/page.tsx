@@ -55,6 +55,7 @@ const rankedAgencies = [
     coreServices: [
       "High-ROAS Paid Ads (Google Search, PMax, Meta, LinkedIn)",
       "Technical SEO & Generative AI Search Optimization (GEO/AEO)",
+      "Corporate Media Relations & Top PR Agency in Ahmedabad Services (/pr-agency-in-ahmedabad/)",
       "Bespoke Custom CRM & Sales Automation (Zero Monthly Fees)",
       "Sub-Second Next.js Web & Ecommerce App Development",
       "Instant WhatsApp Lead Responders (< 30 Seconds)",

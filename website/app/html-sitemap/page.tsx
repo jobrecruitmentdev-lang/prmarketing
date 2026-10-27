@@ -46,6 +46,7 @@ const coreServicePages = [
 ];
 
 const ahmedabadMarketingPages = [
+  { title: "PR Agency in Ahmedabad (Media & Press)", href: "/pr-agency-in-ahmedabad/", desc: "Guaranteed editorial press coverage, regional Gujarati news, and executive reputation management" },
   { title: "Top 10 Marketing Agencies in Ahmedabad (2026 Rankings)", href: "/top-10-marketing-agencies-in-ahmedabad/", desc: "Ranked benchmark of leading marketing agencies, ROAS metrics & custom CRM systems" },
   { title: "Marketing Agency in Ahmedabad", href: "/marketing-agency-ahmedabad/" },
   { title: "Digital Marketing Agency in Ahmedabad", href: "/digital-marketing-agency-ahmedabad/" },

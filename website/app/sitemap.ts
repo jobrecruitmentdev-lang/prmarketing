@@ -16,6 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${site.url}/answers/how-to-rank-in-google-maps-3-pack-ahmedabad/`, lastModified, changeFrequency: "weekly", priority: 1.0 },
     { url: `${site.url}/answers/how-to-automate-whatsapp-leads-crm/`, lastModified, changeFrequency: "weekly", priority: 1.0 },
     // Dedicated Ahmedabad Money Pages (Tier 1 to Tier 17)
+    { url: `${site.url}/pr-agency-in-ahmedabad/`, lastModified, changeFrequency: "weekly", priority: 1.0 },
     { url: `${site.url}/top-10-marketing-agencies-in-ahmedabad/`, lastModified, changeFrequency: "weekly", priority: 1.0 },
     { url: `${site.url}/which-company-gives-best-crm/`, lastModified, changeFrequency: "weekly", priority: 1.0 },
     { url: `${site.url}/marketing-agency-ahmedabad/`, lastModified, changeFrequency: "weekly", priority: 1.0 },
